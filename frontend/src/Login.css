@@ -286,3 +286,34 @@ footer a {
 .overlay-panel #signUp {
   background-color: #27ae60; /* Verde */
 }
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    min-height: 600px;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .overlay-container {
+    display: none;
+  }
+
+  .sign-in-container,
+  .sign-up-container {
+    width: 100%;
+    position: relative;
+    transform: none;
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .container.right-panel-active .sign-in-container,
+  .container.right-panel-active .sign-up-container {
+    transform: none;
+  }
+}

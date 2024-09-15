@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import './Login.css';
 import useLoginScript from './useLoginScript';
+import Button from './SocialButtons'; // Importamos el componente de botones sociales
 
 const Login = () => {
   useLoginScript();
@@ -19,16 +21,23 @@ const Login = () => {
       console.log(response.data);
       // Manejar el éxito del inicio de sesión
       if (response.status === 200) {
-        alert('Inicio de sesión exitoso');
+        Swal.fire({
+          icon: 'success',
+          title: 'Inicio de sesión exitoso',
+          text: 'Bienvenido de nuevo!',
+        });
         // Redirigir al usuario al dashboard o a la página principal
       }
     } catch (error) {
-      console.error(error);
-      // Manejar el error del inicio de sesión
-      alert('Error en el inicio de sesión. Por favor, verifica tus credenciales.');
-    }
-  };
-
+        console.error(error);
+        // Manejar el error del inicio de sesión
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en el inicio de sesión',
+          text: 'Por favor, verifica tus credenciales.',
+        });
+      }
+    };
   return (
     <div>
       <h2>Bienvenido al Hospital-Citas</h2>
@@ -36,11 +45,7 @@ const Login = () => {
         <div className="form-container sign-up-container">
           <form action="#">
             <h1>Crear Cuenta</h1>
-            <div className="social-container">
-              <a href="https://www.facebook.com/FreeWebsiteCode/" className="social"><i className="fab fa-facebook-f"></i></a>
-              <a href="https://twitter.com/freewebsitecode" className="social"><i className="fab fa-twitter"></i></a>
-              <a href="https://www.linkedin.com/in/freewebsitecode/" className="social"><i className="fab fa-linkedin-in"></i></a>
-            </div>
+            <Button/>{/* Botones de redes sociales */}
             <span>o usa tu correo electrónico para registrarte</span>
             <input type="text" placeholder="Nombre" />
             <input type="email" placeholder="Correo Electrónico" />
@@ -51,11 +56,7 @@ const Login = () => {
         <div className="form-container sign-in-container">
           <form onSubmit={handleLoginSubmit}>
             <h1>Iniciar Sesión</h1>
-            <div className="social-container">
-              <a href="https://www.facebook.com/FreeWebsiteCode/" className="social"><i className="fab fa-facebook-f"></i></a>
-              <a href="https://twitter.com/freewebsitecode" className="social"><i className="fab fa-twitter"></i></a>
-              <a href="https://www.linkedin.com/in/freewebsitecode/" className="social"><i className="fab fa-linkedin-in"></i></a>
-            </div>
+            <Button/>{/* Botones de redes sociales */}
             <span>o usa tu cuenta</span>
             <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
             <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
