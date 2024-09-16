@@ -13,9 +13,14 @@ const Login = () => {
   const isSignUp = useLoginScript(); // Usa el hook para manejar la animación
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
+  const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
+
+  const handleRegisterChange = (e) => {
+    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
   };
 
   const handleLoginSubmit = async (e) => {
@@ -37,6 +42,29 @@ const Login = () => {
         icon: 'error',
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
+      });
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/register', registerData);
+      console.log(response.data);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'Bienvenido!',
+        });
+        navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el registro',
+        text: 'Por favor, verifica tus datos.',
       });
     }
   };
@@ -102,17 +130,17 @@ const Login = () => {
         <h2>Bienvenido al Hospital-Citas</h2>
         <div className="container" id="container">
           <div className="form-container sign-up-container">
-            <form action="#">
+            <form onSubmit={handleRegisterSubmit}>
               <h1>Crear Cuenta</h1>
               <GoogleLogin
                 onSuccess={handleGoogleRegisterSuccess}
                 onError={handleGoogleFailure}
               />
               <span>o usa tu correo electrónico para registrarte</span>
-              <input type="text" placeholder="Nombre" />
-              <input type="email" placeholder="Correo Electrónico" />
-              <input type="password" placeholder="Contraseña" />
-              <button>Registrarse</button>
+              <input type="text" name="name" placeholder="Nombre" onChange={handleRegisterChange} />
+              <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleRegisterChange} />
+              <input type="password" name="password" placeholder="Contraseña" onChange={handleRegisterChange} />
+              <button type="submit">Registrarse</button>
             </form>
           </div>
           <div className="form-container sign-in-container">

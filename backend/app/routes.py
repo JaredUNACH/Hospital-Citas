@@ -19,6 +19,31 @@ def login():
     else:
         return jsonify({"message": "Inicio de sesión fallido. Por favor, verifica tu correo y contraseña"}), 401
 
+@routes.route('/register', methods=['POST'])
+def register():
+    name = request.json.get('name')
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+    # Verificar si el usuario ya existe
+    user = Paciente.query.filter_by(email=email).first()
+    if user:
+        return jsonify({'message': 'Usuario ya registrado'}), 400
+
+    # Crear un nuevo usuario
+    new_user = Paciente(
+        nombre=name,
+        apellido_paterno='',
+        apellido_materno='',
+        email=email,
+        fecha_nacimiento='2000-01-01'  # Puedes ajustar esto según tus necesidades
+    )
+    new_user.set_password(password)  # Asegúrate de que tu modelo Paciente tenga un método set_password
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'Registro exitoso', 'email': email, 'name': name}), 200
+
 @routes.route('/google-login', methods=['POST'])
 def google_login():
     token = request.json.get('tokenId')
