@@ -13,7 +13,8 @@ class Paciente(db.Model, UserMixin):
     apellido_paterno = db.Column(db.String(100), nullable=False)
     apellido_materno = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=True)  # Puede ser nulo para usuarios de Google
+    google_id = db.Column(db.String(100), unique=True, nullable=True)  # ID de Google
     fecha_nacimiento = db.Column(db.Date, nullable=False)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), default='usuario', nullable=False)

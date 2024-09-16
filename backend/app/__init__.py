@@ -17,7 +17,7 @@ def create_app():
     
     CORS(app)  # Habilitar CORS
 
-    from .routes import main
-    app.register_blueprint(main)
+    from .routes import routes  # Importar las rutas
+    app.register_blueprint(routes)  # Registrar el blueprint de las rutas
 
     return app

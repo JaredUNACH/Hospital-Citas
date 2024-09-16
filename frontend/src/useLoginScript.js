@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const useLoginScript = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
+
   useEffect(() => {
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
@@ -9,10 +11,12 @@ const useLoginScript = () => {
     if (signUpButton && signInButton && container) {
       const handleSignUpClick = () => {
         container.classList.add("right-panel-active");
+        setIsSignUp(true);
       };
 
       const handleSignInClick = () => {
         container.classList.remove("right-panel-active");
+        setIsSignUp(false);
       };
 
       signUpButton.addEventListener('click', handleSignUpClick);
@@ -25,6 +29,8 @@ const useLoginScript = () => {
       };
     }
   }, []);
+
+  return isSignUp;
 };
 
 export default useLoginScript;
