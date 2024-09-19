@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import useLoginScript from './useLoginScript'; // Asegúrate de que la ruta sea correcta
+import { AuthContext } from './AuthContext';
+import useLoginScript from './useLoginScript'; 
 import './Login.css';
 
 const clientId = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleusercontent.com";
@@ -11,6 +12,7 @@ const clientId = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleuserc
 const Login = () => {
   const navigate = useNavigate(); // Hook para redirigir
   const isSignUp = useLoginScript(); // Usa el hook para manejar la animación
+  const { login, googleLogin } = useContext(AuthContext); // Usa el contexto de autenticación
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
@@ -26,16 +28,14 @@ const Login = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', loginData);
-      console.log(response.data);
-      if (response.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Inicio de sesión exitoso',
-          text: 'Bienvenido de nuevo!',
-        });
+      await login(loginData);
+      Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión exitoso',
+        text: 'Bienvenido de nuevo!',
+      }).then(() => {
         navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
-      }
+      });
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -49,15 +49,16 @@ const Login = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/register', registerData);
+      const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
       console.log(response.data);
       if (response.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Registro exitoso',
           text: 'Bienvenido!',
+        }).then(() => {
+          navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
         });
-        navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
       }
     } catch (error) {
       console.error(error);
@@ -72,44 +73,19 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const { credential } = response;
-      const res = await axios.post('http://127.0.0.1:5000/google-login', { tokenId: credential });
-      console.log(res.data);
-      if (res.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Inicio de sesión exitoso',
-          text: 'Bienvenido de nuevo!',
-        });
+      await googleLogin(credential);
+      Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión exitoso',
+        text: 'Bienvenido de nuevo!',
+      }).then(() => {
         navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
-      }
+      });
     } catch (error) {
       console.error(error);
       Swal.fire({
         icon: 'error',
         title: 'Error en el inicio de sesión',
-        text: 'Por favor, verifica tus credenciales.',
-      });
-    }
-  };
-
-  const handleGoogleRegisterSuccess = async (response) => {
-    try {
-      const { credential } = response;
-      const res = await axios.post('http://127.0.0.1:5000/google-register', { tokenId: credential });
-      console.log(res.data);
-      if (res.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Registro exitoso',
-          text: 'Bienvenido!',
-        });
-        navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
-      }
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error en el registro',
         text: 'Por favor, verifica tus credenciales.',
       });
     }
@@ -126,14 +102,14 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div>
+      <div className='container-principal'>
         <h2>Bienvenido al Hospital-Citas</h2>
         <div className="container" id="container">
           <div className="form-container sign-up-container">
             <form onSubmit={handleRegisterSubmit}>
               <h1>Crear Cuenta</h1>
               <GoogleLogin
-                onSuccess={handleGoogleRegisterSuccess}
+                onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleFailure}
               />
               <span>o usa tu correo electrónico para registrarte</span>

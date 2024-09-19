@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from flask_login import login_user
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models import db, Paciente
 
 routes = Blueprint('routes', __name__)
@@ -14,8 +14,10 @@ def login():
     password = request.json.get('password')
     paciente = Paciente.query.filter_by(email=email).first()
     if paciente and paciente.check_password(password):
-        login_user(paciente)
-        return jsonify({"message": "Inicio de sesión exitoso"}), 200
+        access_token = create_access_token(identity={"id": paciente.id, "email": paciente.email})
+        response = make_response(jsonify({"message": "Inicio de sesión exitoso"}), 200)
+        response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
+        return response
     else:
         return jsonify({"message": "Inicio de sesión fallido. Por favor, verifica tu correo y contraseña"}), 401
 
@@ -60,10 +62,11 @@ def google_login():
         if user is None:
             return jsonify({'message': 'Usuario no registrado'}), 400
 
-        # Aquí puedes manejar la lógica de inicio de sesión, como crear una sesión para el usuario.
-        login_user(user)
-
-        return jsonify({'message': 'Inicio de sesión exitoso', 'email': email, 'name': name}), 200
+        # Crear un token de acceso
+        access_token = create_access_token(identity={"id": user.id, "email": user.email})
+        response = make_response(jsonify({'message': 'Inicio de sesión exitoso', 'email': email, 'name': name}), 200)
+        response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
+        return response
     except ValueError:
         # Token inválido
         return jsonify({'message': 'Error en el inicio de sesión'}), 400
@@ -96,7 +99,17 @@ def google_register():
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({'message': 'Registro exitoso', 'email': email, 'name': name}), 200
+        # Crear un token de acceso
+        access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email})
+        response = make_response(jsonify({'message': 'Registro exitoso', 'email': email, 'name': name}), 200)
+        response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
+        return response
     except ValueError:
         # Token inválido
         return jsonify({'message': 'Error en el registro'}), 400
+
+@routes.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
