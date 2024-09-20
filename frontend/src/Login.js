@@ -111,6 +111,7 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleFailure}
+                useOneTap
               />
               <span>o usa tu correo electrónico para registrarte</span>
               <input type="text" name="name" placeholder="Nombre" onChange={handleRegisterChange} />
@@ -125,6 +126,7 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={handleGoogleLoginSuccess}
                 onError={handleGoogleFailure}
+                useOneTap
               />
               <span>o usa tu cuenta</span>
               <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
