@@ -27,9 +27,12 @@ def register():
     email = request.json.get('email')
     password = request.json.get('password')
 
+    print(f"Registering user: {name}, {email}")
+
     # Verificar si el usuario ya existe
     user = Paciente.query.filter_by(email=email).first()
     if user:
+        print("User already registered")
         return jsonify({'message': 'Usuario ya registrado'}), 400
 
     # Crear un nuevo usuario
@@ -44,11 +47,13 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
+    print(f"User {email} registered successfully")
+
     return jsonify({'message': 'Registro exitoso', 'email': email, 'name': name}), 200
 
 @routes.route('/google-login', methods=['POST'])
 def google_login():
-    token = request.json.get('tokenId')
+    token = request.json.get('credential')
     try:
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 
@@ -73,7 +78,7 @@ def google_login():
 
 @routes.route('/google-register', methods=['POST'])
 def google_register():
-    token = request.json.get('tokenId')
+    token = request.json.get('credential')
     try:
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 

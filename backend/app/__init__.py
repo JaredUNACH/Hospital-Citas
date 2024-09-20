@@ -3,8 +3,8 @@ from config import Config
 from .models import db, bcrypt
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from flask_cors import CORS  # Importar CORS
-from flask_jwt_extended import JWTManager  # Importar JWTManager
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
