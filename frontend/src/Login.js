@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -27,7 +26,8 @@ const Login = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(loginData);
+      const response = await login(loginData);
+      localStorage.setItem('token', response.token); // Guardar el token en el almacenamiento local
       Swal.fire({
         icon: 'success',
         title: 'Inicio de sesión exitoso',
@@ -51,6 +51,7 @@ const Login = () => {
       const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
       console.log(response.data);
       if (response.status === 200) {
+        localStorage.setItem('token', response.data.token); // Guardar el token en el almacenamiento local
         Swal.fire({
           icon: 'success',
           title: 'Registro exitoso',
@@ -72,7 +73,8 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const { credential } = response;
-      await googleLogin(credential);
+      const loginResponse = await googleLogin(credential);
+      localStorage.setItem('token', loginResponse.token); // Guardar el token en el almacenamiento local
       Swal.fire({
         icon: 'success',
         title: 'Inicio de sesión exitoso',
@@ -166,12 +168,12 @@ const Login = () => {
             <div className="overlay">
               <div className="overlay-panel overlay-left">
                 <h1>¡Bienvenido de Nuevo!</h1>
-                <p>Para mantenerte conectado con nosotros, por favor inicia sesión con tu información personal</p>
+                <p>Para agendar tu cita, por favor inicia sesión con tu información personal</p>
                 <button className="ghost" id="signIn">Iniciar Sesión</button>
               </div>
               <div className="overlay-panel overlay-right">
                 <h1>¡Hola, Amigo!</h1>
-                <p>Ingresa tus datos personales y comienza tu viaje con nosotros</p>
+                <p>Ingresa tus datos personales y agenda tu cita con nosotros</p>
                 <button className="ghost" id="signUp">Registrarse</button>
               </div>
             </div>
