@@ -12,6 +12,7 @@ function App() {
       <div className="app-container">
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/logout" element={<Logout />} /> {/* Definir la ruta de cierre de sesión */}
         </Routes>
