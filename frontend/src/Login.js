@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+// Login.js
+import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { AuthContext } from './AuthContext';
 import useLoginScript from './useLoginScript'; 
 import './Login.css';
 
@@ -12,7 +12,6 @@ const clientId = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleuserc
 const Login = () => {
   const navigate = useNavigate(); // Hook para redirigir
   const isSignUp = useLoginScript(); // Usa el hook para manejar la animación
-  const { login, googleLogin } = useContext(AuthContext); // Usa el contexto de autenticación
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
@@ -98,6 +97,34 @@ const Login = () => {
       title: 'Error en el inicio de sesión',
       text: 'No se pudo iniciar sesión con Google. Por favor, intenta de nuevo.',
     });
+  };
+
+  const login = async (loginData) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/login', loginData, { withCredentials: true });
+      console.log(response.data);
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error('Login failed');
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const googleLogin = async (credential) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/google-login', { credential }, { withCredentials: true });
+      console.log(response.data);
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error('Google login failed');
+      }
+    } catch (error) {
+      throw error;
+    }
   };
 
   return (
