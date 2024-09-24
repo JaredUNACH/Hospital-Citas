@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
-import './SpecialtySelect.css';
+import '../styles/SpecialtySelect.css';
 
 const SpecialtySelect = () => {
   const [specialties, setSpecialties] = useState([]);

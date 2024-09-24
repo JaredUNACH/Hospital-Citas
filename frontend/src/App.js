@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Login';
-import Home from './Home';
-import Logout from './Logout'; // Importar el componente de cierre de sesión
+import Login from './pages/Login';
+import Home from './pages/Home';
+import Logout from './pages/Logout'; // Importar el componente de cierre de sesión
 
 import './App.css'; // Importa los estilos CSS para App
 

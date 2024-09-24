@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Home.css';
-import SpecialtySelect from './SpecialtySelect';
+import '../styles/Home.css';
+import SpecialtySelect from '../components/SpecialtySelect';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 

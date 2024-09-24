@@ -3,8 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import useLoginScript from './useLoginScript'; 
-import './Login.css';
+import useLoginScript from '../components/useLoginScript'; 
+import '../styles/Login.css';
 
 const clientId = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleusercontent.com";
 
