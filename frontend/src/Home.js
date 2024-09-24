@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import SpecialtySelect from './SpecialtySelect';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,7 +23,7 @@ const Home = () => {
         <source src="/instalaciones Hospital.mp4" type="video/mp4" />
       </video>
       <nav className="navbar">
-        <img className="logo" src="/logo192.png" alt="Hospital Logo" />
+        <img className="logo" src="/Medical Care.svg" alt="Hospital Logo" />
         <ul className="nav-links">
           <li><a href="/appointments">Mis Citas</a></li>
           <li><a href="/account">Mi Cuenta</a></li>
@@ -43,9 +46,16 @@ const Home = () => {
         </label>
       </nav>
       <div className="content">
-        <h1>Encuentra tu especialista y pide cita </h1>
+        <div className="typewriter">
+          <h1>Encuentra tu especialista y pide cita </h1>
+        </div>
         <div>
-          <button type="button">Explorar</button>
+          <SpecialtySelect />
+        </div>
+        <div>
+          <button type="button" className="search-button">
+            <FontAwesomeIcon icon={faSearch} /> Buscar
+          </button>
         </div>
       </div>
     </div>

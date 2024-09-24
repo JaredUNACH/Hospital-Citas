@@ -37,7 +37,7 @@ def register():
         print("User already registered")
         return jsonify({'message': 'Usuario ya registrado'}), 400
 
-    # Crear un nuevo usuario
+    # Crea un nuevo usuario
     new_user = Paciente(
         nombre=name,
         apellido_paterno='',
@@ -67,12 +67,12 @@ def google_login():
         email = idinfo['email']
         name = idinfo['name']
 
-        # Buscar al usuario en la base de datos
+        # Busca al usuario en la base de datos
         user = Paciente.query.filter_by(email=email).first()
         if user is None:
             return jsonify({'message': 'Usuario no registrado'}), 400
 
-        # Crear un token de acceso
+        # Crea un token de acceso
         access_token = create_access_token(identity={"id": user.id, "email": user.email})
         response_data = {'message': 'Inicio de sesión exitoso', 'email': email, 'name': name, 'token': access_token}
         print('Google login response:', response_data)  # Verifica la respuesta del servidor
@@ -94,7 +94,7 @@ def google_register():
         email = idinfo['email']
         name = idinfo['name']
 
-        # Verificar si el usuario ya existe
+        # Verifica si el usuario ya existe
         user = Paciente.query.filter_by(email=email).first()
         if user:
             return jsonify({'message': 'Usuario ya registrado'}), 400
