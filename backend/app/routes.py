@@ -2,10 +2,19 @@ from flask import Blueprint, request, jsonify, make_response
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from .models import db, Paciente
 import re
 
 routes = Blueprint('routes', __name__)
+
+# Configuración de Flask-Limiter
+limiter = Limiter(
+    get_remote_address,
+    app=routes,
+    default_limits=["200 per day", "50 per hour"]
+)
 
 CLIENT_ID = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleusercontent.com"  # Client ID de Google
 
@@ -14,6 +23,7 @@ def validate_email(email):
     return email_regex.match(email)
 
 @routes.route('/login', methods=['POST'])
+@limiter.limit("5 per minute")
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -33,6 +43,7 @@ def login():
         return jsonify({"message": "Inicio de sesión fallido. Por favor, verifica tu correo y contraseña"}), 401
 
 @routes.route('/register', methods=['POST'])
+@limiter.limit("5 per minute")
 def register():
     name = request.json.get('name')
     email = request.json.get('email')
@@ -69,6 +80,7 @@ def register():
     return response
 
 @routes.route('/google-login', methods=['POST'])
+@limiter.limit("5 per minute")
 def google_login():
     token = request.json.get('credential')
     try:
@@ -99,6 +111,7 @@ def google_login():
         return jsonify({'message': 'Error en el inicio de sesión'}), 400
 
 @routes.route('/google-register', methods=['POST'])
+@limiter.limit("5 per minute")
 def google_register():
     token = request.json.get('credential')
     try:
@@ -142,6 +155,7 @@ def google_register():
 
 @routes.route('/protected', methods=['GET'])
 @jwt_required()
+@limiter.limit("10 per minute")
 def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
