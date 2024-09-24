@@ -16,20 +16,34 @@ def create_app():
     app.config.from_object(Config)
 
     # Configuración de JWT
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'af03f15da847ebb6e355fdcdc397fc4794b30b4b5f3045f4')
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'af03f15da847ebb6e355fdcdc397fc4794b304b5f3045f4')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
     jwt = JWTManager(app)
 
+    # Inicializar extensiones
     db.init_app(app)
     bcrypt.init_app(app)
     migrate = Migrate(app, db)
     login_manager = LoginManager(app)
     login_manager.login_view = 'main.login'
     
-    # Habilitar CORS con credenciales
+    # Habilita CORS con credenciales
     CORS(app, supports_credentials=True)
 
-    from .routes import routes  # Importar las rutas
-    app.register_blueprint(routes)  # Registrar el blueprint de las rutas
+    # Configurar cookies seguras
+    app.config['SESSION_COOKIE_SECURE'] = True  # Asegura que las cookies solo se envíen a través de HTTPS
+    app.config['REMEMBER_COOKIE_SECURE'] = True  # Asegura que las cookies de "remember me" solo se envíen a través de HTTPS
+
+    # Configurar Content Security Policy (CSP)
+    @app.after_request
+    def add_security_headers(response):
+        csp = app.config.get('CSP', {})
+        csp_header = "; ".join([f"{k} {v}" for k, v in csp.items()])
+        response.headers['Content-Security-Policy'] = csp_header
+        return response
+
+    # Importar y registrar las rutas
+    from .routes import routes
+    app.register_blueprint(routes)
 
     return app

@@ -34,6 +34,12 @@ html, body {
   width: 160px;
   margin-top: -10px;
   cursor: pointer;
+  filter: drop-shadow(2px 2px 20px turquoise);
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .nav-links {

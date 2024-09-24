@@ -12,7 +12,7 @@ routes = Blueprint('routes', __name__)
 # Configuración de Flask-Limiter
 limiter = Limiter(
     get_remote_address,
-    app=routes,
+    app=None,  # No configuramos el Blueprint como una aplicación Flask
     default_limits=["200 per day", "50 per hour"]
 )
 
