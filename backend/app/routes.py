@@ -15,7 +15,9 @@ def login():
     paciente = Paciente.query.filter_by(email=email).first()
     if paciente and paciente.check_password(password):
         access_token = create_access_token(identity={"id": paciente.id, "email": paciente.email})
-        response = make_response(jsonify({"message": "Inicio de sesión exitoso"}), 200)
+        response_data = {"message": "Inicio de sesión exitoso", "token": access_token}
+        print('Login response:', response_data)  # Verifica la respuesta del servidor
+        response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
     else:
@@ -29,7 +31,7 @@ def register():
 
     print(f"Registering user: {name}, {email}")
 
-    # Verificar si el usuario ya existe
+    # Verifica si el usuario ya existe
     user = Paciente.query.filter_by(email=email).first()
     if user:
         print("User already registered")
@@ -41,15 +43,18 @@ def register():
         apellido_paterno='',
         apellido_materno='',
         email=email,
-        fecha_nacimiento='2000-01-01'  # Puedes ajustar esto según tus necesidades
+        fecha_nacimiento='2000-01-01'  
     )
-    new_user.set_password(password)  # Asegúrate de que tu modelo Paciente tenga un método set_password
+    new_user.set_password(password)  
     db.session.add(new_user)
     db.session.commit()
 
-    print(f"User {email} registered successfully")
-
-    return jsonify({'message': 'Registro exitoso', 'email': email, 'name': name}), 200
+    access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email})
+    response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'token': access_token}
+    print('Register response:', response_data)  # Verifica la respuesta del servidor
+    response = make_response(jsonify(response_data), 200)
+    response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
+    return response
 
 @routes.route('/google-login', methods=['POST'])
 def google_login():
@@ -69,7 +74,9 @@ def google_login():
 
         # Crear un token de acceso
         access_token = create_access_token(identity={"id": user.id, "email": user.email})
-        response = make_response(jsonify({'message': 'Inicio de sesión exitoso', 'email': email, 'name': name}), 200)
+        response_data = {'message': 'Inicio de sesión exitoso', 'email': email, 'name': name, 'token': access_token}
+        print('Google login response:', response_data)  # Verifica la respuesta del servidor
+        response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
     except ValueError:
@@ -92,21 +99,23 @@ def google_register():
         if user:
             return jsonify({'message': 'Usuario ya registrado'}), 400
 
-        # Crear un nuevo usuario
+        # Crea un nuevo usuario
         new_user = Paciente(
             nombre=name,
             apellido_paterno='',
             apellido_materno='',
             email=email,
             google_id=google_id,
-            fecha_nacimiento='2000-01-01'  # Puedes ajustar esto según tus necesidades
+            fecha_nacimiento='2000-01-01'  
         )
         db.session.add(new_user)
         db.session.commit()
 
-        # Crear un token de acceso
+        # Crea un token de acceso
         access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email})
-        response = make_response(jsonify({'message': 'Registro exitoso', 'email': email, 'name': name}), 200)
+        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'token': access_token}
+        print('Google register response:', response_data)  # Verifica la respuesta del servidor
+        response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
     except ValueError:

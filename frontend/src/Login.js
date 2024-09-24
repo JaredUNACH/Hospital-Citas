@@ -10,7 +10,7 @@ const clientId = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleuserc
 
 const Login = () => {
   const navigate = useNavigate(); // Hook para redirigir
-  const isSignUp = useLoginScript(); // Usa el hook para manejar la animación
+  const isSignUp = useLoginScript(); // hook para manejar la animación
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
@@ -27,14 +27,20 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(loginData);
-      localStorage.setItem('token', response.token); // Guardar el token en el almacenamiento local
-      Swal.fire({
-        icon: 'success',
-        title: 'Inicio de sesión exitoso',
-        text: 'Bienvenido de nuevo!',
-      }).then(() => {
-        navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
-      });
+      console.log('Login response:', response.data); // Verifica la respuesta del servidor
+      if (response.data.token && response.data.token.length > 9) {
+        localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
+        Swal.fire({
+          icon: 'success',
+          title: 'Inicio de sesión exitoso',
+          text: 'Bienvenido de nuevo!',
+        }).then(() => {
+          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+        });
+      } else {
+        console.error('Token inválido:', response.data.token);
+        throw new Error('Token inválido');
+      }
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -49,16 +55,19 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
-      console.log(response.data);
-      if (response.status === 200) {
-        localStorage.setItem('token', response.data.token); // Guardar el token en el almacenamiento local
+      console.log('Register response:', response.data); // Verificar la respuesta del servidor
+      if (response.status === 200 && response.data.token && response.data.token.length > 9) {
+        localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
         Swal.fire({
           icon: 'success',
           title: 'Registro exitoso',
           text: 'Bienvenido!',
         }).then(() => {
-          navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
+          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
         });
+      } else {
+        console.error('Token inválido:', response.data.token);
+        throw new Error('Token inválido');
       }
     } catch (error) {
       console.error(error);
@@ -74,14 +83,20 @@ const Login = () => {
     try {
       const { credential } = response;
       const loginResponse = await googleLogin(credential);
-      localStorage.setItem('token', loginResponse.token); // Guardar el token en el almacenamiento local
-      Swal.fire({
-        icon: 'success',
-        title: 'Inicio de sesión exitoso',
-        text: 'Bienvenido de nuevo!',
-      }).then(() => {
-        navigate('/home'); // Redirigir al usuario al dashboard o a la página principal
-      });
+      console.log('Google login response:', loginResponse.data); // Verifica la respuesta del servidor
+      if (loginResponse.data.token && loginResponse.data.token.length > 9) {
+        localStorage.setItem('token', loginResponse.data.token); // Guarda el token en el almacenamiento local
+        Swal.fire({
+          icon: 'success',
+          title: 'Inicio de sesión exitoso',
+          text: 'Bienvenido de nuevo!',
+        }).then(() => {
+          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+        });
+      } else {
+        console.error('Token inválido:', loginResponse.data.token);
+        throw new Error('Token inválido');
+      }
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -104,9 +119,9 @@ const Login = () => {
   const login = async (loginData) => {
     try {
       const response = await axios.post('http://127.0.0.1:5000/login', loginData, { withCredentials: true });
-      console.log(response.data);
+      console.log('Login API response:', response.data); // Verifica la respuesta del servidor
       if (response.status === 200) {
-        return response.data;
+        return response;
       } else {
         throw new Error('Login failed');
       }
@@ -118,9 +133,9 @@ const Login = () => {
   const googleLogin = async (credential) => {
     try {
       const response = await axios.post('http://127.0.0.1:5000/google-login', { credential }, { withCredentials: true });
-      console.log(response.data);
+      console.log('Google login API response:', response.data); // Verifica la respuesta del servidor
       if (response.status === 200) {
-        return response.data;
+        return response;
       } else {
         throw new Error('Google login failed');
       }

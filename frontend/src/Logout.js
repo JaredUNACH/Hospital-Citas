@@ -5,8 +5,8 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.removeItem('token'); // Eliminar el token del almacenamiento local
-    navigate('/login'); // Redirigir al usuario a la página de inicio de sesión
+    localStorage.removeItem('token'); // Elimina el token del almacenamiento local
+    navigate('/login'); // Redirige al usuario a la página de inicio de sesión
   }, [navigate]);
 
   return null;
