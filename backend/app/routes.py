@@ -3,15 +3,24 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .models import db, Paciente
+import re
 
 routes = Blueprint('routes', __name__)
 
 CLIENT_ID = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleusercontent.com"  # Client ID de Google
 
+def validate_email(email):
+    email_regex = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
+    return email_regex.match(email)
+
 @routes.route('/login', methods=['POST'])
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
+
+    if not validate_email(email):
+        return jsonify({"message": "Correo electrónico inválido"}), 400
+
     paciente = Paciente.query.filter_by(email=email).first()
     if paciente and paciente.check_password(password):
         access_token = create_access_token(identity={"id": paciente.id, "email": paciente.email})
@@ -28,6 +37,9 @@ def register():
     name = request.json.get('name')
     email = request.json.get('email')
     password = request.json.get('password')
+
+    if not validate_email(email):
+        return jsonify({"message": "Correo electrónico inválido"}), 400
 
     print(f"Registering user: {name}, {email}")
 
@@ -67,6 +79,9 @@ def google_login():
         email = idinfo['email']
         name = idinfo['name']
 
+        if not validate_email(email):
+            return jsonify({"message": "Correo electrónico inválido"}), 400
+
         # Busca al usuario en la base de datos
         user = Paciente.query.filter_by(email=email).first()
         if user is None:
@@ -93,6 +108,9 @@ def google_register():
         google_id = idinfo['sub']
         email = idinfo['email']
         name = idinfo['name']
+
+        if not validate_email(email):
+            return jsonify({"message": "Correo electrónico inválido"}), 400
 
         # Verifica si el usuario ya existe
         user = Paciente.query.filter_by(email=email).first()

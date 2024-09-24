@@ -23,8 +23,21 @@ const Login = () => {
     setRegisterData({ ...registerData, [e.target.name]: e.target.value });
   };
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    if (!validateEmail(loginData.email)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Correo electrónico inválido',
+        text: 'Por favor, ingresa un correo electrónico válido.',
+      });
+      return;
+    }
     try {
       const response = await login(loginData);
       console.log('Login response:', response.data); // Verifica la respuesta del servidor
@@ -53,6 +66,14 @@ const Login = () => {
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
+    if (!validateEmail(registerData.email)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Correo electrónico inválido',
+        text: 'Por favor, ingresa un correo electrónico válido.',
+      });
+      return;
+    }
     try {
       const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
       console.log('Register response:', response.data); // Verificar la respuesta del servidor
