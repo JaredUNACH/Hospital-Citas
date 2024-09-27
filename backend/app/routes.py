@@ -17,7 +17,7 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"]
 )
 
-CLIENT_ID = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleusercontent.com"  # Client ID de Google
+CLIENT_ID = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com"  # Client ID de Google
 
 def validate_email(email):
     email_regex = re.compile(r'^[^\s@]+@[^\s@]+\.[^\s@]+$')
@@ -133,10 +133,10 @@ def google_register():
             print("Correo electrónico inválido")
             return jsonify({"message": "Correo electrónico inválido"}), 400
 
-        # Verifica si el usuario ya existe
+        # Verifica si el usuario ya existe por correo electrónico
         user = Paciente.query.filter_by(email=email).first()
         if user:
-            print("Usuario ya registrado")
+            print(f"Usuario ya registrado con el correo: {email}")
             return jsonify({'message': 'Usuario ya registrado'}), 400
 
         # Crea un nuevo usuario
@@ -151,10 +151,12 @@ def google_register():
         db.session.add(new_user)
         db.session.commit()
 
-        # Respuesta de éxito sin generar el token JWT
-        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name}
+        # Generar un token JWT para el nuevo usuario
+        access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email})
+        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'token': access_token}
         print('Google register response:', response_data)  # Verifica la respuesta del servidor
         response = make_response(jsonify(response_data), 200)
+        response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
     except ValueError as e:
         # Token inválido
@@ -164,7 +166,7 @@ def google_register():
         # Otros errores
         print('Error en el registro:', e)  # Verifica otros errores en la consola del servidor
         return jsonify({'message': 'Error en el registro'}), 500
-    
+
 @routes.route('/protected', methods=['GET'])
 @jwt_required()
 @limiter.limit("10 per minute")

@@ -6,7 +6,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import useLoginScript from '../components/useLoginScript'; 
 import '../styles/Login.css';
 
-const clientId = "312226628197-vuug8kd54rhent80sea8naghsj50crd4.apps.googleusercontent.com";
+const clientId = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com";
 
 const Login = () => {
   const navigate = useNavigate(); // Hook para redirigir
@@ -128,13 +128,13 @@ const Login = () => {
     }
   };
 
-  const handleGoogleRegisterSuccess = async (response) => {
+    const handleGoogleRegisterSuccess = async (response) => {
     try {
       const { credential } = response;
       console.log('Google credential:', credential); // Verifica el token en la consola
       const registerResponse = await googleRegister(credential);
       console.log('Google register response:', registerResponse.data); // Verifica la respuesta del servidor
-      if (registerResponse.data.token && registerResponse.data.token.length > 9) {
+      if (registerResponse.status === 200 && registerResponse.data.token && registerResponse.data.token.length > 9) {
         localStorage.setItem('token', registerResponse.data.token); // Guarda el token en el almacenamiento local
         Swal.fire({
           icon: 'success',
