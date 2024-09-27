@@ -1,0 +1,172 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-size: 1.6rem;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: rgb(204, 204, 204);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 10vh;
+  background: transparent; /* Fondo transparente */
+  z-index: 1000; /* Z-index alto para que quede por encima de otros componentes */
+}
+.nav__brand {
+  text-transform: uppercase;
+}
+
+.nav__menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3rem;
+  position: relative; /* Necesario para el pseudo-elemento */
+}
+.nav__toggler {
+  display: none;
+}
+.nav__toggler div {
+  width: 2.5rem;
+  height: 0.2rem;
+  margin: 0.4rem;
+  background: rgb(204, 204, 204);
+  transition: 0.3s ease-in;
+}
+
+@media screen and (max-width: 768px) {
+  .nav__toggler {
+    display: block;
+    cursor: pointer;
+  }
+  .nav__menu {
+    position: fixed;
+    top: 7vh;
+    right: 0;
+    height: 93vh;
+    width: 50vw;
+    background: rgba(64, 224, 208, 0.8); /* Fondo turquesa medio transparente */
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out, background 0.5s ease-in-out;
+    z-index: 999; /* Z-index alto para que quede por encima de otros componentes */
+  }
+  .nav__item {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  }
+  .nav__active .nav__item {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* Active Class */
+.nav__active {
+  transform: translateX(0%);
+  background: rgba(64, 224, 208, 0.8); /* Fondo turquesa medio transparente cuando se active */
+  z-index: 999; /* Z-index alto para que quede por encima de otros componentes */
+}
+
+/* Toggle Icon Animation */
+.toggle .line1 {
+  transform: rotate(-45deg) translate(-4px, 5px);
+}
+.toggle .line2 {
+  opacity: 0;
+}
+.toggle .line3 {
+  transform: rotate(45deg) translate(-4px, -5px);
+}
+
+/* Estilos para el logo */
+.logo {
+  width: 160px;
+  margin-top: -10px;
+  cursor: pointer;
+  filter: drop-shadow(2px 2px 20px turquoise);
+  transition: transform 0.3s ease-in-out;
+  margin-top: 100px;
+}
+
+.logo:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Efecto hover para las opciones del menú */
+.nav__link {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  font-size: 1.8rem; /* Ajusta el tamaño de la letra aquí */
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(204, 204, 204);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav__link:hover {
+  color: white; /* Cambia el color del texto al pasar el cursor */
+  transform: translateY(-5px); /* Efecto de desplazamiento hacia arriba */
+}
+
+.nav__link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Mejorado: Efecto hover animado para las opciones del menú */
+.nav__menu::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: turquoise;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.nav__item:hover ~ .nav__menu::before {
+  width: 100%;
+  left: 0;
+}
+
+.nav__item:hover .nav__link::after {
+  background-color: turquoise;
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Efecto de rebote entre las opciones del menú */
+.nav__item {
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav__item:hover {
+  transform: scale(1.1); /* Efecto de escala al pasar el cursor */
+}

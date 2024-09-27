@@ -21,50 +21,6 @@ html, body {
   position: relative;
 }
 
-.navbar {
-  width: 90%;
-  padding: 30px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  width: 160px;
-  margin-top: -10px;
-  cursor: pointer;
-  filter: drop-shadow(2px 2px 20px turquoise);
-  transition: transform 0.3s ease-in-out;
-}
-
-.logo:hover {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-}
-
-.nav-links li {
-  margin: 20px;
-}
-
-.nav-links li a {
-  text-decoration: none;
-  text-transform: uppercase;
-  color: white;
-  font-weight: 600;
-  padding: 15px;
-}
-
-.nav-links li a:hover {
-  background: white;
-  transition: 0.6s;
-  color: black;
-}
-
 .content {
   width: 100%;
   position: absolute;
@@ -76,14 +32,14 @@ html, body {
 
 .content h1 {
   margin-top: 80px;
-  font-size: 55px;
+  font-size: 3vw; /* Tamaño de fuente relativo al ancho de la pantalla */
   font-weight: 800;
   color: turquoise;
 }
 
 @keyframes typewriter {
   from { width: 0; }
-  to { width: 100%; }
+  to { width: 80%; }
 }
 
 @keyframes blinkTextCursor {
@@ -156,45 +112,6 @@ button:hover {
   display: none;
 }
 
-.burger {
-  position: relative;
-  width: 40px;
-  height: 30px;
-  background: transparent;
-  cursor: pointer;
-  display: block;
-}
-
-.burger span {
-  display: block;
-  position: absolute;
-  height: 4px;
-  width: 100%;
-  background: black;
-  border-radius: 9px;
-  opacity: 1;
-  left: 0;
-  transform: rotate(0deg);
-  transition: .25s ease-in-out;
-}
-
-.burger span:nth-of-type(1) {
-  top: 0px;
-  transform-origin: left center;
-}
-
-.burger span:nth-of-type(2) {
-  top: 50%;
-  transform: translateY(-50%);
-  transform-origin: left center;
-}
-
-.burger span:nth-of-type(3) {
-  top: 100%;
-  transform-origin: left center;
-  transform: translateY(-100%);
-}
-
 .popup input:checked ~ .burger span:nth-of-type(1) {
   transform: rotate(45deg);
   top: 0px;
@@ -261,38 +178,6 @@ button:hover {
 }
 
 @media (max-width: 768px) {
-  .burger {
-    display: inline-block;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .popup {
-    display: inline-block;
-  }
-
-  .navbar {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 20px;
-  }
-
-  .navbar ul {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .navbar ul li {
-    margin: 10px 0;
-  }
-
-  .content h1 {
-    font-size: 50px;
-    margin-top: 40px;
-  }
-
   button {
     width: 150px;
     padding: 10px;
@@ -306,16 +191,8 @@ button:hover {
     margin-left: 0;
   }
 
-  .navbar {
-    padding: 10px;
-  }
-
-  .navbar ul li {
-    margin: 5px 0;
-  }
-
   .content h1 {
-    font-size: 40px;
+    font-size: 3vw; /* Tamaño de fuente relativo al ancho de la pantalla */
     margin-top: 20px;
   }
 

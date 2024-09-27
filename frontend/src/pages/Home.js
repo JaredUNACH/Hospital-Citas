@@ -4,6 +4,7 @@ import '../styles/Home.css';
 import SpecialtySelect from '../components/SpecialtySelect';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Navbar from '../components/Navbar'; // Importa el nuevo componente Navbar
 
 const Home = () => {
   const navigate = useNavigate();
@@ -22,29 +23,7 @@ const Home = () => {
       <video autoPlay loop muted playsInline>
         <source src="/instalaciones Hospital.mp4" type="video/mp4" />
       </video>
-      <nav className="navbar">
-        <img className="logo" src="/Medical Care.svg" alt="Hospital Logo" />
-        <ul className="nav-links">
-          <li><a href="/appointments">Mis Citas</a></li>
-          <li><a href="/account">Mi Cuenta</a></li>
-          <li><a href="/logout">Cerrar Sesión</a></li>
-        </ul>
-        <label className="popup">
-          <input type="checkbox" />
-          <div className="burger" tabIndex="0">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <nav className="popup-window">
-            <ul>
-              <li><a href="/appointments">Mis Citas</a></li>
-              <li><a href="/account">Mi Cuenta</a></li>
-              <li><a href="/logout">Cerrar Sesión</a></li>
-            </ul>
-          </nav>
-        </label>
-      </nav>
+      <Navbar /> {/* Agrega el nuevo componente Navbar */}
       <div className="content">
         <div className="typewriter">
           <h1>Encuentra tu especialista y pide cita </h1>
