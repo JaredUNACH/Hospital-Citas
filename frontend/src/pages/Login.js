@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import useLoginScript from '../components/useLoginScript'; 
 import '../styles/Login.css';
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 
 const clientId = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com";
 
@@ -32,7 +33,7 @@ const Login = () => {
     e.preventDefault();
     if (!validateEmail(loginData.email)) {
       Swal.fire({
-        icon: 'error',
+        icon: 'warning', // Cambiado a 'warning'
         title: 'Correo electrónico inválido',
         text: 'Por favor, ingresa un correo electrónico válido.',
       });
@@ -44,9 +45,10 @@ const Login = () => {
       if (response.data.token && response.data.token.length > 9) {
         localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
         Swal.fire({
-          icon: 'success',
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
+          icon: 'success', // Cambiado a 'success'
+          timer: 3000,
         }).then(() => {
           navigate('/home'); // Redirige al usuario al dashboard o a la página principal
         });
@@ -57,9 +59,10 @@ const Login = () => {
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error',
+        icon: 'error', // Cambiado a 'error'
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
+        timer: 3000,
       });
     }
   };
@@ -68,9 +71,10 @@ const Login = () => {
     e.preventDefault();
     if (!validateEmail(registerData.email)) {
       Swal.fire({
-        icon: 'error',
+        icon: 'warning', // Cambiado a 'warning'
         title: 'Correo electrónico inválido',
         text: 'Por favor, ingresa un correo electrónico válido.',
+        timer: 3000,
       });
       return;
     }
@@ -80,9 +84,10 @@ const Login = () => {
       if (response.status === 200 && response.data.token && response.data.token.length > 9) {
         localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
         Swal.fire({
-          icon: 'success',
           title: 'Registro exitoso',
           text: 'Bienvenido!',
+          icon: 'success', // Cambiado a 'success'
+          timer: 3000,
         }).then(() => {
           navigate('/home'); // Redirige al usuario al dashboard o a la página principal
         });
@@ -93,9 +98,10 @@ const Login = () => {
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error',
+        icon: 'error', // Cambiado a 'error'
         title: 'Error en el registro',
         text: 'Por favor, verifica tus datos.',
+        timer: 3000,
       });
     }
   };
@@ -108,9 +114,10 @@ const Login = () => {
       if (loginResponse.data.token && loginResponse.data.token.length > 9) {
         localStorage.setItem('token', loginResponse.data.token); // Guarda el token en el almacenamiento local
         Swal.fire({
-          icon: 'success',
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
+          icon: 'success', // Cambiado a 'success'
+          timer: 3000,
         }).then(() => {
           navigate('/home'); // Redirige al usuario al dashboard o a la página principal
         });
@@ -121,14 +128,15 @@ const Login = () => {
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error',
+        icon: 'error', // Cambiado a 'error'
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
+        timer: 3000,
       });
     }
   };
 
-    const handleGoogleRegisterSuccess = async (response) => {
+  const handleGoogleRegisterSuccess = async (response) => {
     try {
       const { credential } = response;
       console.log('Google credential:', credential); // Verifica el token en la consola
@@ -137,9 +145,10 @@ const Login = () => {
       if (registerResponse.status === 200 && registerResponse.data.token && registerResponse.data.token.length > 9) {
         localStorage.setItem('token', registerResponse.data.token); // Guarda el token en el almacenamiento local
         Swal.fire({
-          icon: 'success',
           title: 'Registro exitoso',
           text: 'Bienvenido!',
+          icon: 'success', // Cambiado a 'success'
+          timer: 3000,
         }).then(() => {
           navigate('/home'); // Redirige al usuario al dashboard o a la página principal
         });
@@ -150,9 +159,10 @@ const Login = () => {
     } catch (error) {
       console.error('Error en el registro con Google:', error);
       Swal.fire({
-        icon: 'error',
+        icon: 'error', // Cambiado a 'error'
         title: 'Error en el registro',
         text: 'Por favor, verifica tus datos.',
+        timer: 3000,
       });
     }
   };
@@ -160,9 +170,10 @@ const Login = () => {
   const handleGoogleFailure = (error) => {
     console.error(error);
     Swal.fire({
-      icon: 'error',
+      icon: 'error', // Cambiado a 'error'
       title: 'Error en el inicio de sesión',
       text: 'No se pudo iniciar sesión con Google. Por favor, intenta de nuevo.',
+      timer: 3000,
     });
   };
 
