@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify, make_response
 from google.oauth2 import id_token
-from google.auth.transport import requests
+from google.auth.transport import requests as google_requests  # Importa google_requests correctamente
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_cors import CORS
 from .models import db, Paciente
 import re
 
@@ -84,7 +85,7 @@ def register():
 def google_login():
     token = request.json.get('credential')
     try:
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+        idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), CLIENT_ID)
 
         # El token de ID es válido. Obtener el ID de la cuenta de Google del usuario desde el token decodificado.
         google_id = idinfo['sub']
@@ -114,8 +115,14 @@ def google_login():
 @limiter.limit("5 per minute")
 def google_register():
     token = request.json.get('credential')
+    if not token:
+        print("Token is missing")
+        return jsonify({"message": "Token is missing"}), 400
+
     try:
-        idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+        print('Received token:', token)  # Verifica el token en la consola del servidor
+        idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), CLIENT_ID)
+        print('Decoded token info:', idinfo)  # Verifica la información decodificada del token
 
         # El token de ID es válido. Obtener el ID de la cuenta de Google del usuario desde el token decodificado.
         google_id = idinfo['sub']
@@ -123,11 +130,13 @@ def google_register():
         name = idinfo['name']
 
         if not validate_email(email):
+            print("Correo electrónico inválido")
             return jsonify({"message": "Correo electrónico inválido"}), 400
 
         # Verifica si el usuario ya existe
         user = Paciente.query.filter_by(email=email).first()
         if user:
+            print("Usuario ya registrado")
             return jsonify({'message': 'Usuario ya registrado'}), 400
 
         # Crea un nuevo usuario
@@ -142,17 +151,20 @@ def google_register():
         db.session.add(new_user)
         db.session.commit()
 
-        # Crea un token de acceso
-        access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email})
-        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'token': access_token}
+        # Respuesta de éxito sin generar el token JWT
+        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name}
         print('Google register response:', response_data)  # Verifica la respuesta del servidor
         response = make_response(jsonify(response_data), 200)
-        response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
-    except ValueError:
+    except ValueError as e:
         # Token inválido
+        print('Token verification failed:', e)  # Verifica el error en la consola del servidor
         return jsonify({'message': 'Error en el registro'}), 400
-
+    except Exception as e:
+        # Otros errores
+        print('Error en el registro:', e)  # Verifica otros errores en la consola del servidor
+        return jsonify({'message': 'Error en el registro'}), 500
+    
 @routes.route('/protected', methods=['GET'])
 @jwt_required()
 @limiter.limit("10 per minute")

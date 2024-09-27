@@ -128,6 +128,35 @@ const Login = () => {
     }
   };
 
+  const handleGoogleRegisterSuccess = async (response) => {
+    try {
+      const { credential } = response;
+      console.log('Google credential:', credential); // Verifica el token en la consola
+      const registerResponse = await googleRegister(credential);
+      console.log('Google register response:', registerResponse.data); // Verifica la respuesta del servidor
+      if (registerResponse.data.token && registerResponse.data.token.length > 9) {
+        localStorage.setItem('token', registerResponse.data.token); // Guarda el token en el almacenamiento local
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'Bienvenido!',
+        }).then(() => {
+          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+        });
+      } else {
+        console.error('Token inválido:', registerResponse.data.token);
+        throw new Error('Token inválido');
+      }
+    } catch (error) {
+      console.error('Error en el registro con Google:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en el registro',
+        text: 'Por favor, verifica tus datos.',
+      });
+    }
+  };
+
   const handleGoogleFailure = (error) => {
     console.error(error);
     Swal.fire({
@@ -165,6 +194,22 @@ const Login = () => {
     }
   };
 
+  const googleRegister = async (credential) => {
+    try {
+      console.log('Sending credential to backend:', credential); // Verifica el token antes de enviarlo
+      const response = await axios.post('http://127.0.0.1:5000/google-register', { credential }, { withCredentials: true });
+      console.log('Google register API response:', response.data); // Verifica la respuesta del servidor
+      if (response.status === 200) {
+        return response;
+      } else {
+        throw new Error('Google register failed');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud de registro con Google:', error);
+      throw error;
+    }
+  };
+
   return (
     <GoogleOAuthProvider clientId={clientId}>
       <div className='container-principal'>
@@ -174,7 +219,7 @@ const Login = () => {
             <form onSubmit={handleRegisterSubmit}>
               <h1>Crear Cuenta</h1>
               <GoogleLogin
-                onSuccess={handleGoogleLoginSuccess}
+                onSuccess={handleGoogleRegisterSuccess}
                 onError={handleGoogleFailure}
                 useOneTap
               />
