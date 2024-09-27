@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
+import io from 'socket.io-client';
 import '../styles/SpecialtySelect.css';
+
+const socket = io('http://127.0.0.1:5000');
 
 const SpecialtySelect = () => {
   const [specialties, setSpecialties] = useState([]);
@@ -13,7 +16,7 @@ const SpecialtySelect = () => {
         const response = await axios.get('http://127.0.0.1:5000/specialties');
         const specialtyOptions = response.data.map(specialty => ({
           value: specialty.id,
-          label: specialty.name
+          label: specialty.nombre // Asegúrate de usar el nombre correcto del campo
         }));
         setSpecialties(specialtyOptions);
       } catch (error) {
@@ -22,6 +25,24 @@ const SpecialtySelect = () => {
     };
 
     fetchSpecialties();
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket');
+      socket.emit('request_specialties');
+    });
+
+    socket.on('specialties_data', (data) => {
+      const specialtyOptions = data.map(specialty => ({
+        value: specialty.id,
+        label: specialty.nombre
+      }));
+      setSpecialties(specialtyOptions);
+    });
+
+    return () => {
+      socket.off('connect');
+      socket.off('specialties_data');
+    };
   }, []);
 
   const handleChange = (selectedOption) => {

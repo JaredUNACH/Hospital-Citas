@@ -1,4 +1,6 @@
-.react-select-container {
+/* SpecialtySelect.css */
+
+.specialty-select-container {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
@@ -19,7 +21,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra al pasar el cursor */
 }
 
-.react-select__control {
+.specialty-select .react-select__control {
   cursor: pointer;
   border-color: #007bff;
   box-shadow: none;
@@ -27,30 +29,35 @@
   transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.react-select__control:hover {
+.specialty-select .react-select__control:hover {
   border-color: #0056b3;
   box-shadow: 0 0 5px rgba(0, 91, 179, 0.5); /* Sombra al pasar el cursor */
 }
 
-.react-select__menu {
+.specialty-select .react-select__menu {
   border-color: #007bff;
-  border-radius: 20px; /* Bordes redondeados */
+ 
   animation: fadeIn 0.3s ease-in-out; /* Animación de aparición */
+  background-color: white; /* Fondo blanco para las opciones */
 }
 
-.react-select__option {
+.specialty-select .react-select__option {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  color: black; /* Color del texto de las opciones */
+  background-color: white; /* Fondo blanco para las opciones */
+  border-radius: 20px; /* Bordes redondeados */
 }
 
-.react-select__option--is-focused {
+.specialty-select .react-select__option--is-focused {
   background-color: #e9ecef;
   color: #007bff; /* Color del texto al enfocar */
 }
 
-.react-select__option--is-selected {
+.specialty-select .react-select__option--is-selected {
   background-color: #007bff;
   color: white;
   cursor: pointer;
+ 
 }
 
 @keyframes fadeIn {

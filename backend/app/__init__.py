@@ -5,9 +5,13 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
+from flask_socketio import SocketIO
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
+
+# Inicializar Flask-SocketIO
+socketio = SocketIO()
 
 def create_app():
     load_dotenv()  # Cargar variables de entorno desde el archivo .env
@@ -16,7 +20,7 @@ def create_app():
     app.config.from_object(Config)
 
     # Configuración de JWT
-    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'af03f15da847ebb6e355fdcdc397fc4794b304b5f3045f4')
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'af03f15da847ebb6e355fdcdc397fc4794304b5f3045f4')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
     jwt = JWTManager(app)
 
@@ -42,8 +46,14 @@ def create_app():
         response.headers['Content-Security-Policy'] = csp_header
         return response
 
+    # Inicializar Flask-SocketIO
+    socketio.init_app(app, cors_allowed_origins="*")
+
     # Importar y registrar las rutas
     from .routes import routes
     app.register_blueprint(routes)
 
     return app
+
+# Importar los eventos de WebSocket
+from .functions import home
