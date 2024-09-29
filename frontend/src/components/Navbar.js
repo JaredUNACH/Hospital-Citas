@@ -29,24 +29,24 @@ function Navbar() {
 
   return (
     <nav className="nav">
-      <a href="#" className="nav__brand">
+      <button className="nav__brand" onClick={() => navigate('/')}>
         <img src={logo} alt="Logo" className="logo" />
-      </a>
+      </button>
       <ul className={active}>
         <li className="nav__item">
-          <a href="#" className="nav__link">
+          <button className="nav__link" onClick={() => navigate('/appointments')}>
             Mis citas
-          </a>
+          </button>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link">
+          <button className="nav__link" onClick={() => navigate('/account')}>
             Cuenta
-          </a>
+          </button>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link" onClick={handleLogout}>
+          <button className="nav__link" onClick={handleLogout}>
             Cerrar sesión
-          </a>
+          </button>
         </li>
       </ul>
       <div onClick={navToggle} className={icon}>

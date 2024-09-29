@@ -222,7 +222,7 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div className='container-principal'>
+      <div className={`container-principal ${isSignUp ? 'sign-up-mode' : ''}`}>
         <h2>Bienvenido al Hospital-Citas</h2>
         <div className="container" id="container">
           <div className="form-container sign-up-container">
@@ -251,7 +251,6 @@ const Login = () => {
               <span>o usa tu cuenta</span>
               <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
               <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
-              <a href="#">¿Olvidaste tu contraseña?</a>
               <button type="submit">Iniciar Sesión</button>
             </form>
           </div>
