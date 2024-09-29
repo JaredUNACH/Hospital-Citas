@@ -1,7 +1,12 @@
+import sys
+import os
+
+# Añadir el directorio 'backend' al sys.path para que las importaciones funcionen correctamente
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'app')))
+
 from flask import Flask, send_from_directory
 from app import create_app, socketio
 from dotenv import load_dotenv
-import os
 
 load_dotenv()  # Cargar variables de entorno desde el archivo .env
 
