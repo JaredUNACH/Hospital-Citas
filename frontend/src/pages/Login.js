@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import useLoginScript from '../components/useLoginScript'; 
@@ -32,7 +31,7 @@ const Login = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(loginData.email)) {
-      Swal.fire({
+      window.Swal.fire({
         icon: 'warning', // Cambiado a 'warning'
         title: 'Correo electrónico inválido',
         text: 'Por favor, ingresa un correo electrónico válido.',
@@ -44,7 +43,7 @@ const Login = () => {
       console.log('Login response:', response.data); // Verifica la respuesta del servidor
       if (response.data.token && response.data.token.length > 9) {
         localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
-        Swal.fire({
+        window.Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
           icon: 'success', // Cambiado a 'success'
@@ -58,7 +57,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
-      Swal.fire({
+      window.Swal.fire({
         icon: 'error', // Cambiado a 'error'
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
@@ -70,7 +69,7 @@ const Login = () => {
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(registerData.email)) {
-      Swal.fire({
+      window.Swal.fire({
         icon: 'warning', // Cambiado a 'warning'
         title: 'Correo electrónico inválido',
         text: 'Por favor, ingresa un correo electrónico válido.',
@@ -83,7 +82,7 @@ const Login = () => {
       console.log('Register response:', response.data); // Verificar la respuesta del servidor
       if (response.status === 200 && response.data.token && response.data.token.length > 9) {
         localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
-        Swal.fire({
+        window.Swal.fire({
           title: 'Registro exitoso',
           text: 'Bienvenido!',
           icon: 'success', // Cambiado a 'success'
@@ -97,7 +96,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
-      Swal.fire({
+      window.Swal.fire({
         icon: 'error', // Cambiado a 'error'
         title: 'Error en el registro',
         text: 'Por favor, verifica tus datos.',
@@ -113,7 +112,7 @@ const Login = () => {
       console.log('Google login response:', loginResponse.data); // Verifica la respuesta del servidor
       if (loginResponse.data.token && loginResponse.data.token.length > 9) {
         localStorage.setItem('token', loginResponse.data.token); // Guarda el token en el almacenamiento local
-        Swal.fire({
+        window.Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
           icon: 'success', // Cambiado a 'success'
@@ -127,7 +126,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
-      Swal.fire({
+      window.Swal.fire({
         icon: 'error', // Cambiado a 'error'
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
@@ -144,7 +143,7 @@ const Login = () => {
       console.log('Google register response:', registerResponse.data); // Verifica la respuesta del servidor
       if (registerResponse.status === 200 && registerResponse.data.token && registerResponse.data.token.length > 9) {
         localStorage.setItem('token', registerResponse.data.token); // Guarda el token en el almacenamiento local
-        Swal.fire({
+        window.Swal.fire({
           title: 'Registro exitoso',
           text: 'Bienvenido!',
           icon: 'success', // Cambiado a 'success'
@@ -158,7 +157,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Error en el registro con Google:', error);
-      Swal.fire({
+      window.Swal.fire({
         icon: 'error', // Cambiado a 'error'
         title: 'Error en el registro',
         text: 'Por favor, verifica tus datos.',
@@ -169,7 +168,7 @@ const Login = () => {
 
   const handleGoogleFailure = (error) => {
     console.error(error);
-    Swal.fire({
+    window.Swal.fire({
       icon: 'error', // Cambiado a 'error'
       title: 'Error en el inicio de sesión',
       text: 'No se pudo iniciar sesión con Google. Por favor, intenta de nuevo.',
