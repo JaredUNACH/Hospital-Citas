@@ -3,8 +3,7 @@ services:
     name: Hospital-Citas
     env: python
     buildCommand: |
-      cd frontend && npm install && npm run build
-      cd ../backend && pip install -r requirements.txt
+      cd frontend && npm install && npm run build && cd ../backend && pip install -r requirements.txt
     startCommand: gunicorn -w 4 -k gevent backend.run:app
     envVars:
       - key: DATABASE_URL
