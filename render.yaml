@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: my-flask-app
+    name: Hospital-Citas
     env: python
     buildCommand: |
       cd frontend && npm install && npm run build
@@ -11,3 +11,5 @@ services:
         value: postgresql://jared:zb8WfYa0iqDpopW4dVh865FQK45O8g9k@dpg-crs8kuogph6c738qude0-a.oregon-postgres.render.com/care_gzry
       - key: SECRET_KEY
         value: af03f15da847ebb6e355fdcdc397fc4794b30b4b5f3045f4
+      - key: NODE_OPTIONS
+        value: --openssl-legacy-provider
