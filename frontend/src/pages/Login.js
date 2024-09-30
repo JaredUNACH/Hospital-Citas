@@ -7,6 +7,7 @@ import '../styles/Login.css';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 
 const clientId = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com";
+const API_BASE_URL = "https://hospital-citas.onrender.com";
 
 const Login = () => {
   const navigate = useNavigate(); // Hook para redirigir
@@ -78,7 +79,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
+      const response = await axios.post(`${API_BASE_URL}/register`, registerData, { withCredentials: true });
       console.log('Register response:', response.data); // Verificar la respuesta del servidor
       if (response.status === 200 && response.data.token && response.data.token.length > 9) {
         localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
@@ -178,7 +179,7 @@ const Login = () => {
 
   const login = async (loginData) => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', loginData, { withCredentials: true });
+      const response = await axios.post(`${API_BASE_URL}/login`, loginData, { withCredentials: true });
       console.log('Login API response:', response.data); // Verifica la respuesta del servidor
       if (response.status === 200) {
         return response;
@@ -192,7 +193,7 @@ const Login = () => {
 
   const googleLogin = async (credential) => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/google-login', { credential }, { withCredentials: true });
+      const response = await axios.post(`${API_BASE_URL}/google-login`, { credential }, { withCredentials: true });
       console.log('Google login API response:', response.data); // Verifica la respuesta del servidor
       if (response.status === 200) {
         return response;
@@ -207,7 +208,7 @@ const Login = () => {
   const googleRegister = async (credential) => {
     try {
       console.log('Sending credential to backend:', credential); // Verifica el token antes de enviarlo
-      const response = await axios.post('http://127.0.0.1:5000/google-register', { credential }, { withCredentials: true });
+      const response = await axios.post(`${API_BASE_URL}/google-register`, { credential }, { withCredentials: true });
       console.log('Google register API response:', response.data); // Verifica la respuesta del servidor
       if (response.status === 200) {
         return response;

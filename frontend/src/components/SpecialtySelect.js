@@ -4,7 +4,8 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import '../styles/SpecialtySelect.css';
 
-const socket = io('http://127.0.0.1:5000');
+const API_BASE_URL = "https://hospital-citas.onrender.com";
+const socket = io(API_BASE_URL);
 
 const SpecialtySelect = () => {
   const [specialties, setSpecialties] = useState([]);
@@ -13,7 +14,7 @@ const SpecialtySelect = () => {
   useEffect(() => {
     const fetchSpecialties = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/specialties');
+        const response = await axios.get(`${API_BASE_URL}/specialties`);
         const specialtyOptions = response.data.map(specialty => ({
           value: specialty.id,
           label: specialty.nombre // Asegúrate de usar el nombre correcto del campo

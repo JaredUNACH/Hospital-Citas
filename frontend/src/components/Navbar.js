@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Cambiado a useNavigate
+import axios from 'axios';
 import "../styles/Navbar.css";
-import logo from "../images/Medical Care.svg"; // Asegúrate de ajustar la ruta al logo
+import logo from "../images/Medical Care.svg"; //  ruta al logo
+
+const API_BASE_URL = "https://hospital-citas.onrender.com";
 
 function Navbar() {
   const [active, setActive] = useState("nav__menu");
@@ -19,12 +22,18 @@ function Navbar() {
     } else setIcon("nav__toggler");
   };
 
-  const handleLogout = () => {
-    // Eliminar el token de sesión
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+    } catch (error) {
+      console.error('Error during logout:', error);
+    } finally {
+      // Eliminar el token de sesión
+      localStorage.removeItem("token");
 
-    // Redirigir al usuario a la página de inicio de sesión
-    navigate("/login"); // Cambiado a navigate
+      // Redirigir al usuario a la página de inicio de sesión
+      navigate("/login"); // Cambiado a navigate
+    }
   };
 
   return (
