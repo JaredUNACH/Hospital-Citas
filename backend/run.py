@@ -1,25 +1,22 @@
 import sys
 import os
+from flask import Flask
+from flask_cors import CORS
+from flask_socketio import SocketIO
+from app import create_app
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 # Añadir el directorio 'backend' al sys.path para que las importaciones funcionen correctamente
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'app')))
 
-from flask import Flask, send_from_directory
-from app import create_app, socketio
-from dotenv import load_dotenv
-
-load_dotenv()  # Cargar variables de entorno desde el archivo .env
-
 app = create_app()
 
-# Ruta para servir los archivos estáticos de React
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists("frontend/build/" + path):
-        return send_from_directory('frontend/build', path)
-    else:
-        return send_from_directory('frontend/build', 'index.html')
+# Configurar CORS para permitir solicitudes desde tu frontend
+CORS(app, resources={r"/*": {"origins": "https://hospital-citas-frontend.onrender.com"}})
+socketio = SocketIO(app, cors_allowed_origins="https://hospital-citas-frontend.onrender.com", async_mode='gevent')
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
