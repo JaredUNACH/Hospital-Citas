@@ -1,5 +1,10 @@
-import sys
 import os
+import sys
+from gevent import monkey
+
+# Hacer el monkey-patching antes de cualquier otra importación
+monkey.patch_all()
+
 from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
