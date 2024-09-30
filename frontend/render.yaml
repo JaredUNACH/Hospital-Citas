@@ -2,9 +2,9 @@ services:
   - type: web
     name: Hospital-Citas-Frontend
     env: static
-    buildCommand: |
-      NODE_OPTIONS=--openssl-legacy-provider npm install && npm run build
+    buildCommand: npm install && npm run build
     startCommand: serve -s build
     envVars:
       - key: REACT_APP_API_URL
         value: https://hospital-citas.onrender.com
+    runtime: node 16
