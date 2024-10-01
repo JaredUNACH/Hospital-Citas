@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Logout from './pages/Logout'; // Importar el componente de cierre de sesión
+import AccountPatient from './pages/AccountPatient'; // Importar el componente de cuenta de paciente
 
 import './App.css'; // Importa los estilos CSS para App
 
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/account-patient" element={<AccountPatient />} />  
           <Route path="/logout" element={<Logout />} /> {/* Definir la ruta de cierre de sesión */}
         </Routes>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Cambiado a useNavigate
+import { useNavigate, Link } from "react-router-dom"; // Importar Link
 import "../styles/Navbar.css";
 import logo from "../images/Medical Care.svg"; // Asegúrate de ajustar la ruta al logo
 
@@ -29,24 +29,24 @@ function Navbar() {
 
   return (
     <nav className="nav">
-      <a href="#" className="nav__brand">
+      <Link to="/" className="nav__brand">
         <img src={logo} alt="Logo" className="logo" />
-      </a>
+      </Link>
       <ul className={active}>
         <li className="nav__item">
-          <a href="#" className="nav__link">
+          <Link to="/appointments" className="nav__link">
             Mis citas
-          </a>
+          </Link>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link">
+          <Link to="/account-patient" className="nav__link">
             Cuenta
-          </a>
+          </Link>
         </li>
         <li className="nav__item">
-          <a href="#" className="nav__link" onClick={handleLogout}>
+          <Link to="/login" className="nav__link" onClick={handleLogout}>
             Cerrar sesión
-          </a>
+          </Link>
         </li>
       </ul>
       <div onClick={navToggle} className={icon}>
