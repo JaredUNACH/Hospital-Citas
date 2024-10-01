@@ -245,7 +245,7 @@ const Login = () => {
       >
         <div className={`container-principal ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>
           <h2 className={`bounce ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>Bienvenido al Hospital-Citas</h2>
-          <div className="container" id="container">
+          <div className="container-login" id="container-login">
             <div className={`form-container sign-up-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
               <form onSubmit={handleRegisterSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
                 <h1>Crear Cuenta</h1>
