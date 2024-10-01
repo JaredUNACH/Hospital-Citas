@@ -92,7 +92,7 @@
   }
 .navigation {
   position: fixed;
-  width: 300px;
+  width: 200px;
   height: 100%;
   background: var(--blue);
   border-left: 10px solid var(--blue);
@@ -194,8 +194,8 @@
 /* ===================== Main ===================== */
 .main {
   position: absolute;
-  width: calc(100% - 300px);
-  left: 300px;
+  width: calc(100% - 200px);
+  left: 200px;
   min-height: 100vh;
   background: var(--white);
   transition: 0.5s;
@@ -534,7 +534,7 @@
     margin-top: 5px;
     padding: 1px 10px;
     height: 81%;
-    width: 100%;
+    width: 50%;
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -551,6 +551,7 @@
 
 
 .edit-button {
+    width: 60%;
     background-color: #FF6600;
     color: white;
     border: none;
@@ -668,7 +669,7 @@
     margin-right: 5px;
     box-sizing: border-box;
     height: 50%;
-    width: 100%;
+    width: 65%;
     margin-right: 40px;
 }
 .eye-button-A p {

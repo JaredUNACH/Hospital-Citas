@@ -59,10 +59,6 @@ const EffectsAccount = () => {
 
     toggle.onclick = toggleMenu;
 
-    // Add 'active' class to navigation and main when the page loads
-    navigation.classList.add("active");
-    main.classList.add("active");
-
     // Selecciona todos los campos de entrada
     const inputs = document.querySelectorAll('.input input');
     const lineaCarga = document.querySelector('.linea-carga');
