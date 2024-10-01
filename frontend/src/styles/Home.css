@@ -1,3 +1,4 @@
+/* Home.css */
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 * {
   box-sizing: border-box;
@@ -74,6 +75,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1; /* Ajusta el z-index del botón de búsqueda */
 }
 
 .search-button svg {
@@ -194,4 +196,30 @@ button:hover {
     padding: 8px;
     font-size: 14px;
   }
+}
+
+/* Animations */
+@keyframes emerge {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.specialty-select {
+  animation: emerge 1s ease-out 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  z-index: 2; /* Asegura que el select esté por encima del botón de búsqueda */
+}
+
+.search-button {
+  animation: emerge 1s ease-out 1s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  z-index: 1; /* Ajusta el z-index del botón de búsqueda */
 }

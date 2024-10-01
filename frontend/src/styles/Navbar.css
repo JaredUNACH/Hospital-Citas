@@ -25,6 +25,7 @@ a {
   height: 10vh;
   background: transparent; /* Fondo transparente */
   z-index: 1000; /* Z-index alto para que quede por encima de otros componentes */
+  animation: emerge 1s ease-out;
 }
 .nav__brand {
   text-transform: uppercase;
@@ -169,4 +170,34 @@ a {
 
 .nav__item:hover {
   transform: scale(1.1); /* Efecto de escala al pasar el cursor */
+}
+
+/* Animations */
+@keyframes emerge {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav__item {
+  animation: emerge 1s ease-out 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+.nav__item:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.nav__item:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+.nav__item:nth-child(4) {
+  animation-delay: 0.8s;
 }

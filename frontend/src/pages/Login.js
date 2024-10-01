@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { CSSTransition } from 'react-transition-group';
 import useLoginScript from '../components/useLoginScript'; 
 import '../styles/Login.css';
+import '../styles/Transitions.css'; // Importa los estilos de transición
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 
 const clientId = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com";
@@ -15,6 +17,14 @@ const Login = () => {
 
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
+  const [inTransition, setInTransition] = useState(false); // Estado para manejar la transición
+  const [animate, setAnimate] = useState(false); // Estado para manejar la animación
+
+  useEffect(() => {
+    if (inTransition) {
+      setAnimate(true);
+    }
+  }, [inTransition]);
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -50,7 +60,8 @@ const Login = () => {
           icon: 'success', // Cambiado a 'success'
           timer: 3000,
         }).then(() => {
-          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+          setInTransition(true); // Inicia la transición
+          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
         console.error('Token inválido:', response.data.token);
@@ -89,7 +100,8 @@ const Login = () => {
           icon: 'success', // Cambiado a 'success'
           timer: 3000,
         }).then(() => {
-          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+          setInTransition(true); // Inicia la transición
+          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
         console.error('Token inválido:', response.data.token);
@@ -119,7 +131,8 @@ const Login = () => {
           icon: 'success', // Cambiado a 'success'
           timer: 3000,
         }).then(() => {
-          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+          setInTransition(true); // Inicia la transición
+          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
         console.error('Token inválido:', loginResponse.data.token);
@@ -150,7 +163,8 @@ const Login = () => {
           icon: 'success', // Cambiado a 'success'
           timer: 3000,
         }).then(() => {
-          navigate('/home'); // Redirige al usuario al dashboard o a la página principal
+          setInTransition(true); // Inicia la transición
+          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
         console.error('Token inválido:', registerResponse.data.token);
@@ -223,61 +237,68 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <div className='container-principal'>
-        <h2>Bienvenido al Hospital-Citas</h2>
-        <div className="container" id="container">
-          <div className="form-container sign-up-container">
-            <form onSubmit={handleRegisterSubmit}>
-              <h1>Crear Cuenta</h1>
-              <GoogleLogin
-                onSuccess={handleGoogleRegisterSuccess}
-                onError={handleGoogleFailure}
-                useOneTap
-              />
-              <span>o usa tu correo electrónico para registrarte</span>
-              <input type="text" name="name" placeholder="Nombre" onChange={handleRegisterChange} />
-              <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleRegisterChange} />
-              <input type="password" name="password" placeholder="Contraseña" onChange={handleRegisterChange} />
-              <button type="submit">Registrarse</button>
-            </form>
-          </div>
-          <div className="form-container sign-in-container">
-            <form onSubmit={handleLoginSubmit}>
-              <h1>Iniciar Sesión</h1>
-              <GoogleLogin
-                onSuccess={handleGoogleLoginSuccess}
-                onError={handleGoogleFailure}
-                useOneTap
-              />
-              <span>o usa tu cuenta</span>
-              <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
-              <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
-              <a href="#">¿Olvidaste tu contraseña?</a>
-              <button type="submit">Iniciar Sesión</button>
-            </form>
-          </div>
-          <div className="overlay-container">
-            <div className="overlay">
-              <div className="overlay-panel overlay-left">
-                <h1>¡Bienvenido de Nuevo!</h1>
-                <p>Para agendar tu cita, por favor inicia sesión con tu información personal</p>
-                <button className="ghost" id="signIn">Iniciar Sesión</button>
-              </div>
-              <div className="overlay-panel overlay-right">
-                <h1>¡Hola, Amigo!</h1>
-                <p>Ingresa tus datos personales y agenda tu cita con nosotros</p>
-                <button className="ghost" id="signUp">Registrarse</button>
+      <CSSTransition
+        in={!inTransition}
+        timeout={1000} // Aumenta el tiempo de espera a 1000ms
+        classNames="fade"
+        unmountOnExit
+      >
+        <div className={`container-principal ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>
+          <h2 className={`bounce ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>Bienvenido al Hospital-Citas</h2>
+          <div className="container" id="container">
+            <div className={`form-container sign-up-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+              <form onSubmit={handleRegisterSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
+                <h1>Crear Cuenta</h1>
+                <GoogleLogin
+                  onSuccess={handleGoogleRegisterSuccess}
+                  onError={handleGoogleFailure}
+                  useOneTap
+                />
+                <span>o usa tu correo electrónico para registrarte</span>
+                <input type="text" name="name" placeholder="Nombre" onChange={handleRegisterChange} />
+                <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleRegisterChange} />
+                <input type="password" name="password" placeholder="Contraseña" onChange={handleRegisterChange} />
+                <button type="submit" className="pulse">Registrarse</button>
+              </form>
+            </div>
+            <div className={`form-container sign-in-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+              <form onSubmit={handleLoginSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
+                <h1>Iniciar Sesión</h1>
+                <GoogleLogin
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={handleGoogleFailure}
+                  useOneTap
+                />
+                <span>o usa tu cuenta</span>
+                <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
+                <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
+                <a href="#">¿Olvidaste tu contraseña?</a>
+                <button type="submit" className="pulse">Iniciar Sesión</button>
+              </form>
+            </div>
+            <div className="overlay-container">
+              <div className="overlay">
+                <div className={`overlay-panel overlay-left ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+                  <h1>¡Bienvenido de Nuevo!</h1>
+                  <p>Para agendar tu cita, por favor inicia sesión con tu información personal</p>
+                  <button className="ghost" id="signIn">Iniciar Sesión</button>
+                </div>
+                <div className={`overlay-panel overlay-right ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+                  <h1>¡Hola, Amigo!</h1>
+                  <p>Ingresa tus datos personales y agenda tu cita con nosotros</p>
+                  <button className="ghost" id="signUp">Registrarse</button>
+                </div>
               </div>
             </div>
           </div>
+          <footer>
+            <p>
+              Creado con <i className="fa fa-heart"></i> por
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/JaredUNACH"> Jared Salazar</a>
+            </p>
+          </footer>
         </div>
-        <footer>
-          <p>
-            Creado con <i className="fa fa-heart"></i> por
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/JaredUNACH"> Jared Salazar</a>
-          </p>
-        </footer>
-      </div>
+      </CSSTransition>
     </GoogleOAuthProvider>
   );
 };
