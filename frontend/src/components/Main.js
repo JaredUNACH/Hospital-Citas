@@ -1,11 +1,17 @@
 import React from 'react';
-
+import MisCitas from '../images/MisCitas.png'
+import HistorialMedico from '../images/HistorialMedico.png'
+import CongifCuenta from '../images/CuentaConfiguracion.png'
+import Reportes from '../images/Reportes.png'
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 const Main = () => {
   return (
     <div className="main">
       <div className="topbar">
         <div className="toggle">
-          <ion-icon name="menu-outline"></ion-icon>
+          <FontAwesomeIcon icon={faBars} />
         </div>
         <div className="nombre">
           <h2>Hola, Jhovanny</h2>
@@ -35,10 +41,10 @@ const Main = () => {
           <div className="cardBox">
             <div className="card-empleo">
               <div className="profile-container">
-                <img className="profile-picture" src="img/empleo.svg" alt="Profile Picture" />
+                <img className="profile-picture" src={MisCitas} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">Empleo</h2>
+                <h2 className="title-card">Mis Citas</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => window.location.href='detalle-empleo.html'}>
                     <i className="fas fa-eye"></i>
@@ -52,10 +58,10 @@ const Main = () => {
 
             <div className="card-beneficiarios">
               <div className="profile-container">
-                <img className="profile-picture" src="img/beneficiarios.svg" alt="Profile Picture" />
+                <img className="profile-picture" src={HistorialMedico} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">Beneficiarios</h2>
+                <h2 className="title-card">Historial Medico</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => window.location.href='detalle-beneficiario.html'}>
                     <i className="fas fa-eye"></i>
@@ -68,10 +74,10 @@ const Main = () => {
             </div>
             <div className="card-bajas">
               <div className="profile-container">
-                <img className="profile-picture" src="img/bajas.svg" alt="Profile Picture" />
+                <img className="profile-picture" src={CongifCuenta} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">Bajas</h2>
+                <h2 className="title-card">Configuracion de la cuenta</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => window.location.href='detalle-bajas.html'}>
                     <i className="fas fa-eye"></i>
@@ -85,10 +91,10 @@ const Main = () => {
 
             <div className="card-prejubilado">
               <div className="profile-container">
-                <img className="profile-picture" src="img/prejubilado.svg" alt="Profile Picture" />
+                <img className="profile-picture" src={Reportes} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">Prejubilado</h2>
+                <h2 className="title-card">Reportes</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => window.location.href='detalle-prejubilado.html'}>
                     <i className="fas fa-eye"></i>
