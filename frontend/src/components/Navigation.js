@@ -1,5 +1,5 @@
 import React from 'react';
-
+import logo from "../images/Medical Care.svg"; // Asegúrate de ajustar la ruta al logo
 const Navigation = () => {
   return (
     <div className="navigation">
@@ -7,8 +7,8 @@ const Navigation = () => {
         <li>
           <a href="#">
             <span className="icon">
-              <img className="large-logo" src="img/Logo fabes blanco.png" alt="Large Logo" />
-              <img className="small-logo" src="img/Icono fabes blanco.png" alt="Small Logo" />
+              <img className="large-logo" src={logo} alt="Large Logo" />
+              <img className="small-logo" src={logo} alt="Small Logo" />
             </span>
           </a>
         </li>
@@ -24,9 +24,20 @@ const Navigation = () => {
         <li>
           <a href="#">
             <span className="icon">
+              <ion-icon name="card-outline"></ion-icon>
+            </span>
+            <span className="title">Mis Citas</span>
+            <i className="fas fa-chevron-down adm-icon"></i>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span className="icon">
               <ion-icon name="people-outline"></ion-icon>
             </span>
-            <span className="title">Usuario</span>
+            <span className="title">Usuario
+              
+            </span>
             <i className="fas fa-chevron-down usuario-icon"></i>
           </a>
         </li>
@@ -35,7 +46,7 @@ const Navigation = () => {
             <span className="icon">
               <ion-icon name="card-outline"></ion-icon>
             </span>
-            <span className="title">Adm Créditos</span>
+            <span className="title">Historial</span>
             <i className="fas fa-chevron-down adm-icon"></i>
           </a>
         </li>
@@ -46,50 +57,6 @@ const Navigation = () => {
             </span>
             <span className="title">Reportes</span>
             <i className="fas fa-chevron-down reportes-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span className="icon">
-              <ion-icon name="logo-usd"></ion-icon>
-            </span>
-            <span className="title">Prestamos</span>
-            <i className="fas fa-chevron-down prestamos-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span className="icon">
-              <ion-icon name="folder-outline"></ion-icon>
-            </span>
-            <span className="title">Administración</span>
-            <i className="fas fa-chevron-down administracion-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span className="icon">
-              <ion-icon name="phone-portrait-outline"></ion-icon>
-            </span>
-            <span className="title">Mobile</span>
-            <i className="fas fa-chevron-down mobile-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span className="icon">
-              <ion-icon name="settings-outline"></ion-icon>
-            </span>
-            <span className="title">Configuración</span>
-            <i className="fas fa-chevron-down confi-icon"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span className="icon">
-              <ion-icon name="log-out-outline"></ion-icon>
-            </span>
-            <span className="title">Cerrar Sesión</span>
           </a>
         </li>
       </ul>

@@ -27,19 +27,19 @@
 
 /* =============== Navigation ================ */
 .inicio-icon {
-    margin-left: 100px; /* Mueve el icono un poco a la derecha */
+    margin-left: 41px; /* Mueve el icono un poco a la derecha */
     margin-top: 22px; /* Mueve el icono un poco hacia abajo */
   }
   .usuario-icon {
-    margin-left: 82px; /* Mueve el icono un poco a la derecha */
+    margin-left: 30px; /* Mueve el icono un poco a la derecha */
     margin-top: 22px; /* Mueve el icono un poco hacia abajo */
   }
   .adm-icon {
-    margin-left: 38px; /* Mueve el icono un poco a la derecha */
+    margin-left: 25px; /* Mueve el icono un poco a la derecha */
     margin-top: 22px; /* Mueve el icono un poco hacia abajo */
   }
   .reportes-icon {
-    margin-left: 70px; /* Mueve el icono un poco a la derecha */
+    margin-left: 20px; /* Mueve el icono un poco a la derecha */
     margin-top: 22px; /* Mueve el icono un poco hacia abajo */
   }
   .prestamos-icon {
@@ -47,7 +47,7 @@
     margin-top: 22px; /* Mueve el icono un poco hacia abajo */
   }
   .administracion-icon {
-    margin-left: 27px; /* Mueve el icono un poco a la derecha */
+    margin-left: 10px; /* Mueve el icono un poco a la derecha */
     margin-top: 22px; /* Mueve el icono un poco hacia abajo */
   }
   .mobile-icon {
@@ -62,8 +62,8 @@
     display: block;
     width: 130px; /* Ajusta el ancho de la imagen grande */
     height: auto; /* Ajusta la altura de la imagen grande */
-    margin-left: 32px; /* Mueve la imagen un poco a la derecha */
-    margin-top: 30px; /* Mueve la imagen un poco hacia abajo */
+    margin-left: 25px; /* Mueve la imagen un poco a la derecha */
+    margin-top: -10px;
   }
   
   .small-logo {
@@ -71,7 +71,7 @@
     width: 50px; /* Ajusta el ancho de la imagen pequeña */
     height: auto; /* Ajusta la altura de la imagen pequeña */
     margin-right: 5px; /* Mueve la imagen un poco a la derecha */
-    margin-top: 5px; /* Mueve la imagen un poco hacia abajo */
+    margin-top: -5px; 
   }
   .large-logo {
     display: block;
@@ -342,7 +342,7 @@
   width: 100%;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 30px;
 }
 
@@ -687,10 +687,10 @@
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
   .navigation {
-    left: -300px;
+    left: -200px;
   }
   .navigation.active {
-    width: 300px;
+    width: 200px;
     left: 0;
   }
   .main {
@@ -698,7 +698,7 @@
     left: 0;
   }
   .main.active {
-    left: 300px;
+    left: 200px;
   }
   .cardBox {
     grid-template-columns: repeat(2, 1fr);

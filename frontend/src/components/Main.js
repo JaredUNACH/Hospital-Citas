@@ -66,20 +66,6 @@ const Main = () => {
                 </div>
               </div>
             </div>
-
-            <div className="card-ahorro">
-              <div className="profile-container">
-                <img className="profile-picture" src="img/ahorro.svg" alt="Profile Picture" />
-              </div>
-              <div className="title-button-container">
-                <h2 className="title-card">Ahorro</h2>
-                <button className="eye-button-A">
-                  <i className="fas fa-eye"></i>
-                  <p>Visualizar</p>
-                </button>
-              </div>
-            </div>
-
             <div className="card-bajas">
               <div className="profile-container">
                 <img className="profile-picture" src="img/bajas.svg" alt="Profile Picture" />
@@ -111,19 +97,6 @@ const Main = () => {
                     Editar
                   </button>
                 </div>
-              </div>
-            </div>
-
-            <div className="card-prestamo">
-              <div className="profile-container">
-                <img className="profile-picture" src="img/prestamos.svg" alt="Profile Picture" />
-              </div>
-              <div className="title-button-container">
-                <h2 className="title-card">Prestamos</h2>
-                <button className="eye-button-A" onClick={() => window.location.href='visualizar-prestamo.html'}>
-                  <i className="fas fa-eye"></i>
-                  <p>Visualizar</p>
-                </button>
               </div>
             </div>
           </div>
