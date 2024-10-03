@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { CSSTransition } from 'react-transition-group';
 import useLoginScript from '../components/useLoginScript'; 
+import LoginMovil from '../components/LoginMovil'; // Importa el componente móvil
 import '../styles/Login.css';
 import '../styles/Transitions.css'; // Importa los estilos de transición
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
@@ -236,70 +237,85 @@ const Login = () => {
   };
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <CSSTransition
-        in={!inTransition}
-        timeout={1000} // Aumenta el tiempo de espera a 1000ms
-        classNames="fade"
-        unmountOnExit
-      >
-        <div className={`container-principal ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>
-          <h2 className={`bounce ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>Bienvenido al Hospital-Citas</h2>
-          <div className="container-login" id="container-login">
-            <div className={`form-container sign-up-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
-              <form onSubmit={handleRegisterSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
-                <h1>Crear Cuenta</h1>
-                <GoogleLogin
-                  onSuccess={handleGoogleRegisterSuccess}
-                  onError={handleGoogleFailure}
-                  useOneTap
-                />
-                <span>o usa tu correo electrónico para registrarte</span>
-                <input type="text" name="name" placeholder="Nombre" onChange={handleRegisterChange} />
-                <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleRegisterChange} />
-                <input type="password" name="password" placeholder="Contraseña" onChange={handleRegisterChange} />
-                <button type="submit" className="pulse">Registrarse</button>
-              </form>
-            </div>
-            <div className={`form-container sign-in-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
-              <form onSubmit={handleLoginSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
-                <h1>Iniciar Sesión</h1>
-                <GoogleLogin
-                  onSuccess={handleGoogleLoginSuccess}
-                  onError={handleGoogleFailure}
-                  useOneTap
-                />
-                <span>o usa tu cuenta</span>
-                <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
-                <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
-                <a href="#">¿Olvidaste tu contraseña?</a>
-                <button type="submit" className="pulse">Iniciar Sesión</button>
-              </form>
-            </div>
-            <div className="overlay-container">
-              <div className="overlay">
-                <div className={`overlay-panel overlay-left ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
-                  <h1>¡Bienvenido de Nuevo!</h1>
-                  <p>Para agendar tu cita, por favor inicia sesión con tu información personal</p>
-                  <button className="ghost" id="signIn">Iniciar Sesión</button>
+    <>
+      <div className="desktop-view">
+        <GoogleOAuthProvider clientId={clientId}>
+          <CSSTransition
+            in={!inTransition}
+            timeout={1000} // Aumenta el tiempo de espera a 1000ms
+            classNames="fade"
+            unmountOnExit
+          >
+            <div className={`container-principal ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>
+              <h2 className={`bounce ${animate ? (inTransition ? 'fade-exit-active' : 'fade-enter-active') : ''}`}>Bienvenido al Hospital-Citas</h2>
+              <div className="container-login" id="container-login">
+                <div className={`form-container sign-up-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+                  <form onSubmit={handleRegisterSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
+                    <h1>Crear Cuenta</h1>
+                    <GoogleLogin
+                      onSuccess={handleGoogleRegisterSuccess}
+                      onError={handleGoogleFailure}
+                      useOneTap
+                    />
+                    <span>o usa tu correo electrónico para registrarte</span>
+                    <input type="text" name="name" placeholder="Nombre" onChange={handleRegisterChange} />
+                    <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleRegisterChange} />
+                    <input type="password" name="password" placeholder="Contraseña" onChange={handleRegisterChange} />
+                    <button type="submit" className="pulse">Registrarse</button>
+                  </form>
                 </div>
-                <div className={`overlay-panel overlay-right ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
-                  <h1>¡Hola, Amigo!</h1>
-                  <p>Ingresa tus datos personales y agenda tu cita con nosotros</p>
-                  <button className="ghost" id="signUp">Registrarse</button>
+                <div className={`form-container sign-in-container ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+                  <form onSubmit={handleLoginSubmit} className={`${animate ? (inTransition ? 'rotate-out' : 'rotate-in') : ''}`}>
+                    <h1>Iniciar Sesión</h1>
+                    <GoogleLogin
+                      onSuccess={handleGoogleLoginSuccess}
+                      onError={handleGoogleFailure}
+                      useOneTap
+                    />
+                    <span>o usa tu cuenta</span>
+                    <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
+                    <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                    <button type="submit" className="pulse">Iniciar Sesión</button>
+                  </form>
+                </div>
+                <div className="overlay-container">
+                  <div className="overlay">
+                    <div className={`overlay-panel overlay-left ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+                      <h1>¡Bienvenido de Nuevo!</h1>
+                      <p>Para agendar tu cita, por favor inicia sesión con tu información personal</p>
+                      <button className="ghost" id="signIn">Iniciar Sesión</button>
+                    </div>
+                    <div className={`overlay-panel overlay-right ${animate ? (inTransition ? 'slide-out' : 'slide-in') : ''}`}>
+                      <h1>¡Hola, Amigo!</h1>
+                      <p>Ingresa tus datos personales y agenda tu cita con nosotros</p>
+                      <button className="ghost" id="signUp">Registrarse</button>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <footer>
+                <p>
+                  Creado con <i className="fa fa-heart"></i> por
+                  <a target="_blank" rel="noopener noreferrer" href="https://github.com/JaredUNACH"> Jared Salazar</a>
+                </p>
+              </footer>
             </div>
-          </div>
-          <footer>
-            <p>
-              Creado con <i className="fa fa-heart"></i> por
-              <a target="_blank" rel="noopener noreferrer" href="https://github.com/JaredUNACH"> Jared Salazar</a>
-            </p>
-          </footer>
-        </div>
-      </CSSTransition>
-    </GoogleOAuthProvider>
+          </CSSTransition>
+        </GoogleOAuthProvider>
+      </div>
+      <div className="mobile-view">
+        <LoginMovil
+          clientId={clientId}
+          handleGoogleLoginSuccess={handleGoogleLoginSuccess}
+          handleGoogleFailure={handleGoogleFailure}
+          handleLoginSubmit={handleLoginSubmit}
+          handleLoginChange={handleLoginChange}
+          handleRegisterSubmit={handleRegisterSubmit}
+          handleRegisterChange={handleRegisterChange}
+        />
+      </div>
+    </>
   );
 };
 

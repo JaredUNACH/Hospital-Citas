@@ -1,0 +1,121 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  
+}
+
+/* Ocultar la vista móvil por defecto */
+.mobile-view {
+  display: none;
+}
+
+/* Mostrar la vista de escritorio por defecto */
+.desktop-view {
+  display: block;
+}
+
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+  /* Mostrar la vista móvil y ocultar la vista de escritorio en pantallas pequeñas */
+  .mobile-view {
+    display: block;
+  }
+
+  .desktop-view {
+    display: none;
+  }
+
+  .container-principal-movil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    background: url('../images/FondoLogin.svg') no-repeat center;
+    background-size: cover;
+    overflow: hidden; /* Evita el scroll dentro del contenedor */
+  }
+
+  .container-transparente {
+    background-color: rgba(255, 255, 255, 0.5); /* Fondo blanco con transparencia */
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .container-login-movil {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: relative;
+    height: 100%; /* Asegura que el contenedor ocupe toda la altura disponible */
+  }
+
+  .container-login-movil form {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Asegura que el formulario ocupe toda la altura del contenedor */
+    justify-content: center; /* Centra verticalmente el contenido del formulario */
+    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+  }
+
+  .container-login-movil.login-view form:nth-child(1) {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .container-login-movil.login-view form:nth-child(2) {
+    transform: translateX(100%);
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .container-login-movil.register-view form:nth-child(1) {
+    transform: translateX(-100%);
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .container-login-movil.register-view form:nth-child(2) {
+    transform: translateX(0);
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .container-login-movil input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .container-login-movil button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2980b9;
+    color: white;
+    cursor: pointer;
+  }
+
+  .container-login-movil .register-link {
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .container-login-movil .register-link a {
+    color: #2980b9;
+    text-decoration: none;
+  }
+}
