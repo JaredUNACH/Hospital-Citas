@@ -8,9 +8,11 @@ import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Aweso
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 
 const Main = () => {
   const [username, setUsername] = useState('');
+  const [userImage, setUserImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +27,14 @@ const Main = () => {
         const response = await axios.get('http://127.0.0.1:5000/user-info', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setUsername(response.data.name);
+        const name = response.data.name;
+        setUsername(name);
+
+        // Obtener la primera letra del nombre de usuario
+        const firstLetter = name.charAt(0).toUpperCase();
+
+        // Seleccionar la imagen adecuada basada en la primera letra
+        setUserImage(letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
       } catch (error) {
         console.error('Failed to fetch user info:', error);
         navigate('/login'); // Redirige al login si la solicitud falla
@@ -53,7 +62,11 @@ const Main = () => {
           </div>
         </div>
         <div className="user">
-          <img src="img/customer01.jpg" alt="" />
+          {userImage ? (
+            <img src={userImage} alt="User" />
+          ) : (
+            <img src="img/customer01.jpg" alt="Default User" />
+          )}
         </div>
         <p className="nombre-usuario">{username}</p>
         <p className="titulo-usuario">Encargado</p>
@@ -137,7 +150,7 @@ const Main = () => {
 
         <div className="recentCustomers">
           <div className="profile-container">
-            <img src="img/Foto-perfil.png" alt="Foto de perfil" className="profile-pic" />
+            <img src={userImage}  alt="Foto" className="profile-pic" />
             <div className="button-container">
               <button className="eye-button" onClick={() => window.location.href='detalle-datos1.html'}>
                 <i className="fas fa-eye"></i>
