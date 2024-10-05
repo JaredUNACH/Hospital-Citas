@@ -1,12 +1,39 @@
-import React from 'react';
-import MisCitas from '../images/MisCitas.png'
-import HistorialMedico from '../images/HistorialMedico.png'
-import CongifCuenta from '../images/CuentaConfiguracion.png'
-import Reportes from '../images/Reportes.png'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import MisCitas from '../images/MisCitas.png';
+import HistorialMedico from '../images/HistorialMedico.png';
+import CongifCuenta from '../images/CuentaConfiguracion.png';
+import Reportes from '../images/Reportes.png';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+
 const Main = () => {
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login'); // Redirige al login si no hay token
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/user-info', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUsername(response.data.name);
+      } catch (error) {
+        console.error('Failed to fetch user info:', error);
+        navigate('/login'); // Redirige al login si la solicitud falla
+      }
+    };
+    fetchUserInfo();
+  }, [navigate]);
+
   return (
     <div className="main">
       <div className="topbar">
@@ -14,7 +41,7 @@ const Main = () => {
           <FontAwesomeIcon icon={faBars} />
         </div>
         <div className="nombre">
-          <h2>Hola, Jhovanny</h2>
+          <h2>Hola, {username}</h2>
         </div>
         <div className="campana">
           <i className="fas fa-bell"></i>
@@ -28,7 +55,7 @@ const Main = () => {
         <div className="user">
           <img src="img/customer01.jpg" alt="" />
         </div>
-        <p className="nombre-usuario">Jhovanni Torres</p>
+        <p className="nombre-usuario">{username}</p>
         <p className="titulo-usuario">Encargado</p>
       </div>
 
@@ -128,8 +155,8 @@ const Main = () => {
                   <p>Nombre</p>
                 </div>
                 <div className="info-nombre">
-                  <p className="nombre">Juan Diego</p>
-                  <p className="apellido">Pérez López</p>
+                  <p className="nombre">{username}</p>
+                  <p className="apellido"></p>
                 </div>
               </div>
             </div>
