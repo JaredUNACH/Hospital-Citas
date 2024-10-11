@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from "../images/Medical Care.svg"; // Asegúrate de ajustar la ruta al logo
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faCalendarAlt, faUsers, faHistory, faChartPie } from '@fortawesome/free-solid-svg-icons';
+import '../styles/Navigation.css';
+import './EffectsAccount'; // Importamos el archivo de efectos de cuenta
 
-const Navigation = () => {
+const Navigation = ({ setContent }) => {
+  const [activeItem, setActiveItem] = useState('main'); // Estado para controlar el elemento activo
+
+  const handleItemClick = (item) => {
+    setActiveItem(item);
+    setContent(item);
+  };
+
   return (
     <div className="navigation">
       <ul>
@@ -16,8 +25,8 @@ const Navigation = () => {
             </span>
           </a>
         </li>
-        <li className="hovered">
-          <a href="#">
+        <li className={activeItem === 'main' ? 'hovered' : ''}>
+          <a href="#" onClick={() => handleItemClick('main')}>
             <span className="icon">
               <FontAwesomeIcon icon={faHouse} />
             </span>
@@ -25,8 +34,8 @@ const Navigation = () => {
             <i className="fas fa-chevron-down inicio-icon"></i>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li className={activeItem === 'appointments' ? 'hovered' : ''}>
+          <a href="#" onClick={() => handleItemClick('appointments')}>
             <span className="icon">
               <FontAwesomeIcon icon={faCalendarAlt} />
             </span>
@@ -34,8 +43,8 @@ const Navigation = () => {
             <i className="fas fa-chevron-down adm-icon"></i>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li className={activeItem === 'account' ? 'hovered' : ''}>
+          <a href="#" onClick={() => handleItemClick('account')}>
             <span className="icon">
               <FontAwesomeIcon icon={faUsers} />
             </span>
@@ -43,8 +52,8 @@ const Navigation = () => {
             <i className="fas fa-chevron-down usuario-icon"></i>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li className={activeItem === 'history' ? 'hovered' : ''}>
+          <a href="#" onClick={() => handleItemClick('history')}>
             <span className="icon">
               <FontAwesomeIcon icon={faHistory} />
             </span>
@@ -52,8 +61,8 @@ const Navigation = () => {
             <i className="fas fa-chevron-down adm-icon"></i>
           </a>
         </li>
-        <li>
-          <a href="#">
+        <li className={activeItem === 'reports' ? 'hovered' : ''}>
+          <a href="#" onClick={() => handleItemClick('reports')}>
             <span className="icon">
               <FontAwesomeIcon icon={faChartPie} />
             </span>
