@@ -8,33 +8,6 @@ const EffectsAccount = () => {
       window.history.back();
     };
 
-    // Campana de notificación y menú de notificaciones
-    const modal = document.querySelector('#notification-modal');
-    const campana = document.querySelector('.campana');
-    const notificationDot = document.querySelector('.notification-dot');
-    const closeModal = document.querySelector('.modal .close');
-
-    const showModal = (event) => {
-      notificationDot.style.display = 'block';
-      modal.style.display = 'block';
-      event.stopPropagation();
-    };
-
-    const hideModal = (event) => {
-      event.stopPropagation();
-      modal.style.display = 'none';
-    };
-
-    const hideModalOnClickOutside = (event) => {
-      if (modal.style.display === 'block') {
-        modal.style.display = 'none';
-      }
-    };
-
-    campana.addEventListener('click', showModal);
-    closeModal.addEventListener('click', hideModal);
-    window.addEventListener('click', hideModalOnClickOutside);
-
     // Add hovered class to selected list item
     const list = document.querySelectorAll(".navigation li");
 
@@ -84,9 +57,6 @@ const EffectsAccount = () => {
     // Cleanup event listeners on component unmount
     return () => {
       backButton.onclick = null;
-      campana.removeEventListener('click', showModal);
-      closeModal.removeEventListener('click', hideModal);
-      window.removeEventListener('click', hideModalOnClickOutside);
       list.forEach((item) => item.removeEventListener("mouseover", activeLink));
       toggle.onclick = null;
       inputs.forEach((input) => {

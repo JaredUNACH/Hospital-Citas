@@ -13,7 +13,12 @@ import letterImages from '../utils/letterImages'; // Importa el mapeo de imágen
 const Main = () => {
   const [username, setUsername] = useState('');
   const [userImage, setUserImage] = useState(null);
+  const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const navigate = useNavigate();
+
+  const handleToggleClick = () => {
+    setIsNavActive(!isNavActive);
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -43,24 +48,30 @@ const Main = () => {
     fetchUserInfo();
   }, [navigate]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsNavActive(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <div className="main">
+    <div className={`main ${isNavActive ? 'active' : ''}`}>
       <div className="topbar">
-        <div className="toggle">
+        <div className="toggle" onClick={handleToggleClick}>
           <FontAwesomeIcon icon={faBars} />
         </div>
         <div className="nombre">
           <h2>Hola, {username}</h2>
         </div>
-        <div className="campana">
-          <i className="fas fa-bell"></i>
-          <div className="notification-dot"></div>
-          <div id="notification-modal" className="modal">
-            <i className="fas fa-times close"></i>
-            <p>Tienes una nueva notificación</p>
-            <p>Un cliente</p>
-          </div>
-        </div>
+        
         <div className="user">
           {userImage ? (
             <img src={userImage} alt="User" />
@@ -68,8 +79,7 @@ const Main = () => {
             <img src="img/customer01.jpg" alt="Default User" />
           )}
         </div>
-        <p className="nombre-usuario">{username}</p>
-        <p className="titulo-usuario">Encargado</p>
+        
       </div>
 
       <div className="flecha-atras">
