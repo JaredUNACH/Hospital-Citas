@@ -249,28 +249,6 @@ const Main = ({ setContent }) => {
                 </div>
               </div>
             </div>
-            <div className="info-item">
-              <i className="fa-solid fa-calendar-day calendar-icon"></i>
-              <div className="info-text">
-                <div className="info-titulo">
-                  <p>Fecha de Nacimiento</p>
-                </div>
-                <div className="info-nombre">
-                  <p className="nombre">{fechaNacimiento}</p>
-                </div>
-              </div>
-            </div>
-            <div className="info-item">
-              <i className="fa-solid fa-pills pills-icon"></i>
-              <div className="info-text">
-                <div className="info-titulo">
-                  <p>Alergia a Medicamentos</p>
-                </div>
-                <div className="info-nombre">
-                  <p className="nombre">{alergiaMedicamentos}</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

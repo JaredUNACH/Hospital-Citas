@@ -60,9 +60,21 @@ def get_specialties():
 @jwt_required()  # Requiere un token JWT válido
 def user_info():
     current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
-    user = Paciente.query.filter_by(email=current_user['email']).first()  # Busca el usuario en la base de datos
+    email = current_user['email']  # Extrae el email del diccionario current_user
+    user = Paciente.query.filter_by(email=email).first()  # Busca el usuario en la base de datos
     if user:
-        return jsonify(name=user.nombre, email=user.email), 200  # Devuelve el nombre y el email del usuario
+        return jsonify({
+            'name': user.nombre,
+            'apellido_paterno': user.apellido_paterno,
+            'apellido_materno': user.apellido_materno,
+            'curp': user.curp,
+            'sexo': user.sexo,
+            'tipo_sangre': user.tipo_sangre,
+            'email': user.email,
+            'telefono': user.telefono,
+            'fecha_nacimiento': user.fecha_nacimiento,
+            'alergia_medicamentos': user.alergia_medicamentos
+        }), 200  # Devuelve la información del usuario
     return jsonify(message="User not found"), 404  # Devuelve un mensaje de error si el usuario no se encuentra
 
 #------------------------------------ Rutas de pacientes ------------------------------------#
@@ -98,7 +110,8 @@ def get_paciente_route(id):
 @jwt_required()  # Requiere un token JWT válido
 def update_user_info():
     current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
-    user = Paciente.query.filter_by(email=current_user['email']).first()  # Busca el usuario en la base de datos
+    email = current_user['email']  # Extrae el email del diccionario current_user
+    user = Paciente.query.filter_by(email=email).first()  # Busca el usuario en la base de datos
     if not user:
         return jsonify({'message': 'User not found'}), 404
 

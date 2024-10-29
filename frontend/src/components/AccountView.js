@@ -6,11 +6,20 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
+import { format } from 'date-fns'; // Importa la función de formateo de date-fns
 
 const AccountView = ({ setContent }) => {
   const [username, setUsername] = useState('');
   const [userImage, setUserImage] = useState(null);
-  const [estadoCivil, setEstadoCivil] = useState('soltero'); // Estado para el select
+  const [apellidoPaterno, setApellidoPaterno] = useState('');
+  const [apellidoMaterno, setApellidoMaterno] = useState('');
+  const [curp, setCurp] = useState('');
+  const [sexo, setSexo] = useState('');
+  const [tipoSangre, setTipoSangre] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [alergiaMedicamentos, setAlergiaMedicamentos] = useState('');
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const navigate = useNavigate();
 
@@ -30,11 +39,20 @@ const AccountView = ({ setContent }) => {
         const response = await axios.get('http://127.0.0.1:5000/user-info', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const name = response.data.name;
-        setUsername(name);
+        const data = response.data;
+        setUsername(data.name);
+        setApellidoPaterno(data.apellido_paterno || '');
+        setApellidoMaterno(data.apellido_materno || '');
+        setCurp(data.curp || '');
+        setSexo(data.sexo || '');
+        setTipoSangre(data.tipo_sangre || '');
+        setEmail(data.email || '');
+        setTelefono(data.telefono || '');
+        setFechaNacimiento(data.fecha_nacimiento ? format(new Date(data.fecha_nacimiento), 'dd/MM/yyyy') : '');
+        setAlergiaMedicamentos(data.alergia_medicamentos || '');
 
         // Obtener la primera letra del nombre de usuario
-        const firstLetter = name.charAt(0).toUpperCase();
+        const firstLetter = data.name.charAt(0).toUpperCase();
 
         // Seleccionar la imagen adecuada basada en la primera letra
         setUserImage(letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
@@ -98,15 +116,15 @@ const AccountView = ({ setContent }) => {
           <div className={styles.cardBox}>
             <div className={styles.input}>
               <div className={styles.Tnombre}>Primer Apellido</div>
-              <span id="inputRFC">Escriba apellido paterno</span>
+              <span id="inputRFC">{apellidoPaterno}</span>
             </div>
             <div className={styles.input}>
               <div className={styles.Tnombre}>Segundo Apellido</div>
-              <span id="inputNombre">Escriba apellido materno</span>
+              <span id="inputNombre">{apellidoMaterno}</span>
             </div>
             <div className={styles.input}>
               <div className={styles.Tnombre}> CURP</div>
-              <span id="inputCURP">Escriba la CURP</span>
+              <span id="inputCURP">{curp}</span>
             </div>
           </div>
           <div className={styles.subtitulo}>
@@ -117,34 +135,31 @@ const AccountView = ({ setContent }) => {
               <div className={styles.Tnombre}> Sexo</div>
               <div style={{ display: 'flex', paddingTop: '5px' }}>
                 <div style={{ paddingRight: '50px' }}>
-                  <span>H</span>
-                </div>
-                <div>
-                  <span>M</span>
+                  <span>{sexo === 'H' ? 'Hombre' : 'Mujer'}</span>
                 </div>
               </div>
             </div>
             <div className={styles.input}>
               <div className={styles.Tnombre}>Tipo de Sangre</div>
-              <span id="input2">{estadoCivil}</span>
+              <span id="input2">{tipoSangre}</span>
             </div>
             <div className={styles.input}>
               <div className={styles.Tnombre}>Email</div>
-              <span id="input1">Escriba el Email</span>
+              <span id="input1">{email}</span>
             </div>
             <div className={styles.input}>
               <div className={styles.Tnombre}> Telefono</div>
-              <span id="input2">Escriba el Telefono</span>
+              <span id="input2">{telefono}</span>
             </div>
           </div>
           <div className={styles.cardBox}>
               <div className={styles.input}>
                 <div className={styles.Tnombre}>Fecha de Nacimiento</div>
-                <span id="input2">2000-12-01</span>
+                <span id="input2">{fechaNacimiento}</span>
               </div>
               <div className={styles.input2}>
                 <div className={styles.Tnombre}>Alergia a Medicamentos</div>
-                <span id="input1">Escriba si es alérgico a algún medicamento</span>
+                <span id="input1">{alergiaMedicamentos}</span>
               </div>
           </div>
           <div className={styles.botonBuscar}>
