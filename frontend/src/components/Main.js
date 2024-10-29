@@ -100,7 +100,7 @@ const Main = ({ setContent }) => {
               <div className="title-button-container">
                 <h2 className="title-card">Mis Citas</h2>
                 <div className="button-container">
-                  <button className="eye-button" onClick={() => window.location.href='detalle-empleo.html'}>
+                  <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>
                   </button>
                   <button className="edit-button" onClick={() => setContent('account')}>
@@ -117,7 +117,7 @@ const Main = ({ setContent }) => {
               <div className="title-button-container">
                 <h2 className="title-card">Historial Medico</h2>
                 <div className="button-container">
-                  <button className="eye-button" onClick={() => window.location.href='detalle-beneficiario.html'}>
+                  <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>
                   </button>
                   <button className="edit-button" onClick={() => setContent('account')}>
@@ -133,7 +133,7 @@ const Main = ({ setContent }) => {
               <div className="title-button-container">
                 <h2 className="title-card">Configuracion de la cuenta</h2>
                 <div className="button-container">
-                  <button className="eye-button" onClick={() => window.location.href='detalle-bajas.html'}>
+                  <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>
                   </button>
                   <button className="edit-button" onClick={() => setContent('account')}>
@@ -150,7 +150,7 @@ const Main = ({ setContent }) => {
               <div className="title-button-container">
                 <h2 className="title-card">Reportes</h2>
                 <div className="button-container">
-                  <button className="eye-button" onClick={() => window.location.href='detalle-prejubilado.html'}>
+                  <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>
                   </button>
                   <button className="edit-button" onClick={() => setContent('account')}>
@@ -166,7 +166,7 @@ const Main = ({ setContent }) => {
           <div className="profile-container">
             <img src={userImage}  alt="Foto" className="profile-pic" />
             <div className="button-container">
-              <button className="eye-button" onClick={() => window.location.href='detalle-datos1.html'}>
+              <button className="eye-button" onClick={() => setContent('view')}>
                 <i className="fas fa-eye"></i>
               </button>
               <button className="edit-button" onClick={() => setContent('account')}>
