@@ -13,6 +13,15 @@ import letterImages from '../utils/letterImages'; // Importa el mapeo de imágen
 const Main = ({ setContent }) => {
   const [username, setUsername] = useState('');
   const [userImage, setUserImage] = useState(null);
+  const [apellidoPaterno, setApellidoPaterno] = useState('');
+  const [apellidoMaterno, setApellidoMaterno] = useState('');
+  const [curp, setCurp] = useState('');
+  const [sexo, setSexo] = useState('');
+  const [tipoSangre, setTipoSangre] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [alergiaMedicamentos, setAlergiaMedicamentos] = useState('');
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const navigate = useNavigate();
 
@@ -32,11 +41,20 @@ const Main = ({ setContent }) => {
         const response = await axios.get('http://127.0.0.1:5000/user-info', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const name = response.data.name;
-        setUsername(name);
+        const data = response.data;
+        setUsername(data.name);
+        setApellidoPaterno(data.apellido_paterno || '');
+        setApellidoMaterno(data.apellido_materno || '');
+        setCurp(data.curp || '');
+        setSexo(data.sexo || '');
+        setTipoSangre(data.tipo_sangre || '');
+        setEmail(data.email || '');
+        setTelefono(data.telefono || '');
+        setFechaNacimiento(data.fecha_nacimiento || '');
+        setAlergiaMedicamentos(data.alergia_medicamentos || '');
 
         // Obtener la primera letra del nombre de usuario
-        const firstLetter = name.charAt(0).toUpperCase();
+        const firstLetter = data.name.charAt(0).toUpperCase();
 
         // Seleccionar la imagen adecuada basada en la primera letra
         setUserImage(letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
@@ -183,7 +201,7 @@ const Main = ({ setContent }) => {
                 </div>
                 <div className="info-nombre">
                   <p className="nombre">{username}</p>
-                  <p className="apellido"></p>
+                  <p className="apellido">{apellidoPaterno} {apellidoMaterno}</p>
                 </div>
               </div>
             </div>
@@ -194,7 +212,7 @@ const Main = ({ setContent }) => {
                   <p>Email</p>
                 </div>
                 <div className="info-nombre">
-                  <p className="nombre">Soltero</p>
+                  <p className="nombre">{email}</p>
                 </div>
               </div>
             </div>
@@ -205,7 +223,7 @@ const Main = ({ setContent }) => {
                   <p>Celular</p>
                 </div>
                 <div className="info-nombre">
-                  <p className="nombre">9614734865</p>
+                  <p className="nombre">{telefono}</p>
                 </div>
               </div>
             </div>
@@ -216,7 +234,7 @@ const Main = ({ setContent }) => {
                   <p>CURP</p>
                 </div>
                 <div className="info-nombre">
-                  <p className="nombre">Tuxtla Gutierrez</p>
+                  <p className="nombre">{curp}</p>
                 </div>
               </div>
             </div>
@@ -227,7 +245,29 @@ const Main = ({ setContent }) => {
                   <p>Tipo de Sangre</p>
                 </div>
                 <div className="info-nombre">
-                  <p className="nombre">Casitas</p>
+                  <p className="nombre">{tipoSangre}</p>
+                </div>
+              </div>
+            </div>
+            <div className="info-item">
+              <i className="fa-solid fa-calendar-day calendar-icon"></i>
+              <div className="info-text">
+                <div className="info-titulo">
+                  <p>Fecha de Nacimiento</p>
+                </div>
+                <div className="info-nombre">
+                  <p className="nombre">{fechaNacimiento}</p>
+                </div>
+              </div>
+            </div>
+            <div className="info-item">
+              <i className="fa-solid fa-pills pills-icon"></i>
+              <div className="info-text">
+                <div className="info-titulo">
+                  <p>Alergia a Medicamentos</p>
+                </div>
+                <div className="info-nombre">
+                  <p className="nombre">{alergiaMedicamentos}</p>
                 </div>
               </div>
             </div>

@@ -12,12 +12,18 @@ class Paciente(db.Model, UserMixin):
     nombre = db.Column(db.String(100), nullable=False)
     apellido_paterno = db.Column(db.String(100), nullable=False)
     apellido_materno = db.Column(db.String(100), nullable=False)
+    curp = db.Column(db.String(18), nullable=True)
+    sexo = db.Column(db.String(1), nullable=True)
+    tipo_sangre = db.Column(db.String(3), nullable=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
+    telefono = db.Column(db.String(15), nullable=True)
+    fecha_nacimiento = db.Column(db.Date, nullable=False)
+    alergia_medicamentos = db.Column(db.Text, nullable=True)
     password = db.Column(db.String(100), nullable=True)  # Puede ser nulo para usuarios de Google
     google_id = db.Column(db.String(100), unique=True, nullable=True)  # ID de Google
-    fecha_nacimiento = db.Column(db.Date, nullable=False)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), default='usuario', nullable=False)
+    historial_medico = db.Column(db.Text, nullable=True)
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -25,7 +31,10 @@ class Paciente(db.Model, UserMixin):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
 
-# Dfinimos la tabla de especialidades
+    def __repr__(self):
+        return f'<Paciente {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'
+
+# Definimos la tabla de especialidades
 # Modelo de especialidades
 class Especialidad(db.Model):
     __tablename__ = 'especialidades'

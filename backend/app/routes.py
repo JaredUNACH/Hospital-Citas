@@ -4,6 +4,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
 from .models import db, Paciente, Especialidad
+from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
 
 # Crea un Blueprint para las rutas
 routes = Blueprint('routes', __name__)
@@ -63,3 +64,54 @@ def user_info():
     if user:
         return jsonify(name=user.nombre, email=user.email), 200  # Devuelve el nombre y el email del usuario
     return jsonify(message="User not found"), 404  # Devuelve un mensaje de error si el usuario no se encuentra
+
+#------------------------------------ Rutas de pacientes ------------------------------------#
+# Ruta para insertar un nuevo paciente
+@routes.route('/pacientes', methods=['POST'])
+def add_paciente_route():
+    data = request.json
+    return jsonify(add_paciente(data))
+
+# Ruta para actualizar un paciente existente
+@routes.route('/pacientes/<int:id>', methods=['PUT'])
+def update_paciente_route(id):
+    data = request.json
+    return jsonify(update_paciente(id, data))
+
+# Ruta para eliminar un paciente
+@routes.route('/pacientes/<int:id>', methods=['DELETE'])
+def delete_paciente_route(id):
+    return jsonify(delete_paciente(id))
+
+# Ruta para obtener todos los pacientes
+@routes.route('/pacientes', methods=['GET'])
+def get_pacientes_route():
+    return jsonify(get_pacientes())
+
+# Ruta para obtener un paciente por ID
+@routes.route('/pacientes/<int:id>', methods=['GET'])
+def get_paciente_route(id):
+    return jsonify(get_paciente(id))
+
+# Ruta para actualizar la información del usuario
+@routes.route('/update-user-info', methods=['PUT'])
+@jwt_required()  # Requiere un token JWT válido
+def update_user_info():
+    current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
+    user = Paciente.query.filter_by(email=current_user['email']).first()  # Busca el usuario en la base de datos
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    data = request.json
+    user.apellido_paterno = data.get('apellido_paterno', user.apellido_paterno)
+    user.apellido_materno = data.get('apellido_materno', user.apellido_materno)
+    user.curp = data.get('curp', user.curp)
+    user.sexo = data.get('sexo', user.sexo)
+    user.tipo_sangre = data.get('tipo_sangre', user.tipo_sangre)
+    user.email = data.get('email', user.email)
+    user.telefono = data.get('telefono', user.telefono)
+    user.fecha_nacimiento = data.get('fecha_nacimiento', user.fecha_nacimiento)
+    user.alergia_medicamentos = data.get('alergia_medicamentos', user.alergia_medicamentos)
+
+    db.session.commit()
+    return jsonify({'message': 'User info updated successfully'}), 200
