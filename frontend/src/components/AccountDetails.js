@@ -60,6 +60,10 @@ const AccountDetails = () => {
     };
   }, []);
 
+  const handleBackClick = () => {
+    navigate('/home'); // Redirige a la página Home
+  };
+
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
       <div className={styles.topbar}>
@@ -77,7 +81,9 @@ const AccountDetails = () => {
             <img src="img/customer01.jpg" alt="Default User" />
           )}
         </div>
-        
+      </div>
+      <div className="flecha-atras" onClick={handleBackClick}>
+          <i className="fa-solid fa-chevron-left fecha-back"></i>
       </div>
 
       <div className={styles.title}>

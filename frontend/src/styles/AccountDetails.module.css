@@ -179,7 +179,7 @@
   .title h2 {
     padding-left: 20px;
     padding-top: 10px;
-    color: #FF6600;
+    color: #2980b9;
   }
   .Icono-lapiz .fa-pencil-alt{
     padding-left: 20px;
@@ -224,7 +224,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 40px;
-    color: #FF6600;
+    color: #2980b9;
     
   }
   .input div {
@@ -282,8 +282,8 @@
   }
   
   .input input[type="text"]:focus {
-    border-color: #FF6600;
-    box-shadow: 0 0 10px #FF6600;
+    border-color: #2980b9;
+    box-shadow: 0 0 10px #2980b9;
   }
   .input input[type="text2"] {
     width: 100%;
@@ -297,8 +297,8 @@
   }
   
   .input input[type="text2"]:focus {
-    border-color: #FF6600;
-    box-shadow: 0 0 10px #FF6600;
+    border-color: #2980b9;
+    box-shadow: 0 0 10px #2980b9;
   }
   .input select {
       width: 100%;
@@ -313,8 +313,8 @@
   }
   
   .input select:focus {
-      border-color: #FF6600;
-      box-shadow: 0 0 10px #FF6600;
+      border-color: #2980b9;
+      box-shadow: 0 0 10px #2980b9;
   }
   .boton-buscar {
       width: 100%;

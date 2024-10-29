@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const EffectsAccount = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    // Flecha para regresar a la página anterior
+    // Flecha para regresar a la página Home
     const backButton = document.querySelector(".fecha-back");
-    backButton.onclick = () => {
-      window.history.back();
-    };
+    if (backButton) {
+      backButton.onclick = () => {
+        navigate('/home');
+      };
+    }
 
     // Add hovered class to selected list item
     const list = document.querySelectorAll(".navigation li");
@@ -30,7 +35,9 @@ const EffectsAccount = () => {
       main.classList.toggle("active");
     };
 
-    toggle.onclick = toggleMenu;
+    if (toggle) {
+      toggle.onclick = toggleMenu;
+    }
 
     // Selecciona todos los campos de entrada
     const inputs = document.querySelectorAll('.input input');
@@ -56,14 +63,18 @@ const EffectsAccount = () => {
 
     // Cleanup event listeners on component unmount
     return () => {
-      backButton.onclick = null;
+      if (backButton) {
+        backButton.onclick = null;
+      }
       list.forEach((item) => item.removeEventListener("mouseover", activeLink));
-      toggle.onclick = null;
+      if (toggle) {
+        toggle.onclick = null;
+      }
       inputs.forEach((input) => {
         input.removeEventListener('input', actualizarLineaCarga);
       });
     };
-  }, []);
+  }, [navigate]);
 
   return null;
 };

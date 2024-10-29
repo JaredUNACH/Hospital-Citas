@@ -6,7 +6,7 @@ import CongifCuenta from '../images/CuentaConfiguracion.png';
 import Reportes from '../images/Reportes.png';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronLeft, faEnvelope } from '@fortawesome/free-solid-svg-icons'; // Importamos los iconos necesarios
 import axios from 'axios';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 
@@ -62,6 +62,10 @@ const Main = () => {
     };
   }, []);
 
+  const handleBackClick = () => {
+    navigate('/home'); // Redirige a la página Home
+  };
+
   return (
     <div className={`main ${isNavActive ? 'active' : ''}`}>
       <div className="topbar">
@@ -82,8 +86,8 @@ const Main = () => {
         
       </div>
 
-      <div className="flecha-atras">
-        <i className="fa-solid fa-chevron-left fecha-back"></i>
+      <div className="flecha-atras" onClick={handleBackClick}>
+        <FontAwesomeIcon icon={faChevronLeft} className="fecha-back" />
       </div>
 
       <div className="details">
@@ -184,10 +188,10 @@ const Main = () => {
               </div>
             </div>
             <div className="info-item">
-              <i className="fa-regular fa-heart corazon-icon"></i>
+              <FontAwesomeIcon icon={faEnvelope} className="corazon-icon" />
               <div className="info-text">
                 <div className="info-titulo">
-                  <p>Estado civil</p>
+                  <p>Email</p>
                 </div>
                 <div className="info-nombre">
                   <p className="nombre">Soltero</p>
@@ -206,10 +210,10 @@ const Main = () => {
               </div>
             </div>
             <div className="info-item">
-              <i className="fa-solid fa-location-dot GPS-icon"></i>
+              <i className="fa-solid fa-id-card GPS-icon"></i>
               <div className="info-text">
                 <div className="info-titulo">
-                  <p>Municipio</p>
+                  <p>CURP</p>
                 </div>
                 <div className="info-nombre">
                   <p className="nombre">Tuxtla Gutierrez</p>
@@ -217,10 +221,10 @@ const Main = () => {
               </div>
             </div>
             <div className="info-item">
-              <i className="fa-solid fa-map-pin pin-icon"></i>
+              <i className="fa-solid fa-droplet pin-icon"></i>
               <div className="info-text">
                 <div className="info-titulo">
-                  <p>Colonia</p>
+                  <p>Tipo de Sangre</p>
                 </div>
                 <div className="info-nombre">
                   <p className="nombre">Casitas</p>
