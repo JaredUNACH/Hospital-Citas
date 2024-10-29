@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 
-const AccountDetails = () => {
+const AccountEdit = ({ setContent }) => {
   const [username, setUsername] = useState('');
   const [userImage, setUserImage] = useState(null);
   const [estadoCivil, setEstadoCivil] = useState('soltero'); // Estado para el select
@@ -61,7 +61,7 @@ const AccountDetails = () => {
   }, []);
 
   const handleBackClick = () => {
-    navigate('/home'); // Redirige a la página Home
+    setContent('main'); // Redirige al estado main
   };
 
   return (
@@ -93,16 +93,16 @@ const AccountDetails = () => {
       <div className={styles.details}>
         <div className={styles.recentOrders}>
           <div className={styles.subtitulo}>
-            <h3><em>Datos del RFC</em></h3>
+            <h3><em>Datos de su cuenta</em></h3>
           </div>
           <div className={styles.cardBox}>
             <div className={styles.input}>
-              <div className={styles.Tnombre}> RFC</div>
-              <input type="text" placeholder="Escriba el RFC" id="inputRFC" />
+              <div className={styles.Tnombre}>Primer Apellido</div>
+              <input type="text" placeholder="Escriba apellido paterno" id="inputRFC" />
             </div>
             <div className={styles.input}>
-              <div className={styles.Tnombre}> Nombre</div>
-              <input type="text" placeholder="Escriba el nombre" id="inputNombre" />
+              <div className={styles.Tnombre}>Segundo Apellido</div>
+              <input type="text" placeholder="Escriba apellido materno" id="inputNombre" />
             </div>
             <div className={styles.input}>
               <div className={styles.Tnombre}> CURP</div>
@@ -127,11 +127,11 @@ const AccountDetails = () => {
               </div>
             </div>
             <div className={styles.input}>
-              <div className={styles.Tnombre}>Estado Civil</div>
+              <div className={styles.Tnombre}>Tipo de Sangre</div>
               <select id="input2" value={estadoCivil} onChange={(e) => setEstadoCivil(e.target.value)}>
                 <option value="" disabled>Escriba el Estado Civil</option>
-                <option value="soltero">Soltero</option>
-                <option value="casado">Casado</option>
+                <option value="soltero">A+</option>
+                <option value="casado">O+</option>
                 {/* Agregar más opciones */}
               </select>
             </div>
@@ -145,17 +145,26 @@ const AccountDetails = () => {
             </div>
           </div>
           <div className={styles.cardBox}>
-            <div className={styles.input}>
-              <div className={styles.Tnombre}> Celular</div>
-              <input type="text" placeholder="Escriba el Celular" id="input2" />
-            </div>
-            <div className={styles.input}>
-              <div className={styles.Tnombre}> Tel.Recados</div>
-              <input type="text" placeholder="Escriba el Tel.Recados" id="input1" />
-            </div>
+              <div className={styles.input}>
+                <div className={styles.Tnombre}>Fecha de Nacimiento</div>
+                <input
+                  type="date"
+                  placeholder="Escriba su fecha (2000-12-01)"
+                  id="input2"
+                  className={styles.dateInput}
+                />
+              </div>
+              <div className={styles.input2}>
+                <div className={styles.Tnombre}>Alergia a Medicamentos</div>
+                <textarea
+                  placeholder="Escriba si es alérgico a algún medicamento"
+                  id="input1"
+                  className={styles.textarea}
+                />
+              </div>
           </div>
           <div className={styles.botonBuscar}>
-            <button type="button" className={styles.botonAtras}>Cancelar</button>
+            <button type="button" className={styles.botonAtras} onClick={handleBackClick}>Cancelar</button>
             <button type="button" onClick={() => alert('Datos guardados')}>Guardar</button>
           </div>
         </div>
@@ -164,4 +173,4 @@ const AccountDetails = () => {
   );
 };
 
-export default AccountDetails;
+export default AccountEdit;

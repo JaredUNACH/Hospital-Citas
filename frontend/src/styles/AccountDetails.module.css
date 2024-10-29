@@ -316,6 +316,23 @@
       border-color: #2980b9;
       box-shadow: 0 0 10px #2980b9;
   }
+  /* Estilos ajustados para el textarea */
+.input2 textarea {
+  width: 100%;
+  padding: 13px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #282826;
+  color: #fff;
+  resize: vertical; /* Permite al usuario ajustar la altura del textarea */
+}
+
+.input2 textarea:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 10px #2980b9;
+}
   .boton-buscar {
       width: 100%;
       height: 20%;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import EffectsAccount from '../components/EffectsAccount';
 import Navigation from '../components/Navigation';
 import Main from '../components/Main';
-import AccountDetails from '../components/AccountDetails'; // Componente para mostrar los detalles de la cuenta
+import AccountEdit from '../components/AccountEdit'; // Componente para mostrar los detalles de la cuenta
 import { Link } from 'react-router-dom';
 import '../styles/AccountPatient.css';
 
@@ -12,11 +12,11 @@ const AccountPatient = () => {
   const renderContent = () => {
     switch (content) {
       case 'main':
-        return <Main />;
+        return <Main setContent={setContent} />;
       case 'account':
-        return <AccountDetails />;
+        return <AccountEdit setContent={setContent} />;
       default:
-        return <Main />;
+        return <Main setContent={setContent} />;
     }
   };
 

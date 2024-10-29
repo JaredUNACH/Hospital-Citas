@@ -6,11 +6,11 @@ import CongifCuenta from '../images/CuentaConfiguracion.png';
 import Reportes from '../images/Reportes.png';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faChevronLeft, faEnvelope } from '@fortawesome/free-solid-svg-icons'; // Importamos los iconos necesarios
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 
-const Main = () => {
+const Main = ({ setContent }) => {
   const [username, setUsername] = useState('');
   const [userImage, setUserImage] = useState(null);
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
@@ -87,7 +87,7 @@ const Main = () => {
       </div>
 
       <div className="flecha-atras" onClick={handleBackClick}>
-        <FontAwesomeIcon icon={faChevronLeft} className="fecha-back" />
+        <i className="fa-solid fa-chevron-left fecha-back"></i>
       </div>
 
       <div className="details">
@@ -103,7 +103,7 @@ const Main = () => {
                   <button className="eye-button" onClick={() => window.location.href='detalle-empleo.html'}>
                     <i className="fas fa-eye"></i>
                   </button>
-                  <button className="edit-button" onClick={() => window.location.href='editar-empleo.html'}>
+                  <button className="edit-button" onClick={() => setContent('account')}>
                     Editar
                   </button>
                 </div>
@@ -120,7 +120,7 @@ const Main = () => {
                   <button className="eye-button" onClick={() => window.location.href='detalle-beneficiario.html'}>
                     <i className="fas fa-eye"></i>
                   </button>
-                  <button className="edit-button" onClick={() => window.location.href='editar-beneficiario.html'}>
+                  <button className="edit-button" onClick={() => setContent('account')}>
                     Editar
                   </button>
                 </div>
@@ -136,7 +136,7 @@ const Main = () => {
                   <button className="eye-button" onClick={() => window.location.href='detalle-bajas.html'}>
                     <i className="fas fa-eye"></i>
                   </button>
-                  <button className="edit-button" onClick={() => window.location.href='editar-bajas.html'}>
+                  <button className="edit-button" onClick={() => setContent('account')}>
                     Editar
                   </button>
                 </div>
@@ -153,7 +153,7 @@ const Main = () => {
                   <button className="eye-button" onClick={() => window.location.href='detalle-prejubilado.html'}>
                     <i className="fas fa-eye"></i>
                   </button>
-                  <button className="edit-button" onClick={() => window.location.href='editar-prejubilado.html'}>
+                  <button className="edit-button" onClick={() => setContent('account')}>
                     Editar
                   </button>
                 </div>
@@ -169,7 +169,7 @@ const Main = () => {
               <button className="eye-button" onClick={() => window.location.href='detalle-datos1.html'}>
                 <i className="fas fa-eye"></i>
               </button>
-              <button className="edit-button" onClick={() => window.location.href='editar-datos1.html'}>
+              <button className="edit-button" onClick={() => setContent('account')}>
                 Editar
               </button>
             </div>
@@ -188,7 +188,7 @@ const Main = () => {
               </div>
             </div>
             <div className="info-item">
-              <FontAwesomeIcon icon={faEnvelope} className="corazon-icon" />
+              <i className="fa-regular fa-envelope corazon-icon"></i>
               <div className="info-text">
                 <div className="info-titulo">
                   <p>Email</p>
