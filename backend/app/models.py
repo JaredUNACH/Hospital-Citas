@@ -35,7 +35,6 @@ class Paciente(db.Model, UserMixin):
         return f'<Paciente {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'
 
 # Definimos la tabla de especialidades
-# Modelo de especialidades
 class Especialidad(db.Model):
     __tablename__ = 'especialidades'
     id = db.Column(db.Integer, primary_key=True)
@@ -43,3 +42,20 @@ class Especialidad(db.Model):
 
     def __repr__(self):
         return f'<Especialidad {self.nombre}>'
+
+# Definimos la tabla de doctores
+class Doctor(db.Model):
+    __tablename__ = 'medicos'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    apellido_paterno = db.Column(db.String(100), nullable=False)
+    apellido_materno = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    especialidad_id = db.Column(db.Integer, db.ForeignKey('especialidades.id'), nullable=False)
+    fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    especialidad = db.relationship('Especialidad', backref=db.backref('doctores', lazy=True))
+
+    def __repr__(self):
+        return f'<Doctor {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'

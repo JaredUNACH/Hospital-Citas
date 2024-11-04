@@ -6,7 +6,7 @@ import '../styles/SpecialtySelect.css';
 
 const socket = io('http://127.0.0.1:5000');
 
-const SpecialtySelect = () => {
+const SpecialtySelect = ({ onChange }) => {
   const [specialties, setSpecialties] = useState([]);
   const [selectedSpecialty, setSelectedSpecialty] = useState(null);
 
@@ -15,7 +15,7 @@ const SpecialtySelect = () => {
       try {
         const response = await axios.get('http://127.0.0.1:5000/specialties');
         const specialtyOptions = response.data.map(specialty => ({
-          value: specialty.id,
+          value: specialty.nombre, // Usar el nombre de la especialidad como valor
           label: specialty.nombre // Asegúrate de usar el nombre correcto del campo
         }));
         setSpecialties(specialtyOptions);
@@ -33,7 +33,7 @@ const SpecialtySelect = () => {
 
     socket.on('specialties_data', (data) => {
       const specialtyOptions = data.map(specialty => ({
-        value: specialty.id,
+        value: specialty.nombre, // Usar el nombre de la especialidad como valor
         label: specialty.nombre
       }));
       setSpecialties(specialtyOptions);
@@ -47,6 +47,7 @@ const SpecialtySelect = () => {
 
   const handleChange = (selectedOption) => {
     setSelectedSpecialty(selectedOption);
+    onChange(selectedOption); // Llamar a la función onChange pasada como prop
     console.log('Selected specialty:', selectedOption);
   };
 

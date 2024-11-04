@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Appointment.css';
 import FormAgenda from '../components/Form-Agenda'; // Importa el componente FormAgenda
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,10 +7,13 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../components/Navbar'; // Importa el nuevo componente Navbar
 
 import { CSSTransition } from 'react-transition-group';
+import axios from 'axios';
 
-const Home = () => {
+const Appointment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [inTransition, setInTransition] = useState(false);
+  const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
     // Verificar si el usuario ha iniciado sesión
@@ -20,6 +23,20 @@ const Home = () => {
       navigate('/login');
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      const specialty = location.state?.specialty || '';
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/doctors?specialty=${specialty}`);
+        setDoctors(response.data);
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+      }
+    };
+
+    fetchDoctors();
+  }, [location.state]);
 
   const handleNavigation = (path) => {
     setInTransition(true);
@@ -45,7 +62,7 @@ const Home = () => {
             <h2>Agenta tu cita!</h2>
           </div>
           <div className='Agenda-contendor'>
-            <FormAgenda />
+            <FormAgenda doctors={doctors} />
           </div>
         </div>
       </div>
@@ -53,4 +70,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Appointment;

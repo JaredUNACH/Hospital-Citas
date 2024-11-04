@@ -1,6 +1,6 @@
 .form-agenda-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 20px;
   background-color: #f9f9f9;
@@ -10,6 +10,16 @@
   overflow-y: auto; /* Habilita el desplazamiento vertical */
 }
 
+.doctor-card {
+  display: flex;
+  flex-direction: row; /* Asegura que el calendario esté a la derecha */
+  gap: 20px;
+  padding: 20px;
+  background-color: turquoise;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .doctor-info {
   display: flex;
   flex-direction: column;
@@ -17,11 +27,14 @@
   text-align: center;
 }
 
-.doctor-photo {
+.doctor-photo-placeholder {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  object-fit: cover;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 10px;
 }
 
@@ -50,7 +63,6 @@
 }
 
 .calendar-container {
-  margin-top: 20px;
   width: 100%; /* Asegura que el calendario ocupe todo el ancho disponible */
   height: auto; /* Permite que la altura se ajuste automáticamente */
   color: #333;
@@ -59,18 +71,17 @@
 .react-calendar {
   width: 100%; /* Asegura que el calendario ocupe todo el ancho disponible */
   max-width: 100%; /* Asegura que el calendario no se desborde */
-  font-size: .8em; /* Reduce el tamaño de la fuente para hacer el calendario más pequeño */
+  font-size: 0.8em; /* Reduce el tamaño de la fuente para hacer el calendario más pequeño */
 }
 
 .react-calendar__tile {
-  height: 1.8em; /* Reduce la altura de cada celda del calendario */
+  height: 2.5em; /* Reduce la altura de cada celda del calendario */
 }
 
 /* Media query para pantallas más pequeñas */
 @media (max-width: 768px) {
-  .form-agenda-container {
-    grid-template-columns: 1fr; /* Cambia a una sola columna */
-    grid-template-rows: auto auto; /* Asegura que las filas se ajusten automáticamente */
+  .doctor-card {
+    flex-direction: column; /* Cambia a una sola columna en pantallas pequeñas */
   }
 
   .doctor-info, .appointment-info {

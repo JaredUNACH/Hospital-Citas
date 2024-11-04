@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
-from .models import db, Paciente, Especialidad
+from .models import db, Paciente, Especialidad, Doctor
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
 
 # Crea un Blueprint para las rutas
@@ -128,3 +128,15 @@ def update_user_info():
 
     db.session.commit()
     return jsonify({'message': 'User info updated successfully'}), 200
+
+# Ruta para obtener los doctores por especialidad
+@routes.route('/doctors', methods=['GET'])
+def get_doctors():
+    specialty = request.args.get('specialty')
+    if specialty:
+        doctors = Doctor.query.filter(Doctor.especialidad.has(nombre=specialty)).all()
+    else:
+        doctors = Doctor.query.all()
+    
+    doctors_list = [{'name': doctor.nombre, 'specialty': doctor.especialidad.nombre, 'email': doctor.email} for doctor in doctors]
+    return jsonify(doctors_list)

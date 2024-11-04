@@ -11,6 +11,7 @@ import { CSSTransition } from 'react-transition-group';
 const Home = () => {
   const navigate = useNavigate();
   const [inTransition, setInTransition] = useState(false);
+  const [selectedSpecialty, setSelectedSpecialty] = useState('');
 
   useEffect(() => {
     // Verificar si el usuario ha iniciado sesión
@@ -29,7 +30,7 @@ const Home = () => {
   };
 
   const handleSearchClick = () => {
-    handleNavigation('/Appointment'); // Redirige a la página para agendar citas
+    navigate('/appointment', { state: { specialty: selectedSpecialty.value } }); // Redirige a la página para agendar citas con la especialidad seleccionada
   };
 
   return (
@@ -49,7 +50,7 @@ const Home = () => {
             <h1>Encuentra tu especialista y pide cita </h1>
           </div>
           <div>
-            <SpecialtySelect />
+            <SpecialtySelect onChange={(option) => setSelectedSpecialty(option)} />
           </div>
           <div>
             <button type="button" className="search-button" onClick={handleSearchClick}>
