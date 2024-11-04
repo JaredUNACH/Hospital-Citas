@@ -28,6 +28,10 @@ const Home = () => {
     }, 500); // Tiempo de la transición en ms
   };
 
+  const handleSearchClick = () => {
+    handleNavigation('/Appointment'); // Redirige a la página para agendar citas
+  };
+
   return (
     <CSSTransition
       in={!inTransition}
@@ -48,7 +52,7 @@ const Home = () => {
             <SpecialtySelect />
           </div>
           <div>
-            <button type="button" className="search-button">
+            <button type="button" className="search-button" onClick={handleSearchClick}>
               <FontAwesomeIcon icon={faSearch} /> Buscar
             </button>
           </div>

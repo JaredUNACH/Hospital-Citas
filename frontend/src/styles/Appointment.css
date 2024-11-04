@@ -1,0 +1,240 @@
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.banner {
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(rgba(0,0,0,0.40),rgba(0,0,0,0.40));
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.content-Appointment {
+  width: 100%;
+  position: absolute;
+  color: white;
+  top: 55%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.content-Appointment h1 {
+  margin-top: 80px;
+  font-size: 3vw; /* Tamaño de fuente relativo al ancho de la pantalla */
+  font-weight: 800;
+  color: turquoise;
+}
+
+@keyframes typewriter-A {
+  from { width: 0; }
+  to { width: 17%; }
+}
+
+@keyframes blinkTextCursor-A {
+  from { border-right-color: rgba(0, 0, 0, 0.75); }
+  to { border-right-color: transparent; }
+}
+
+.typewriter-A h2 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .1em solid rgba(0, 0, 0, 0.75); /* The typewriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .02em; /* Adjust as needed to bring the cursor closer to the text */
+  animation: 
+    typewriter-A 3.5s steps(40, end) 1s 1 normal both,
+    blinkTextCursor-A 500ms steps(40, end) infinite normal;
+  color: turquoise;
+}
+
+button {
+  width: 200px;
+  padding: 15px;
+  margin: 20px 5px;
+  text-align: center;
+  border-radius: 25px;
+  color: black;
+  border: 2px solid transparent;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  background: rgb(0, 192, 226);
+  transition: 0.5s;
+  color: white;
+}
+
+.search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; /* Ajusta el z-index del botón de búsqueda */
+}
+
+.search-button svg {
+  margin-right: 8px;
+}
+
+.banner video {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+/* Centrar el contenedor del botón */
+.content-Appointment > div {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Popup Menu Styles */
+.popup {
+  display: none;
+  text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+.popup input {
+  display: none;
+}
+
+.popup input:checked ~ .burger span:nth-of-type(1) {
+  transform: rotate(45deg);
+  top: 0px;
+  left: 5px;
+}
+
+.popup input:checked ~ .burger span:nth-of-type(2) {
+  width: 0%;
+  opacity: 0;
+}
+
+.popup input:checked ~ .burger span:nth-of-type(3) {
+  transform: rotate(-45deg);
+  top: 28px;
+  left: 5px;
+}
+
+.popup-window {
+  transform: scale(0.8);
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  padding: 0.625em 0.25em;
+  background: #fff;
+  font-family: Menlo, Roboto Mono, monospace;
+  color: #333;
+  border-radius: 0.375em;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .2);
+  border: 0.0625em solid #ccc;
+  top: -25px; /* Ajusta esta propiedad para mover hacia arriba */
+  left: -150px; /* Ajusta esta propiedad para mover hacia la izquierda */
+  transition: all .1s ease-in-out;
+}
+
+.popup-window ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.popup-window ul li {
+  margin: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.popup-window ul li:last-child {
+  border-bottom: none;
+}
+
+.popup-window ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  padding: 0.75em 1rem;
+  display: block;
+  border-radius: 0.375em;
+  cursor: pointer;
+}
+
+.popup input:checked ~ .popup-window {
+  transform: scale(1);
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  button {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .typewriter-A h2 {
+    font-size: 5vw; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+    letter-spacing: .02em; /* Ajusta el espaciado entre letras */
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .content-Appointment h1 {
+    font-size: 5vw; /* Tamaño de fuente relativo al ancho de la pantalla */
+    margin-top: 20px;
+  }
+
+  button {
+    width: 120px;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .typewriter-A h2 {
+    font-size: 6vw; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+    letter-spacing: .02em; /* Ajusta el espaciado entre letras */
+  }
+  @keyframes typewriter-A {
+    from { width: 0; }
+    to { width: 70%; }
+  }
+}
+
+/* Animations */
+@keyframes emerge {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.specialty-select {
+  animation: emerge 1s ease-out 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  z-index: 2; /* Asegura que el select esté por encima del botón de búsqueda */
+}
+
+.search-button {
+  animation: emerge 1s ease-out 1s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  z-index: 1; /* Ajusta el z-index del botón de búsqueda */
+}

@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Logout from './pages/Logout';
 import AccountPatient from './pages/AccountPatient';
+import Appointment from './pages/Appointment'; // Importa el nuevo componente Appointment
 import './App.css'; // Importa los estilos CSS para App
 
 function App() {
@@ -25,6 +26,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/account-patient" element={<AccountPatient />} />
+      <Route path="/appointment" element={<Appointment />} /> {/* Agrega la nueva ruta */}
       <Route path="/logout" element={<Logout />} />
     </Routes>
   );

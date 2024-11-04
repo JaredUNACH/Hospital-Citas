@@ -105,6 +105,7 @@ const AccountEdit = ({ setContent }) => {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Datos guardados');
+      setContent('main'); // Redirige al estado main después de guardar
     } catch (error) {
       console.error('Failed to save user info:', error);
       alert('Error al guardar los datos');

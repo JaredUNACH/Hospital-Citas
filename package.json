@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2"
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "react-calendar": "^5.1.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
