@@ -20,6 +20,7 @@ const AccountEdit = ({ setContent }) => {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [alergiaMedicamentos, setAlergiaMedicamentos] = useState('');
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
+  const [role, setRole] = useState(''); // Estado para almacenar el rol del usuario
   const navigate = useNavigate();
 
   const handleToggleClick = () => {
@@ -55,6 +56,10 @@ const AccountEdit = ({ setContent }) => {
 
         // Seleccionar la imagen adecuada basada en la primera letra
         setUserImage(letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
+
+        // Decodificar el token JWT manualmente para obtener el rol del usuario
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setRole(decodedToken.sub.rol); // Ajusta esto según la estructura de tu token
       } catch (error) {
         console.error('Failed to fetch user info:', error);
         navigate('/login'); // Redirige al login si la solicitud falla
@@ -89,15 +94,15 @@ const AccountEdit = ({ setContent }) => {
     }
 
     const userData = {
-      apellido_paterno: apellidoPaterno,
-      apellido_materno: apellidoMaterno,
-      curp: curp,
-      sexo: sexo,
-      tipo_sangre: tipoSangre,
-      email: email,
-      telefono: telefono,
-      fecha_nacimiento: fechaNacimiento,
-      alergia_medicamentos: alergiaMedicamentos
+      apellido_paterno: apellidoPaterno || null,
+      apellido_materno: apellidoMaterno || null,
+      curp: curp || null,
+      sexo: sexo || null,
+      tipo_sangre: tipoSangre || null,
+      email: email || null,
+      telefono: telefono || null,
+      fecha_nacimiento: fechaNacimiento || null,
+      alergia_medicamentos: alergiaMedicamentos || null
     };
 
     try {

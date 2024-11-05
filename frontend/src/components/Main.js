@@ -139,7 +139,7 @@ const Main = ({ setContent }) => {
                 <img className="profile-picture" src={HistorialMedico} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">Historial Medico</h2>
+                <h2 className="title-card">{role === 'administrador' ? 'Lista de usuarios' : 'Historial Medico'}</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>
@@ -167,22 +167,24 @@ const Main = ({ setContent }) => {
               </div>
             </div>
 
-            <div className="card-prejubilado">
-              <div className="profile-container">
-                <img className="profile-picture" src={Reportes} alt="Profile Picture" />
-              </div>
-              <div className="title-button-container">
-                <h2 className="title-card">Reportes</h2>
-                <div className="button-container">
-                  <button className="eye-button" onClick={() => setContent('view')}>
-                    <i className="fas fa-eye"></i>
-                  </button>
-                  <button className="edit-button" onClick={() => setContent('account')}>
-                    Editar
-                  </button>
+            {role === 'administrador' && (
+              <div className="card-prejubilado">
+                <div className="profile-container">
+                  <img className="profile-picture" src={Reportes} alt="Profile Picture" />
+                </div>
+                <div className="title-button-container">
+                  <h2 className="title-card">Reportes</h2>
+                  <div className="button-container">
+                    <button className="eye-button" onClick={() => setContent('view')}>
+                      <i className="fas fa-eye"></i>
+                    </button>
+                    <button className="edit-button" onClick={() => setContent('account')}>
+                      Editar
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

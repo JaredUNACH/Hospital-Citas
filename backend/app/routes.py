@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_tok
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
+from .functions.users_functions import user_info, update_user_info  # Importa las funciones de usuario
 from .models import db, Paciente, Administrador, Especialidad, Doctor
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
 
@@ -58,44 +59,14 @@ def get_specialties():
 # Nueva ruta para obtener la información del usuario logueado
 @routes.route('/user-info', methods=['GET'])
 @jwt_required()  # Requiere un token JWT válido
-def user_info():
-    current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
-    email = current_user['email']  # Extrae el email del diccionario current_user
-    user = Paciente.query.filter_by(email=email).first()  # Busca el usuario en la base de datos
-    admin = Administrador.query.filter_by(email=email).first()  # Busca el administrador en la base de datos
-    doctor = Doctor.query.filter_by(email=email).first()  # Busca el doctor en la base de datos
-    
-    if user:
-        return jsonify({
-            'name': user.nombre,
-            'apellido_paterno': user.apellido_paterno,
-            'apellido_materno': user.apellido_materno,
-            'curp': user.curp,
-            'sexo': user.sexo,
-            'tipo_sangre': user.tipo_sangre,
-            'email': user.email,
-            'telefono': user.telefono,
-            'fecha_nacimiento': user.fecha_nacimiento,
-            'alergia_medicamentos': user.alergia_medicamentos
-        }), 200  # Devuelve la información del usuario
-    elif admin:
-        return jsonify({
-            'name': admin.nombre,
-            'apellido_paterno': admin.apellido_paterno,
-            'apellido_materno': admin.apellido_materno,
-            'email': admin.email,
-            'rol': admin.rol
-        }), 200  # Devuelve la información del administrador
-    elif doctor:
-        return jsonify({
-            'name': doctor.nombre,
-            'apellido_paterno': doctor.apellido_paterno,
-            'apellido_materno': doctor.apellido_materno,
-            'email': doctor.email,
-            'rol': doctor.rol,
-            'especialidad': doctor.especialidad.nombre
-        }), 200  # Devuelve la información del doctor
-    return jsonify(message="User not found"), 404  # Devuelve un mensaje de error si el usuario no se encuentra
+def user_info_route():
+    return user_info()  # Llama a la función user_info
+
+# Ruta para actualizar la información del usuario
+@routes.route('/update-user-info', methods=['PUT'])
+@jwt_required()  # Requiere un token JWT válido
+def update_user_info_route():
+    return update_user_info()  # Llama a la función update_user_info
 
 #------------------------------------ Rutas de pacientes ------------------------------------#
 # Ruta para insertar un nuevo paciente
@@ -124,30 +95,6 @@ def get_pacientes_route():
 @routes.route('/pacientes/<int:id>', methods=['GET'])
 def get_paciente_route(id):
     return jsonify(get_paciente(id))
-
-# Ruta para actualizar la información del usuario
-@routes.route('/update-user-info', methods=['PUT'])
-@jwt_required()  # Requiere un token JWT válido
-def update_user_info():
-    current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
-    email = current_user['email']  # Extrae el email del diccionario current_user
-    user = Paciente.query.filter_by(email=email).first()  # Busca el usuario en la base de datos
-    if not user:
-        return jsonify({'message': 'User not found'}), 404
-
-    data = request.json
-    user.apellido_paterno = data.get('apellido_paterno', user.apellido_paterno)
-    user.apellido_materno = data.get('apellido_materno', user.apellido_materno)
-    user.curp = data.get('curp', user.curp)
-    user.sexo = data.get('sexo', user.sexo)
-    user.tipo_sangre = data.get('tipo_sangre', user.tipo_sangre)
-    user.email = data.get('email', user.email)
-    user.telefono = data.get('telefono', user.telefono)
-    user.fecha_nacimiento = data.get('fecha_nacimiento', user.fecha_nacimiento)
-    user.alergia_medicamentos = data.get('alergia_medicamentos', user.alergia_medicamentos)
-
-    db.session.commit()
-    return jsonify({'message': 'User info updated successfully'}), 200
 
 # Ruta para obtener los doctores por especialidad
 @routes.route('/doctors', methods=['GET'])

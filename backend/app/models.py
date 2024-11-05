@@ -45,6 +45,12 @@ class Administrador(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), default='administrador', nullable=False)
+    curp = db.Column(db.String(18), nullable=True)
+    sexo = db.Column(db.String(1), nullable=True)
+    tipo_sangre = db.Column(db.String(3), nullable=True)
+    telefono = db.Column(db.String(15), nullable=True)
+    fecha_nacimiento = db.Column(db.Date, nullable=True)
+    alergia_medicamentos = db.Column(db.Text, nullable=True)
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -74,6 +80,12 @@ class Doctor(db.Model, UserMixin):
     especialidad_id = db.Column(db.Integer, db.ForeignKey('especialidades.id'), nullable=False)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), default='medico', nullable=False)
+    curp = db.Column(db.String(18), nullable=True)
+    sexo = db.Column(db.String(1), nullable=True)
+    tipo_sangre = db.Column(db.String(3), nullable=True)
+    telefono = db.Column(db.String(15), nullable=True)
+    fecha_nacimiento = db.Column(db.Date, nullable=True)
+    alergia_medicamentos = db.Column(db.Text, nullable=True)
 
     especialidad = db.relationship('Especialidad', backref=db.backref('doctores', lazy=True))
 
