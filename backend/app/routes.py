@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, make_response
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
-from .models import db, Paciente, Especialidad, Doctor
+from .models import db, Paciente, Administrador, Especialidad, Doctor
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
 
 # Crea un Blueprint para las rutas
@@ -62,6 +62,8 @@ def user_info():
     current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
     email = current_user['email']  # Extrae el email del diccionario current_user
     user = Paciente.query.filter_by(email=email).first()  # Busca el usuario en la base de datos
+    admin = Administrador.query.filter_by(email=email).first()  # Busca el administrador en la base de datos
+    
     if user:
         return jsonify({
             'name': user.nombre,
@@ -75,6 +77,14 @@ def user_info():
             'fecha_nacimiento': user.fecha_nacimiento,
             'alergia_medicamentos': user.alergia_medicamentos
         }), 200  # Devuelve la información del usuario
+    elif admin:
+        return jsonify({
+            'name': admin.nombre,
+            'apellido_paterno': admin.apellido_paterno,
+            'apellido_materno': admin.apellido_materno,
+            'email': admin.email,
+            'rol': admin.rol
+        }), 200  # Devuelve la información del administrador
     return jsonify(message="User not found"), 404  # Devuelve un mensaje de error si el usuario no se encuentra
 
 #------------------------------------ Rutas de pacientes ------------------------------------#

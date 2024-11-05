@@ -44,34 +44,44 @@ const Login = () => {
     e.preventDefault();
     if (!validateEmail(loginData.email)) {
       Swal.fire({
-        icon: 'warning', // Cambiado a 'warning'
+        icon: 'warning',
         title: 'Correo electrónico inválido',
         text: 'Por favor, ingresa un correo electrónico válido.',
       });
       return;
     }
     try {
-      const response = await login(loginData);
+      const response = await axios.post('http://127.0.0.1:5000/login', loginData, { withCredentials: true });
       console.log('Login response:', response.data); // Verifica la respuesta del servidor
-      if (response.data.token && response.data.token.length > 9) {
-        localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
+      const token = response.data.access_token;
+      if (token && token.length > 9) {
+        localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
+        console.log('Decoded token:', decodedToken); // Verifica el contenido del token decodificado
         Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
-          icon: 'success', // Cambiado a 'success'
+          icon: 'success',
           timer: 3000,
         }).then(() => {
           setInTransition(true); // Inicia la transición
-          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
+          setTimeout(() => {
+            if (rol === 'administrador') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            } else {
+              navigate('/home'); // Redirige al home si el usuario es un paciente
+            }
+          }, 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
-        console.error('Token inválido:', response.data.token);
+        console.error('Token inválido:', token);
         throw new Error('Token inválido');
       }
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error', // Cambiado a 'error'
+        icon: 'error',
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
         timer: 3000,
@@ -83,35 +93,43 @@ const Login = () => {
     e.preventDefault();
     if (!validateEmail(registerData.email)) {
       Swal.fire({
-        icon: 'warning', // Cambiado a 'warning'
+        icon: 'warning',
         title: 'Correo electrónico inválido',
         text: 'Por favor, ingresa un correo electrónico válido.',
-        timer: 3000,
       });
       return;
     }
     try {
       const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
-      console.log('Register response:', response.data); // Verificar la respuesta del servidor
-      if (response.status === 200 && response.data.token && response.data.token.length > 9) {
-        localStorage.setItem('token', response.data.token); // Guarda el token en el almacenamiento local
+      console.log('Register response:', response.data); // Verifica la respuesta del servidor
+      const token = response.data.access_token;
+      if (token && token.length > 9) {
+        localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         Swal.fire({
           title: 'Registro exitoso',
           text: 'Bienvenido!',
-          icon: 'success', // Cambiado a 'success'
+          icon: 'success',
           timer: 3000,
         }).then(() => {
           setInTransition(true); // Inicia la transición
-          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
+          setTimeout(() => {
+            if (rol === 'administrador') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            } else {
+              navigate('/home'); // Redirige al home si el usuario es un paciente
+            }
+          }, 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
-        console.error('Token inválido:', response.data.token);
+        console.error('Token inválido:', token);
         throw new Error('Token inválido');
       }
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error', // Cambiado a 'error'
+        icon: 'error',
         title: 'Error en el registro',
         text: 'Por favor, verifica tus datos.',
         timer: 3000,
@@ -122,27 +140,36 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const { credential } = response;
-      const loginResponse = await googleLogin(credential);
+      const loginResponse = await axios.post('http://127.0.0.1:5000/google-login', { credential }, { withCredentials: true });
       console.log('Google login response:', loginResponse.data); // Verifica la respuesta del servidor
-      if (loginResponse.data.token && loginResponse.data.token.length > 9) {
-        localStorage.setItem('token', loginResponse.data.token); // Guarda el token en el almacenamiento local
+      const token = loginResponse.data.access_token;
+      if (token && token.length > 9) {
+        localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
-          icon: 'success', // Cambiado a 'success'
+          icon: 'success',
           timer: 3000,
         }).then(() => {
           setInTransition(true); // Inicia la transición
-          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
+          setTimeout(() => {
+            if (rol === 'administrador') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            } else {
+              navigate('/home'); // Redirige al home si el usuario es un paciente
+            }
+          }, 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
-        console.error('Token inválido:', loginResponse.data.token);
+        console.error('Token inválido:', token);
         throw new Error('Token inválido');
       }
     } catch (error) {
       console.error(error);
       Swal.fire({
-        icon: 'error', // Cambiado a 'error'
+        icon: 'error',
         title: 'Error en el inicio de sesión',
         text: 'Por favor, verifica tus credenciales.',
         timer: 3000,
@@ -153,28 +180,36 @@ const Login = () => {
   const handleGoogleRegisterSuccess = async (response) => {
     try {
       const { credential } = response;
-      console.log('Google credential:', credential); // Verifica el token en la consola
-      const registerResponse = await googleRegister(credential);
+      const registerResponse = await axios.post('http://127.0.0.1:5000/google-register', { credential }, { withCredentials: true });
       console.log('Google register response:', registerResponse.data); // Verifica la respuesta del servidor
-      if (registerResponse.status === 200 && registerResponse.data.token && registerResponse.data.token.length > 9) {
-        localStorage.setItem('token', registerResponse.data.token); // Guarda el token en el almacenamiento local
+      const token = registerResponse.data.access_token;
+      if (token && token.length > 9) {
+        localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         Swal.fire({
           title: 'Registro exitoso',
           text: 'Bienvenido!',
-          icon: 'success', // Cambiado a 'success'
+          icon: 'success',
           timer: 3000,
         }).then(() => {
           setInTransition(true); // Inicia la transición
-          setTimeout(() => navigate('/home'), 1000); // Aumenta el tiempo de espera a 1000ms
+          setTimeout(() => {
+            if (rol === 'administrador') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            } else {
+              navigate('/home'); // Redirige al home si el usuario es un paciente
+            }
+          }, 1000); // Aumenta el tiempo de espera a 1000ms
         });
       } else {
-        console.error('Token inválido:', registerResponse.data.token);
+        console.error('Token inválido:', token);
         throw new Error('Token inválido');
       }
     } catch (error) {
       console.error('Error en el registro con Google:', error);
       Swal.fire({
-        icon: 'error', // Cambiado a 'error'
+        icon: 'error',
         title: 'Error en el registro',
         text: 'Por favor, verifica tus datos.',
         timer: 3000,
@@ -185,55 +220,11 @@ const Login = () => {
   const handleGoogleFailure = (error) => {
     console.error(error);
     Swal.fire({
-      icon: 'error', // Cambiado a 'error'
+      icon: 'error',
       title: 'Error en el inicio de sesión',
       text: 'No se pudo iniciar sesión con Google. Por favor, intenta de nuevo.',
       timer: 3000,
     });
-  };
-
-  const login = async (loginData) => {
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/login', loginData, { withCredentials: true });
-      console.log('Login API response:', response.data); // Verifica la respuesta del servidor
-      if (response.status === 200) {
-        return response;
-      } else {
-        throw new Error('Login failed');
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const googleLogin = async (credential) => {
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/google-login', { credential }, { withCredentials: true });
-      console.log('Google login API response:', response.data); // Verifica la respuesta del servidor
-      if (response.status === 200) {
-        return response;
-      } else {
-        throw new Error('Google login failed');
-      }
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const googleRegister = async (credential) => {
-    try {
-      console.log('Sending credential to backend:', credential); // Verifica el token antes de enviarlo
-      const response = await axios.post('http://127.0.0.1:5000/google-register', { credential }, { withCredentials: true });
-      console.log('Google register API response:', response.data); // Verifica la respuesta del servidor
-      if (response.status === 200) {
-        return response;
-      } else {
-        throw new Error('Google register failed');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud de registro con Google:', error);
-      throw error;
-    }
   };
 
   return (
@@ -242,7 +233,7 @@ const Login = () => {
         <GoogleOAuthProvider clientId={clientId}>
           <CSSTransition
             in={!inTransition}
-            timeout={1000} // Aumenta el tiempo de espera a 1000ms
+            timeout={1000}
             classNames="fade"
             unmountOnExit
           >

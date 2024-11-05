@@ -34,7 +34,27 @@ class Paciente(db.Model, UserMixin):
     def __repr__(self):
         return f'<Paciente {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'
 
-# Definimos la tabla de especialidades
+class Administrador(db.Model, UserMixin):
+    __tablename__ = 'administradores'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    apellido_paterno = db.Column(db.String(100), nullable=False)
+    apellido_materno = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
+    rol = db.Column(db.String(50), default='administrador', nullable=False)
+
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
+    def __repr__(self):
+        return f'<Administrador {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'
+
 class Especialidad(db.Model):
     __tablename__ = 'especialidades'
     id = db.Column(db.Integer, primary_key=True)
@@ -43,7 +63,6 @@ class Especialidad(db.Model):
     def __repr__(self):
         return f'<Especialidad {self.nombre}>'
 
-# Definimos la tabla de doctores
 class Doctor(db.Model):
     __tablename__ = 'medicos'
     id = db.Column(db.Integer, primary_key=True)

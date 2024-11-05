@@ -35,7 +35,7 @@ const Navigation = ({ setContent }) => {
           </a>
         </li>
         <li className={activeItem === 'appointments' ? 'hovered' : ''}>
-          <a href="#" onClick={() => handleItemClick('appointments')}>
+          <a href="#" onClick={() => handleItemClick('')}>
             <span className="icon">
               <FontAwesomeIcon icon={faCalendarAlt} />
             </span>
@@ -44,7 +44,7 @@ const Navigation = ({ setContent }) => {
           </a>
         </li>
         <li className={activeItem === 'account' ? 'hovered' : ''}>
-          <a href="#" onClick={() => handleItemClick('account')}>
+          <a href="#" onClick={() => handleItemClick('view')}>
             <span className="icon">
               <FontAwesomeIcon icon={faUsers} />
             </span>

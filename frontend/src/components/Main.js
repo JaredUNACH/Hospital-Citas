@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
+import { jwtDecode } from 'jwt-decode'; // Importa jwtDecode para decodificar el token JWT
 
 const Main = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -23,6 +24,7 @@ const Main = ({ setContent }) => {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [alergiaMedicamentos, setAlergiaMedicamentos] = useState('');
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
+  const [role, setRole] = useState(''); // Estado para almacenar el rol del usuario
   const navigate = useNavigate();
 
   const handleToggleClick = () => {
@@ -58,6 +60,10 @@ const Main = ({ setContent }) => {
 
         // Seleccionar la imagen adecuada basada en la primera letra
         setUserImage(letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
+
+        // Decodificar el token JWT para obtener el rol del usuario
+        const decodedToken = jwtDecode(token);
+        setRole(decodedToken.sub.rol); // Ajusta esto según la estructura de tu token
       } catch (error) {
         console.error('Failed to fetch user info:', error);
         navigate('/login'); // Redirige al login si la solicitud falla
@@ -91,7 +97,7 @@ const Main = ({ setContent }) => {
           <FontAwesomeIcon icon={faBars} />
         </div>
         <div className="nombre">
-          <h2>Hola, {username}</h2>
+          <h2>Hola, {role === 'administrador' ? 'Admin ' : ''}{username}</h2>
         </div>
         
         <div className="user">
