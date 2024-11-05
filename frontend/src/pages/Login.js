@@ -67,8 +67,8 @@ const Login = () => {
         }).then(() => {
           setInTransition(true); // Inicia la transición
           setTimeout(() => {
-            if (rol === 'administrador') {
-              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            if (rol === 'administrador' || rol === 'medico') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador o doctor
             } else {
               navigate('/home'); // Redirige al home si el usuario es un paciente
             }
@@ -115,8 +115,8 @@ const Login = () => {
         }).then(() => {
           setInTransition(true); // Inicia la transición
           setTimeout(() => {
-            if (rol === 'administrador') {
-              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            if (rol === 'administrador' || rol === 'medico') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador o doctor
             } else {
               navigate('/home'); // Redirige al home si el usuario es un paciente
             }
@@ -155,8 +155,8 @@ const Login = () => {
         }).then(() => {
           setInTransition(true); // Inicia la transición
           setTimeout(() => {
-            if (rol === 'administrador') {
-              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            if (rol === 'administrador' || rol === 'medico') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador o doctor
             } else {
               navigate('/home'); // Redirige al home si el usuario es un paciente
             }
@@ -195,8 +195,8 @@ const Login = () => {
         }).then(() => {
           setInTransition(true); // Inicia la transición
           setTimeout(() => {
-            if (rol === 'administrador') {
-              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador
+            if (rol === 'administrador' || rol === 'medico') {
+              navigate('/account-patient'); // Redirige a AccountPatient si el usuario es un administrador o doctor
             } else {
               navigate('/home'); // Redirige al home si el usuario es un paciente
             }

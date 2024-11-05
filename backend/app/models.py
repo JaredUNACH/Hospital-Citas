@@ -63,7 +63,7 @@ class Especialidad(db.Model):
     def __repr__(self):
         return f'<Especialidad {self.nombre}>'
 
-class Doctor(db.Model):
+class Doctor(db.Model, UserMixin):
     __tablename__ = 'medicos'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
@@ -73,8 +73,15 @@ class Doctor(db.Model):
     password = db.Column(db.String(100), nullable=False)
     especialidad_id = db.Column(db.Integer, db.ForeignKey('especialidades.id'), nullable=False)
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
+    rol = db.Column(db.String(50), default='medico', nullable=False)
 
     especialidad = db.relationship('Especialidad', backref=db.backref('doctores', lazy=True))
+
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
 
     def __repr__(self):
         return f'<Doctor {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'

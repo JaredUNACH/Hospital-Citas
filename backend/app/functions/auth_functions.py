@@ -1,7 +1,7 @@
 import re
 from flask import jsonify, make_response, request
 from flask_jwt_extended import create_access_token
-from ..models import db, Paciente, Administrador
+from ..models import db, Paciente, Administrador, Doctor
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
 
@@ -20,6 +20,7 @@ def login():
 
     paciente = Paciente.query.filter_by(email=email).first()
     admin = Administrador.query.filter_by(email=email).first()
+    doctor = Doctor.query.filter_by(email=email).first()
 
     if paciente and paciente.check_password(password):
         access_token = create_access_token(identity={"id": paciente.id, "email": paciente.email, "rol": paciente.rol})
@@ -30,6 +31,13 @@ def login():
         return response
     elif admin and admin.check_password(password):
         access_token = create_access_token(identity={"id": admin.id, "email": admin.email, "rol": admin.rol})
+        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token}
+        print('Login response:', response_data)
+        response = make_response(jsonify(response_data), 200)
+        response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
+        return response
+    elif doctor and doctor.check_password(password):
+        access_token = create_access_token(identity={"id": doctor.id, "email": doctor.email, "rol": doctor.rol})
         response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token}
         print('Login response:', response_data)
         response = make_response(jsonify(response_data), 200)

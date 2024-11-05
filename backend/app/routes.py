@@ -63,6 +63,7 @@ def user_info():
     email = current_user['email']  # Extrae el email del diccionario current_user
     user = Paciente.query.filter_by(email=email).first()  # Busca el usuario en la base de datos
     admin = Administrador.query.filter_by(email=email).first()  # Busca el administrador en la base de datos
+    doctor = Doctor.query.filter_by(email=email).first()  # Busca el doctor en la base de datos
     
     if user:
         return jsonify({
@@ -85,6 +86,15 @@ def user_info():
             'email': admin.email,
             'rol': admin.rol
         }), 200  # Devuelve la información del administrador
+    elif doctor:
+        return jsonify({
+            'name': doctor.nombre,
+            'apellido_paterno': doctor.apellido_paterno,
+            'apellido_materno': doctor.apellido_materno,
+            'email': doctor.email,
+            'rol': doctor.rol,
+            'especialidad': doctor.especialidad.nombre
+        }), 200  # Devuelve la información del doctor
     return jsonify(message="User not found"), 404  # Devuelve un mensaje de error si el usuario no se encuentra
 
 #------------------------------------ Rutas de pacientes ------------------------------------#

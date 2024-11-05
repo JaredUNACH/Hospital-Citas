@@ -97,7 +97,7 @@ const Main = ({ setContent }) => {
           <FontAwesomeIcon icon={faBars} />
         </div>
         <div className="nombre">
-          <h2>Hola, {role === 'administrador' ? 'Admin ' : ''}{username}</h2>
+          <h2>Hola, {role === 'administrador' ? 'Admin ' : role === 'medico' ? 'Doctor ' : ''}{username}</h2>
         </div>
         
         <div className="user">
