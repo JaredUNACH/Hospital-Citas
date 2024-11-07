@@ -20,6 +20,7 @@ const FormAgenda = ({ doctors }) => {
             <br />
             <div className="appointment-details">
               <p><strong>Email:</strong> {doctor.email}</p>
+              <p><strong>Teléfono:</strong> {doctor.telefono}</p>
             </div>
           </div>
           <div className="appointment-info">
