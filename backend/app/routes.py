@@ -118,7 +118,15 @@ def get_doctors():
     else:
         doctors = Doctor.query.all()
     
-    doctors_list = [{'nombre': doctor.nombre, 'apellido_paterno': doctor.apellido_paterno, 'especialidad': doctor.especialidad.nombre, 'email': doctor.email, 'sexo': doctor.sexo, 'telefono': doctor.telefono} for doctor in doctors]
+    doctors_list = [{
+        'nombre': doctor.nombre,
+        'apellido_paterno': doctor.apellido_paterno,
+        'especialidad': doctor.especialidad.nombre,
+        'email': doctor.email,
+        'sexo': doctor.sexo,
+        'telefono': doctor.telefono,
+        'profile_picture': doctor.profile_picture  # Incluir la ruta de la imagen de perfil
+    } for doctor in doctors]
     return jsonify(doctors_list)
 
 #subida de imagenes de perfil------------------------------------#
