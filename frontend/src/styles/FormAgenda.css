@@ -78,6 +78,31 @@
   height: 2.5em; /* Reduce la altura de cada celda del calendario */
 }
 
+/* Estilos para dispositivos de escritorio */
+.desktop-button-container {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .desktop-button-container {
+    display: block;
+  }
+  .mobile-button-container {
+    display: none;
+  }
+}
+
+/* Estilos para dispositivos móviles */
+.mobile-button-container {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobile-button-container {
+    display: none;
+  }
+}
+
 /* Media query para pantallas más pequeñas */
 @media (max-width: 768px) {
   .doctor-card {

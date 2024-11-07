@@ -6,6 +6,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
+import UpdateImage from './update-image'; // Importa el componente UpdateImage
 
 const AccountEdit = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -198,27 +199,30 @@ const AccountEdit = ({ setContent }) => {
             </div>
           </div>
           <div className={styles.cardBox}>
-              <div className={styles.input}>
-                <div className={styles.Tnombre}>Fecha de Nacimiento</div>
-                <input
-                  type="date"
-                  placeholder="Escriba su fecha (2000-12-01)"
-                  id="input2"
-                  className={styles.dateInput}
-                  value={fechaNacimiento}
-                  onChange={(e) => setFechaNacimiento(e.target.value)}
-                />
-              </div>
-              <div className={styles.input2}>
-                <div className={styles.Tnombre}>Alergia a Medicamentos</div>
-                <textarea
-                  placeholder="Escriba si es alérgico a algún medicamento"
-                  id="input1"
-                  className={styles.textarea}
-                  value={alergiaMedicamentos}
-                  onChange={(e) => setAlergiaMedicamentos(e.target.value)}
-                />
-              </div>
+            <div className={styles.input}>
+              <div className={styles.Tnombre}>Fecha de Nacimiento</div>
+              <input
+                type="date"
+                placeholder="Escriba su fecha (2000-12-01)"
+                id="input2"
+                className={styles.dateInput}
+                value={fechaNacimiento}
+                onChange={(e) => setFechaNacimiento(e.target.value)}
+              />
+            </div>
+            <div className={styles.input2}>
+              <div className={styles.Tnombre}>Alergia a Medicamentos</div>
+              <textarea
+                placeholder="Escriba si es alérgico a algún medicamento"
+                id="input1"
+                className={styles.textarea}
+                value={alergiaMedicamentos}
+                onChange={(e) => setAlergiaMedicamentos(e.target.value)}
+              />
+            </div>
+            <div className={styles.input2}>
+              <UpdateImage /> {/* Añadir el componente UpdateImage al lado de la columna de Alergia a Medicamentos */}
+            </div>
           </div>
           <div className={styles.botonBuscar}>
             <button type="button" className={styles.botonAtras} onClick={handleBackClick}>Cancelar</button>
