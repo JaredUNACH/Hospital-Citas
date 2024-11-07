@@ -91,6 +91,46 @@ const Main = ({ setContent }) => {
     navigate('/home'); // Redirige a la página Home
   };
 
+  const getBeneficiariosButtonContent = () => {
+    switch (role) {
+      case 'administrador':
+        return (
+          <>
+            <button className="eye-button" onClick={() => setContent('user-list')}>
+              <i className="fas fa-eye"></i>
+            </button>
+            <button className="edit-button" onClick={() => setContent('user-list')}>
+              Editar
+            </button>
+          </>
+        );
+      case 'medico':
+        return (
+          <>
+            <button className="eye-button" onClick={() => setContent('doctor-view')}>
+              <i className="fas fa-eye"></i>
+            </button>
+            <button className="edit-button" onClick={() => setContent('doctor-edit')}>
+              Editar
+            </button>
+          </>
+        );
+      case 'usuario':
+        return (
+          <>
+            <button className="eye-button" onClick={() => setContent('patient-view')}>
+              <i className="fas fa-eye"></i>
+            </button>
+            <button className="edit-button" onClick={() => setContent('patient-edit')}>
+              Editar
+            </button>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={`main ${isNavActive ? 'active' : ''}`}>
       <div className="topbar">
@@ -98,7 +138,7 @@ const Main = ({ setContent }) => {
           <FontAwesomeIcon icon={faBars} />
         </div>
         <div className="nombre">
-          <h2>Hola, {role === 'administrador' ? 'Admin ' : role === 'medico' ? 'Doctor ' : ''}{username}</h2>
+          <h2>Hola, {role === 'administrador' ? 'Admin ' : role === 'medico' ? 'Doctor ' : role === 'usuario' ? 'Paciente ' : ''}{username}</h2>
         </div>
         
         <div className="user">
@@ -144,14 +184,9 @@ const Main = ({ setContent }) => {
                 <img className="profile-picture" src={HistorialMedico} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">{role === 'administrador' ? 'Lista de usuarios' : role === 'medico' ? 'Mis pacientes' : 'Historial Medico'}</h2>
+                <h2 className="title-card">{role === 'administrador' ? 'Lista de usuarios' : role === 'medico' ? 'Mis pacientes' : role === 'usuario' ? 'Historial Medico' : ''}</h2>
                 <div className="button-container">
-                  <button className="eye-button" onClick={() => setContent('view')}>
-                    <i className="fas fa-eye"></i>
-                  </button>
-                  <button className="edit-button" onClick={() => setContent('account')}>
-                    Editar
-                  </button>
+                  {getBeneficiariosButtonContent()}
                 </div>
               </div>
             </div>
