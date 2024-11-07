@@ -51,12 +51,13 @@ const AccountEdit = ({ setContent }) => {
         setTelefono(data.telefono || '');
         setFechaNacimiento(data.fecha_nacimiento ? new Date(data.fecha_nacimiento).toISOString().split('T')[0] : '');
         setAlergiaMedicamentos(data.alergia_medicamentos || '');
+        setUserImage(data.profile_picture || null);
 
         // Obtener la primera letra del nombre de usuario
         const firstLetter = data.name.charAt(0).toUpperCase();
 
         // Seleccionar la imagen adecuada basada en la primera letra
-        setUserImage(letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
+        setUserImage(data.profile_picture || letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
 
         // Decodificar el token JWT manualmente para obtener el rol del usuario
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
@@ -116,6 +117,10 @@ const AccountEdit = ({ setContent }) => {
       console.error('Failed to save user info:', error);
       alert('Error al guardar los datos');
     }
+  };
+
+  const handleUploadSuccess = (filepath) => {
+    setUserImage(filepath);
   };
 
   return (
@@ -221,7 +226,7 @@ const AccountEdit = ({ setContent }) => {
               />
             </div>
             <div className={styles.input2}>
-              <UpdateImage /> {/* Añadir el componente UpdateImage al lado de la columna de Alergia a Medicamentos */}
+              <UpdateImage onUploadSuccess={handleUploadSuccess} /> {/* Añadir el componente UpdateImage al lado de la columna de Alergia a Medicamentos */}
             </div>
           </div>
           <div className={styles.botonBuscar}>

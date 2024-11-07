@@ -24,6 +24,7 @@ class Paciente(db.Model, UserMixin):
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), default='usuario', nullable=False)
     historial_medico = db.Column(db.Text, nullable=True)
+    profile_picture = db.Column(db.String(255), nullable=True)
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -51,6 +52,7 @@ class Administrador(db.Model, UserMixin):
     telefono = db.Column(db.String(15), nullable=True)
     fecha_nacimiento = db.Column(db.Date, nullable=True)
     alergia_medicamentos = db.Column(db.Text, nullable=True)
+    profile_picture = db.Column(db.String(255), nullable=True)
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -86,6 +88,7 @@ class Doctor(db.Model, UserMixin):
     telefono = db.Column(db.String(15), nullable=True)
     fecha_nacimiento = db.Column(db.Date, nullable=True)
     alergia_medicamentos = db.Column(db.Text, nullable=True)
+    profile_picture = db.Column(db.String(255), nullable=True)
 
     especialidad = db.relationship('Especialidad', backref=db.backref('doctores', lazy=True))
 

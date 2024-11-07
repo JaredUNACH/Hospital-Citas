@@ -4,8 +4,10 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
 from .functions.users_functions import user_info, update_user_info  # Importa las funciones de usuario
-from .models import db, Paciente, Administrador, Especialidad, Doctor
+from .models import db, Paciente, Administrador, Especialidad, Doctor  # Asegúrate de importar Medico
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
+from werkzeug.utils import secure_filename
+import os
 
 # Crea un Blueprint para las rutas
 routes = Blueprint('routes', __name__)
@@ -16,6 +18,17 @@ limiter = Limiter(
     app=None,
     default_limits=["200 per day", "50 per hour"]  # Límites por defecto: 200 por día, 50 por hora
 )
+
+# Definir la carpeta de subida y las extensiones permitidas
+UPLOAD_FOLDER = 'uploads/profile_pictures'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Asegúrate de que la carpeta de subida exista
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Ruta para el inicio de sesión
 @routes.route('/login', methods=['POST'])
@@ -107,3 +120,29 @@ def get_doctors():
     
     doctors_list = [{'nombre': doctor.nombre, 'apellido_paterno': doctor.apellido_paterno, 'especialidad': doctor.especialidad.nombre, 'email': doctor.email, 'sexo': doctor.sexo, 'telefono': doctor.telefono} for doctor in doctors]
     return jsonify(doctors_list)
+
+#subida de imagenes de perfil------------------------------------#
+
+# Ruta para subir la imagen de perfil
+@routes.route('/upload-profile-picture', methods=['POST'])
+@jwt_required()
+def upload_profile_picture():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        user_id = get_jwt_identity()['id']
+        filepath = os.path.join(UPLOAD_FOLDER, f"{user_id}_{filename}")
+        file.save(filepath)
+        
+        # Actualizar la ruta de la imagen en la base de datos
+        user = Paciente.query.get(user_id) or Administrador.query.get(user_id) or Doctor.query.get(user_id)
+        if user:
+            user.profile_picture = filepath
+            db.session.commit()
+        
+        return jsonify({'message': 'File uploaded successfully', 'filepath': filepath}), 200
+    return jsonify({'error': 'File type not allowed'}), 400
