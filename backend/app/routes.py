@@ -105,5 +105,5 @@ def get_doctors():
     else:
         doctors = Doctor.query.all()
     
-    doctors_list = [{'name': doctor.nombre, 'specialty': doctor.especialidad.nombre, 'email': doctor.email} for doctor in doctors]
+    doctors_list = [{'nombre': doctor.nombre, 'apellido_paterno': doctor.apellido_paterno, 'especialidad': doctor.especialidad.nombre, 'email': doctor.email, 'sexo': doctor.sexo} for doctor in doctors]
     return jsonify(doctors_list)

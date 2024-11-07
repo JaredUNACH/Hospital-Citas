@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/FormAgenda.css'; // Importa los estilos CSS para FormAgenda
 import Calendar from 'react-calendar'; // Importa el componente de calendario
 import 'react-calendar/dist/Calendar.css'; // Importa los estilos CSS para el calendario
+import { getSpecialtyWithGender } from '../utils/genero-especialidad'; // Importa la función desde utils
 
 const FormAgenda = ({ doctors }) => {
   return (
@@ -13,8 +14,8 @@ const FormAgenda = ({ doctors }) => {
               <span>Foto</span>
             </div>
             <div className="doctor-details">
-              <h2>{doctor.name}</h2>
-              <p>{doctor.specialty}</p>
+              <h2>{doctor.nombre} {doctor.apellido_paterno}</h2>
+              <p>{getSpecialtyWithGender(doctor.especialidad, doctor.sexo)}</p>
             </div>
             <br />
             <div className="appointment-details">

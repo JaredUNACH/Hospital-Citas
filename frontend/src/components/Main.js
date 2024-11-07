@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MisCitas from '../images/MisCitas.png';
+import Monitoreo from '../images/Monitoreo.png';
 import HistorialMedico from '../images/HistorialMedico.png';
 import CongifCuenta from '../images/CuentaConfiguracion.png';
 import Reportes from '../images/Reportes.png';
@@ -119,10 +120,14 @@ const Main = ({ setContent }) => {
           <div className="cardBox">
             <div className="card-empleo">
               <div className="profile-container">
-                <img className="profile-picture" src={MisCitas} alt="Profile Picture" />
+                <img
+                  className="profile-picture"
+                  src={role === 'administrador' ? Monitoreo : MisCitas}
+                  alt="Profile Picture"
+                />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">Mis Citas</h2>
+                <h2 className="title-card">{role === 'administrador' ? 'Monitoreo' : 'Mis citas'}</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>
@@ -139,7 +144,7 @@ const Main = ({ setContent }) => {
                 <img className="profile-picture" src={HistorialMedico} alt="Profile Picture" />
               </div>
               <div className="title-button-container">
-                <h2 className="title-card">{role === 'administrador' ? 'Lista de usuarios' : 'Historial Medico'}</h2>
+                <h2 className="title-card">{role === 'administrador' ? 'Lista de usuarios' : role === 'medico' ? 'Mis pacientes' : 'Historial Medico'}</h2>
                 <div className="button-container">
                   <button className="eye-button" onClick={() => setContent('view')}>
                     <i className="fas fa-eye"></i>

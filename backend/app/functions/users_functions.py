@@ -62,43 +62,43 @@ def update_user_info():
 
     if user:
         data = request.json
-        user.apellido_paterno = data.get('apellido_paterno', user.apellido_paterno)
-        user.apellido_materno = data.get('apellido_materno', user.apellido_materno)
-        user.curp = data.get('curp', user.curp)
-        user.sexo = data.get('sexo', user.sexo)
-        user.tipo_sangre = data.get('tipo_sangre', user.tipo_sangre)
-        user.email = data.get('email', user.email)
-        user.telefono = data.get('telefono', user.telefono)
-        user.fecha_nacimiento = data.get('fecha_nacimiento', user.fecha_nacimiento)
-        user.alergia_medicamentos = data.get('alergia_medicamentos', user.alergia_medicamentos)
+        user.apellido_paterno = data.get('apellido_paterno') or None
+        user.apellido_materno = data.get('apellido_materno') or None
+        user.curp = data.get('curp') or None
+        user.sexo = data.get('sexo') or None
+        user.tipo_sangre = data.get('tipo_sangre') or None
+        user.email = data.get('email') or None
+        user.telefono = data.get('telefono') or None
+        user.fecha_nacimiento = data.get('fecha_nacimiento') or None
+        user.alergia_medicamentos = data.get('alergia_medicamentos') or None
         db.session.commit()
         return jsonify({'message': 'User info updated successfully'}), 200
 
     elif admin:
         data = request.json
-        admin.apellido_paterno = data.get('apellido_paterno', admin.apellido_paterno)
-        admin.apellido_materno = data.get('apellido_materno', admin.apellido_materno)
-        admin.curp = data.get('curp', admin.curp)
-        admin.sexo = data.get('sexo', admin.sexo)
-        admin.tipo_sangre = data.get('tipo_sangre', admin.tipo_sangre)
-        admin.email = data.get('email', admin.email)
-        admin.telefono = data.get('telefono', admin.telefono)
-        admin.fecha_nacimiento = data.get('fecha_nacimiento', admin.fecha_nacimiento)
-        admin.alergia_medicamentos = data.get('alergia_medicamentos', admin.alergia_medicamentos)
+        admin.apellido_paterno = data.get('apellido_paterno') or None
+        admin.apellido_materno = data.get('apellido_materno') or None
+        admin.curp = data.get('curp') or None
+        admin.sexo = data.get('sexo') or None
+        admin.tipo_sangre = data.get('tipo_sangre') or None
+        admin.email = data.get('email') or None
+        admin.telefono = data.get('telefono') or None
+        admin.fecha_nacimiento = data.get('fecha_nacimiento') or None
+        admin.alergia_medicamentos = data.get('alergia_medicamentos') or None
         db.session.commit()
         return jsonify({'message': 'Admin info updated successfully'}), 200
 
     elif doctor:
         data = request.json
-        doctor.apellido_paterno = data.get('apellido_paterno', doctor.apellido_paterno)
-        doctor.apellido_materno = data.get('apellido_materno', doctor.apellido_materno)
-        doctor.curp = data.get('curp', doctor.curp)
-        doctor.sexo = data.get('sexo', doctor.sexo)
-        doctor.tipo_sangre = data.get('tipo_sangre', doctor.tipo_sangre)
-        doctor.email = data.get('email', doctor.email)
-        doctor.telefono = data.get('telefono', doctor.telefono)
-        doctor.fecha_nacimiento = data.get('fecha_nacimiento', doctor.fecha_nacimiento)
-        doctor.alergia_medicamentos = data.get('alergia_medicamentos', doctor.alergia_medicamentos)
+        doctor.apellido_paterno = data.get('apellido_paterno') or None
+        doctor.apellido_materno = data.get('apellido_materno') or None
+        doctor.curp = data.get('curp') or None
+        doctor.sexo = data.get('sexo') or None
+        doctor.tipo_sangre = data.get('tipo_sangre') or None
+        doctor.email = data.get('email') or None
+        doctor.telefono = data.get('telefono') or None
+        doctor.fecha_nacimiento = data.get('fecha_nacimiento') or None
+        doctor.alergia_medicamentos = data.get('alergia_medicamentos') or None
         db.session.commit()
         return jsonify({'message': 'Doctor info updated successfully'}), 200
 

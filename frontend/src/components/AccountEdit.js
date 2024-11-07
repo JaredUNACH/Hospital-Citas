@@ -48,7 +48,7 @@ const AccountEdit = ({ setContent }) => {
         setTipoSangre(data.tipo_sangre || '');
         setEmail(data.email || '');
         setTelefono(data.telefono || '');
-        setFechaNacimiento(data.fecha_nacimiento || '');
+        setFechaNacimiento(data.fecha_nacimiento ? new Date(data.fecha_nacimiento).toISOString().split('T')[0] : '');
         setAlergiaMedicamentos(data.alergia_medicamentos || '');
 
         // Obtener la primera letra del nombre de usuario
