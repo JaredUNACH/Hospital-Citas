@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from config import Config
 from .models import db, bcrypt
 from flask_migrate import Migrate
@@ -52,6 +52,11 @@ def create_app():
     # Importar y registrar las rutas
     from .routes import routes
     app.register_blueprint(routes)
+
+    # Configurar la ruta para servir archivos estáticos
+    @app.route('/uploads/profile_pictures/<path:filename>')
+    def uploaded_file(filename):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
     return app
 

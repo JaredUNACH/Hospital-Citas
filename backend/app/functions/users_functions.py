@@ -20,7 +20,8 @@ def user_info():
             'email': user.email,
             'telefono': user.telefono,
             'fecha_nacimiento': user.fecha_nacimiento,
-            'alergia_medicamentos': user.alergia_medicamentos
+            'alergia_medicamentos': user.alergia_medicamentos,
+            'profile_picture': user.profile_picture  # Añadir la imagen de perfil
         }), 200  # Devuelve la información del usuario
     elif admin:
         return jsonify({
@@ -34,7 +35,8 @@ def user_info():
             'telefono': admin.telefono,
             'fecha_nacimiento': admin.fecha_nacimiento,
             'alergia_medicamentos': admin.alergia_medicamentos,
-            'rol': admin.rol
+            'rol': admin.rol,
+            'profile_picture': admin.profile_picture  # Añadir la imagen de perfil
         }), 200  # Devuelve la información del administrador
     elif doctor:
         return jsonify({
@@ -49,7 +51,8 @@ def user_info():
             'fecha_nacimiento': doctor.fecha_nacimiento,
             'alergia_medicamentos': doctor.alergia_medicamentos,
             'rol': doctor.rol,
-            'especialidad': doctor.especialidad.nombre
+            'especialidad': doctor.especialidad.nombre,
+            'profile_picture': doctor.profile_picture  # Añadir la imagen de perfil
         }), 200  # Devuelve la información del doctor
     return jsonify(message="User not found"), 404  # Devuelve un mensaje de error si el usuario no se encuentra
 
@@ -71,6 +74,7 @@ def update_user_info():
         user.telefono = data.get('telefono') or None
         user.fecha_nacimiento = data.get('fecha_nacimiento') or None
         user.alergia_medicamentos = data.get('alergia_medicamentos') or None
+        user.profile_picture = data.get('profile_picture') or user.profile_picture  # Actualizar la imagen de perfil si se proporciona
         db.session.commit()
         return jsonify({'message': 'User info updated successfully'}), 200
 
@@ -85,6 +89,7 @@ def update_user_info():
         admin.telefono = data.get('telefono') or None
         admin.fecha_nacimiento = data.get('fecha_nacimiento') or None
         admin.alergia_medicamentos = data.get('alergia_medicamentos') or None
+        admin.profile_picture = data.get('profile_picture') or admin.profile_picture  # Actualizar la imagen de perfil si se proporciona
         db.session.commit()
         return jsonify({'message': 'Admin info updated successfully'}), 200
 
@@ -99,6 +104,7 @@ def update_user_info():
         doctor.telefono = data.get('telefono') or None
         doctor.fecha_nacimiento = data.get('fecha_nacimiento') or None
         doctor.alergia_medicamentos = data.get('alergia_medicamentos') or None
+        doctor.profile_picture = data.get('profile_picture') or doctor.profile_picture  # Actualizar la imagen de perfil si se proporciona
         db.session.commit()
         return jsonify({'message': 'Doctor info updated successfully'}), 200
 

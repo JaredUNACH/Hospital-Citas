@@ -23,3 +23,6 @@ class Config:
         'object-src': "'none'",
         'frame-src': "'self' https://www.google.com/recaptcha/",
     }
+
+    # Configuración de la carpeta de subida
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads/profile_pictures')

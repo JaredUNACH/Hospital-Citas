@@ -104,7 +104,8 @@ const AccountEdit = ({ setContent }) => {
       email: email || null,
       telefono: telefono || null,
       fecha_nacimiento: fechaNacimiento || null,
-      alergia_medicamentos: alergiaMedicamentos || null
+      alergia_medicamentos: alergiaMedicamentos || null,
+      profile_picture: userImage // Añadir la imagen de perfil al objeto userData
     };
 
     try {
