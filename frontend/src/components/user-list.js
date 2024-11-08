@@ -1,108 +1,88 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/user-list.module.css'; // Importa el módulo CSS
+import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 
-const Card = () => {
+const UserList = ({ setContent }) => {
+  const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
+
+  const handleToggleClick = () => {
+    setIsNavActive(!isNavActive);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsNavActive(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handleBackClick = () => {
+    setContent('main'); // Redirige al estado main
+  };
+
   return (
-    <StyledWrapper>
-      <div className="card">
-        <div className="card__title">Lista de usuarios</div>
-        <div className="card__data">
-          <div className="card__right">
-            <div className="item">
-              Pacientes
-              <div className="buttons">
-                <button className="edit-button">Editar</button>
-                <button className="delete-button">Eliminar</button>
-              </div>
-            </div>
-            <div className="item">
-              Doctores
-              <div className="buttons">
-                <button className="edit-button">Editar</button>
-                <button className="delete-button">Eliminar</button>
-              </div>
-            </div>
-            <div className="item">
-              Administradores
-              <div className="buttons">
-                <button className="edit-button">Editar</button>
-                <button className="delete-button">Eliminar</button>
-              </div>
-            </div>
-          </div>
+    <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
+      <div className={styles.topbar}>
+        <div className={styles.toggle} onClick={handleToggleClick}>
+          <FontAwesomeIcon icon={faBars} />
         </div>
       </div>
-    </StyledWrapper>
+      <div className="flecha-atras" onClick={handleBackClick}>
+        <i className="fa-solid fa-chevron-left fecha-back"></i>
+      </div>
+
+      <div className={styles.title}>
+        <h2><em>Lista de usuarios</em></h2>
+      </div>
+
+      <div className={styles.details}>
+        <div className={styles.recentOrders}>
+          <table className={styles.styledTable}>
+            <thead>
+              <tr>
+                <th>Usuarios</th>
+                <th>Ver</th>
+                <th>Editar</th>
+                <th>Reportes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Pacientes</td>
+                <td>boton de Ver</td>
+                <td>boton de Editar</td>
+                <td>boton de reportes</td>
+              </tr>
+              <tr>
+                <td>Medicos</td>
+                <td>boton de Ver</td>
+                <td>boton de Editar</td>
+                <td>boton de reportes</td>
+              </tr>
+              <tr>
+                <td>Administradores</td>
+                <td>boton de Ver</td>
+                <td>boton de Editar</td>
+                <td>boton de reportes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
-const StyledWrapper = styled.div`
-  .card {
-    width: 300px;
-    background: rgb(44, 44, 44);
-    font-family: "Courier New", Courier, monospace;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .card__title {
-    color: white;
-    font-weight: bold;
-    padding: 10px;
-    border-bottom: 1px solid rgb(167, 159, 159);
-    font-size: 1.2rem;
-    text-align: center;
-  }
-
-  .card__data {
-    font-size: 0.9rem;
-    padding: 10px;
-  }
-
-  .item {
-    padding: 10px;
-    background-color: white;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .item:nth-child(even) {
-    background: rgb(234, 235, 234);
-  }
-
-  .buttons {
-    display: flex;
-    gap: 10px;
-  }
-
-  .edit-button, .delete-button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .edit-button {
-    background-color: #4CAF50;
-    color: white;
-  }
-
-  .delete-button {
-    background-color: #f44336;
-    color: white;
-  }
-
-  .edit-button:hover {
-    background-color: #45a049;
-  }
-
-  .delete-button:hover {
-    background-color: #e53935;
-  }
-`;
-
-export default Card;
+export default UserList;
