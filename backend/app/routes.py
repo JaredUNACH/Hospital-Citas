@@ -9,6 +9,7 @@ from .models import db, Paciente, Administrador, Especialidad, Doctor  # Asegúr
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
 from .functions.pdf_functions import generate_pdf  # Importa la función para generar PDF de pacientes
 from .functions.generate_doctors_pdf import generate_doctors_pdf  # Importa la función para generar PDF de médicos
+from .functions.generate_admins_pdf import generate_admins_pdf  # Importa la función para generar PDF de administradores
 from werkzeug.utils import secure_filename
 import os
 
@@ -171,3 +172,10 @@ def generate_pdf_route():
 @cross_origin()  # Habilita CORS para esta ruta específica
 def generate_doctors_pdf_route():
     return generate_doctors_pdf()
+
+# Ruta para generar pdf de administradores
+@routes.route('/generate-admins-pdf', methods=['GET'])
+@jwt_required()
+@cross_origin()  # Habilita CORS para esta ruta específica
+def generate_admins_pdf_route():
+    return generate_admins_pdf()
