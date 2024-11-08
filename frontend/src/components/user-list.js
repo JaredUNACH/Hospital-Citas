@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import BotonReportes from '../components/BotonReportes'; // Importa el componente BotonReportes
+import BotonReportesMedicos from '../components/BotonReportes-medicos'; // Importa el componente BotonReportesMedicos
 import EditUserButton from '../components/boton-editar-user'; // Importa el componente EditUserButton
 import VerUserButton from '../components/VerUserButton'; // Importa el componente VerUserButton
 
@@ -70,7 +71,7 @@ const UserList = ({ setContent }) => {
                 <td>Medicos</td>
                 <td><VerUserButton /></td>
                 <td><EditUserButton /></td>
-                <td><BotonReportes /></td>
+                <td><BotonReportesMedicos /></td>
               </tr>
               <tr>
                 <td>Administradores</td>
