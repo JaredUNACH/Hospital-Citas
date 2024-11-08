@@ -3,9 +3,10 @@ import styles from '../styles/user-list.module.css'; // Importa el módulo CSS
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
+import BotonReportes from '../components/BotonReportes'; // Importa el componente BotonReportes
+import EditUserButton from '../components/boton-editar-user'; // Importa el componente EditUserButton
+import VerUserButton from '../components/VerUserButton'; // Importa el componente VerUserButton
 
 const UserList = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
@@ -61,21 +62,21 @@ const UserList = ({ setContent }) => {
             <tbody>
               <tr>
                 <td>Pacientes</td>
-                <td>boton de Ver</td>
-                <td>boton de Editar</td>
-                <td>boton de reportes</td>
+                <td><VerUserButton /></td>
+                <td><EditUserButton /></td>
+                <td><BotonReportes /></td>
               </tr>
               <tr>
                 <td>Medicos</td>
-                <td>boton de Ver</td>
-                <td>boton de Editar</td>
-                <td>boton de reportes</td>
+                <td><VerUserButton /></td>
+                <td><EditUserButton /></td>
+                <td><BotonReportes /></td>
               </tr>
               <tr>
                 <td>Administradores</td>
-                <td>boton de Ver</td>
-                <td>boton de Editar</td>
-                <td>boton de reportes</td>
+                <td><VerUserButton /></td>
+                <td><EditUserButton /></td>
+                <td><BotonReportes /></td>
               </tr>
             </tbody>
           </table>
