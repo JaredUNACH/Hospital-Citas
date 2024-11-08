@@ -2,10 +2,12 @@ from flask import Blueprint, request, jsonify, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_cors import cross_origin
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
 from .functions.users_functions import user_info, update_user_info  # Importa las funciones de usuario
 from .models import db, Paciente, Administrador, Especialidad, Doctor  # Asegúrate de importar Medico
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
+from .functions.pdf_functions import generate_pdf  # Importa la función para generar PDF
 from werkzeug.utils import secure_filename
 import os
 
@@ -154,3 +156,10 @@ def upload_profile_picture():
         
         return jsonify({'message': 'File uploaded successfully', 'filepath': filepath}), 200
     return jsonify({'error': 'File type not allowed'}), 400
+
+# Ruta para generar pdf
+@routes.route('/generate-pdf', methods=['GET'])
+@jwt_required()
+@cross_origin()  # Habilita CORS para esta ruta específica
+def generate_pdf_route():
+    return generate_pdf()

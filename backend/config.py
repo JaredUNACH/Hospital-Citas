@@ -26,3 +26,7 @@ class Config:
 
     # Configuración de la carpeta de subida
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads/profile_pictures')
+    
+    # Configuración de CORS
+    CORS_HEADERS = 'Content-Type'
+    CORS_RESOURCES = {r"/*": {"origins": "*"}}

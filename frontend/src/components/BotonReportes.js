@@ -1,10 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const BotonReportes = () => {
+  const handleGeneratePDF = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/generate-pdf', {
+        responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'report.pdf');
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
   return (
     <StyledWrapper>
-      <button className="print-btn">
+      <button className="print-btn" onClick={handleGeneratePDF}>
         <span className="printer-wrapper">
           <span className="printer-container">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 92 75">
