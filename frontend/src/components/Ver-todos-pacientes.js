@@ -7,6 +7,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 import Search from './Search'; // Importa el componente Search
+import AñadirNuevo from './Añadir-nuevo'; // Importa el componente AñadirNuevo
 
 const VerTodosPacientes = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
@@ -124,6 +125,7 @@ const VerTodosPacientes = ({ setContent }) => {
         <div className={styles.searchContainer}>
           <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
         </div>
+        <AñadirNuevo /> {/* Componente AñadirNuevo */}
       </div>
 
       <div className={styles.details}>
