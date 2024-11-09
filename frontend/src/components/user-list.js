@@ -38,6 +38,10 @@ const UserList = ({ setContent }) => {
     setContent('ver-todos-pacientes'); // Cambia el estado para mostrar VerTodosPacientes
   };
 
+  const handleViewMedicosClick = () => {
+    setContent('ver-todos-medicos'); // Cambia el estado para mostrar VerTodosMedicos
+  };
+
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
       <div className={styles.topbar}>
@@ -72,8 +76,8 @@ const UserList = ({ setContent }) => {
                 <td><BotonReportes /></td>
               </tr>
               <tr>
-                <td>Medicos</td>
-                <td><VerUserButton /></td>
+                <td>Médicos</td>
+                <td><VerUserButton onClick={handleViewMedicosClick} /></td>
                 <td><EditUserButton /></td>
                 <td><BotonReportesMedicos /></td>
               </tr>

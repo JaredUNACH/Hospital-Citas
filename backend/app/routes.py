@@ -10,6 +10,7 @@ from .functions.patients_functions import add_paciente, update_paciente, delete_
 from .functions.pdf_functions import generate_pdf  # Importa la función para generar PDF de pacientes
 from .functions.generate_doctors_pdf import generate_doctors_pdf  # Importa la función para generar PDF de médicos
 from .functions.generate_admins_pdf import generate_admins_pdf  # Importa la función para generar PDF de administradores
+from .functions.medicos_functions import add_doctor, update_doctor, delete_doctor, get_doctors, get_doctor  # Importa las funciones de médicos
 from werkzeug.utils import secure_filename
 import os
 
@@ -113,9 +114,39 @@ def get_pacientes_route():
 def get_paciente_route(id):
     return jsonify(get_paciente(id))
 
+#------------------------------------ Rutas de médicos ------------------------------------#
+# Ruta para insertar un nuevo médico
+@routes.route('/medicos', methods=['POST'])
+def add_doctor_route():
+    data = request.json
+    return jsonify(add_doctor(data))
+
+# Ruta para actualizar un médico existente
+@routes.route('/medicos/<int:id>', methods=['PUT'])
+def update_doctor_route(id):
+    data = request.json
+    return jsonify(update_doctor(id, data))
+
+# Ruta para eliminar un médico
+@routes.route('/medicos/<int:id>', methods=['DELETE'])
+def delete_doctor_route(id):
+    return jsonify(delete_doctor(id))
+
+# Ruta para obtener todos los médicos
+@routes.route('/medicos', methods=['GET'])
+def get_doctors_route():
+    doctors, status_code = get_doctors()
+    return jsonify(doctors), status_code
+
+# Ruta para obtener un médico por ID
+@routes.route('/medicos/<int:id>', methods=['GET'])
+def get_doctor_route(id):
+    doctor, status_code = get_doctor(id)
+    return jsonify(doctor), status_code
+
 # Ruta para obtener los doctores por especialidad
 @routes.route('/doctors', methods=['GET'])
-def get_doctors():
+def get_doctors_by_specialty():
     specialty = request.args.get('specialty')
     if specialty:
         doctors = Doctor.query.filter(Doctor.especialidad.has(nombre=specialty)).all()
