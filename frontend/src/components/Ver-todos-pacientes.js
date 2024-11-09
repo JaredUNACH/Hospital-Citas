@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonReportes from './BotonReportes'; // Importa el componente BotonReportes
 import EditUserButton from './boton-editar-user'; // Importa el componente EditUserButton
+import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 
 const VerTodosPacientes = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [pacientes, setPacientes] = useState([]); // Estado para almacenar los datos de los pacientes
+  const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -39,7 +41,9 @@ const VerTodosPacientes = ({ setContent }) => {
           }
         });
         console.log(response.data); // Verifica los datos recibidos
-        setPacientes(response.data[0]); // Ajuste para obtener solo los datos de los pacientes
+        const pacientesData = response.data[0]; // Ajuste para obtener solo los datos de los pacientes
+        const sortedPacientes = pacientesData.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        setPacientes(sortedPacientes);
       } catch (error) {
         console.error('Error fetching pacientes:', error);
       }
@@ -50,6 +54,33 @@ const VerTodosPacientes = ({ setContent }) => {
 
   const handleBackClick = () => {
     setContent('user-list'); // Redirige al estado main
+  };
+
+  const handleDoubleClick = (id, field, value) => {
+    setEditing({ id, field, value });
+  };
+
+  const handleChange = (e) => {
+    setEditing({ ...editing, value: e.target.value });
+  };
+
+  const handleSave = async (id) => {
+    try {
+      const response = await axios.put(`http://127.0.0.1:5000/pacientes/${id}`, {
+        [editing.field]: editing.value
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log(response.data); // Verifica la respuesta del servidor
+      setPacientes(pacientes.map(paciente => 
+        paciente.id === id ? { ...paciente, [editing.field]: editing.value } : paciente
+      ));
+      setEditing({});
+    } catch (error) {
+      console.error('Error updating paciente:', error);
+    }
   };
 
   return (
@@ -90,18 +121,86 @@ const VerTodosPacientes = ({ setContent }) => {
             <tbody>
               {pacientes.map((paciente, index) => (
                 <tr key={paciente.id || index}>
-                  <td>{paciente.nombre}</td>
-                  <td>{paciente.apellido_paterno}</td>
-                  <td>{paciente.apellido_materno}</td>
-                  <td>{paciente.curp}</td>
-                  <td>{paciente.sexo}</td>
-                  <td>{paciente.tipo_sangre}</td>
-                  <td>{paciente.email}</td>
-                  <td>{paciente.telefono}</td>
-                  <td>{paciente.fecha_nacimiento}</td>
-                  <td>{paciente.alergia_medicamentos}</td>
-                  <td>{paciente.historial_medico}</td>
-                  <td><EditUserButton /></td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'nombre', paciente.nombre)}>
+                    {editing.id === paciente.id && editing.field === 'nombre' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.nombre
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'apellido_paterno', paciente.apellido_paterno)}>
+                    {editing.id === paciente.id && editing.field === 'apellido_paterno' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.apellido_paterno
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'apellido_materno', paciente.apellido_materno)}>
+                    {editing.id === paciente.id && editing.field === 'apellido_materno' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.apellido_materno
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'curp', paciente.curp)}>
+                    {editing.id === paciente.id && editing.field === 'curp' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.curp
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'sexo', paciente.sexo)}>
+                    {editing.id === paciente.id && editing.field === 'sexo' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.sexo
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'tipo_sangre', paciente.tipo_sangre)}>
+                    {editing.id === paciente.id && editing.field === 'tipo_sangre' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.tipo_sangre
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'email', paciente.email)}>
+                    {editing.id === paciente.id && editing.field === 'email' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.email
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'telefono', paciente.telefono)}>
+                    {editing.id === paciente.id && editing.field === 'telefono' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.telefono
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'fecha_nacimiento', paciente.fecha_nacimiento)}>
+                    {editing.id === paciente.id && editing.field === 'fecha_nacimiento' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.fecha_nacimiento
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'alergia_medicamentos', paciente.alergia_medicamentos)}>
+                    {editing.id === paciente.id && editing.field === 'alergia_medicamentos' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.alergia_medicamentos
+                    )}
+                  </td>
+                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'historial_medico', paciente.historial_medico)}>
+                    {editing.id === paciente.id && editing.field === 'historial_medico' ? (
+                      <input type="text" value={editing.value} onChange={handleChange} />
+                    ) : (
+                      paciente.historial_medico
+                    )}
+                  </td>
+                  <td>
+                    <BotonGuardar onClick={() => handleSave(paciente.id)} />
+                  </td>
                   <td><BotonReportes /></td>
                 </tr>
               ))}
