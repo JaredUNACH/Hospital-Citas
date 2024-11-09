@@ -4,7 +4,7 @@ import styles from '../styles/Ver-todos.module.css'; // Importa el módulo CSS
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import BotonReportes from './BotonReportes'; // Importa el componente BotonReportes
+import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import EditUserButton from './boton-editar-user'; // Importa el componente EditUserButton
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 
@@ -83,6 +83,20 @@ const VerTodosPacientes = ({ setContent }) => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://127.0.0.1:5000/pacientes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log(response.data); // Verifica la respuesta del servidor
+      setPacientes(pacientes.filter(paciente => paciente.id !== id));
+    } catch (error) {
+      console.error('Error deleting paciente:', error);
+    }
+  };
+
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
       <div className={styles.topbar}>
@@ -115,7 +129,7 @@ const VerTodosPacientes = ({ setContent }) => {
                 <th>Alergia a Medicamentos</th>
                 <th>Historial Médico</th>
                 <th>Editar</th>
-                <th>Reportes</th>
+                <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
@@ -201,7 +215,11 @@ const VerTodosPacientes = ({ setContent }) => {
                   <td>
                     <BotonGuardar onClick={() => handleSave(paciente.id)} />
                   </td>
-                  <td><BotonReportes /></td>
+                  <td>
+                    <div className={styles.botonEliminarWrapper}>
+                      <BotonEliminar onClick={() => handleDelete(paciente.id)} />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
