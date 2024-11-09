@@ -1,0 +1,630 @@
+.styledTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.styledTable:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.styledTable thead {
+  background: #282826;
+  color: #fff;
+}
+
+.styledTable th, .styledTable td {
+  padding-bottom: -10px; /* Reduce el padding para disminuir la separación */
+  padding-left: 10px;
+  text-align: left;
+}
+
+.styledTable tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.styledTable tbody tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+.styledTable tbody tr:hover {
+  background: #e0e0e0;
+}
+
+.styledTable th {
+  background: #282826;
+  color: #fff;
+  font-weight: bold;
+}
+
+.styledTable td {
+  border-bottom: 1px solid #ddd;
+}
+
+.styledTable tbody tr:last-child td {
+  border-bottom: none;
+}
+  
+  
+  /* ===================== Main ===================== */
+  .main {
+      position: absolute;
+      width: calc(100% - 200px);
+      left: 200px;
+      min-height: 100vh;
+      background: var(--white);
+      transition: 0.5s;
+    }
+    .main.active {
+      width: calc(100% - 80px);
+      left: 80px;
+    }
+    
+    .topbar {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+    }
+    
+    .toggle {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+      cursor: pointer;
+    }
+    
+    @media (max-width: 700px) {
+      .nombre {
+        display: none;
+      }
+    }
+    
+    .user {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      left: -130px;
+    }
+    
+    .user img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .campana {
+      position: relative;
+      left: 155px;
+      top: -14px;
+    }
+    
+    
+    /* Cuando la pantalla es de 1500px o menos (típicamente tablets en modo paisaje), ajusta la posición left de .campana a 0px */
+    @media screen and (max-width: 1500px) {
+      .campana {
+        left: 0px;
+      }
+    }
+    
+    .fas.fa-bell {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      cursor: pointer;
+    }
+    
+    .campana .fas.fa-bell {
+      font-size: 1.5em; 
+    }
+    
+    .notification-dot {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 10px;
+      height: 10px;
+      background-color: #F00;
+      border-radius: 50%;
+      display: block; /* Muestra el punto de notificación por defecto */
+    }
+    
+    .modal {
+      position: absolute;
+      top: 30px;
+      right: 0;
+      width: 200px;
+      height: 100px;
+      background-color: #FFF;
+      border: 1px solid #000;
+      display: none; /* Oculta el modal por defecto */
+      z-index: 9999; /* Asegura que el modal siempre esté en la parte superior */
+      border-radius: 10px;
+    }
+    .modal p {
+      border-bottom: 1px solid #ddd; /* Agrega una línea divisoria entre las notificaciones */
+      padding: 10px; /* Agrega un poco de espacio alrededor de las notificaciones */
+      background-color: #f9f9f9; /* Cambia el color de fondo de las notificaciones */
+      margin: 0; /* Elimina los márgenes predeterminados */
+      border-radius: 10px;
+      transition: background-color 0.3s; /* Agrega una transición suave al cambiar el color de fondo */
+    }
+    
+    .modal p:hover {
+      background-color: #e0e0e0; /* Cambia el color de fondo de las notificaciones al pasar el cursor por encima */
+    }
+    
+    .modal p:last-child {
+      border-bottom: none; /* Elimina la línea divisoria de la última notificación */
+    }
+    
+    .modal .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      color: #aaa; /* Cambia el color del botón de cierre */
+    }
+    
+    .modal .close:hover {
+      color: #000; /* Cambia el color del botón de cierre cuando se pasa el cursor por encima */
+    }
+    
+    .nombre-usuario {
+      position: absolute;
+      right: 20px; 
+      top: 9px;
+    }
+    
+    .titulo-usuario {
+      position: absolute;
+      right: 72px; 
+      top: 30px; 
+      font-size: 0.8em;
+      opacity: 0.5; /* Hace el texto semi-transparente */
+    }
+    /* ======================= Cards ====================== */
+    .segundo-encabezado {
+      display: flex;
+      align-items: center;
+      width: 98%;
+      padding-left: 20px;
+      padding-top: 20px;
+    }
+    
+    .Icono-lapiz, .domicilio {
+      display: flex;
+      align-items: center;
+      margin: 0 20px;
+    }
+    
+    .Icono-lapiz i, .domicilio i {
+      margin-right: 10px;
+    }
+    
+    .linea-horizontal {
+      width: 100%;
+      height: 10px;
+      background-color: #ddd;
+    }
+    
+    .linea-carga {
+      height: 10px;
+      background-color: #FF6600;
+      width: 0;
+    }
+    .title h2 {
+      padding-left: 20px;
+      padding-top: 10px;
+      color: #2980b9;
+    }
+    .Icono-lapiz .fa-pencil-alt{
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-top: 15px;
+      color: #ffffff;
+    }
+    .domicilio .fa-solid.fa-2 {
+      padding: 10px;
+      background-color: #000000;
+      color: #ffffff;
+      border-radius: 50%;
+      font-size: .9em;
+    }
+    
+    
+    .cardBox {
+      position: relative;
+      width: 100%;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 40px;
+      
+    }
+    .cardBox2 {
+        position: relative;
+        width: 100%;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 40px;
+        
+    }
+    
+    .subtitulo {
+      position: relative;
+      width: 100%;
+      padding-left: 20px;
+      padding-top: 5px;
+      padding-bottom: -20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 40px;
+      color: #2980b9;
+      
+    }
+    .input div {
+        display: flex;
+        align-items: center;
+    }
+    
+    .input input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        border: 2px solid #282826;
+        cursor: pointer;
+    }
+    
+    .input input[type="checkbox"]:checked {
+        background: #282826;
+    }
+    /*Inputs */
+    .Tnombre {
+      position: relative;
+      width: 100%;
+      padding: 4px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 40px;
+      left: 10px;
+    }
+    .input {
+      position: relative;
+      padding-top: 0px;
+    }
+    .clear-icon {
+      display: none;
+      position: absolute;
+      top: 70%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      border-radius: 20px;
+      color: #ffffff;
+      font-size: 1.5em;
+    }
+    .input input[type="text"] {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: all 0.3s ease;
+      background-color: #282826;
+      color: #fff; 
+    }
+    
+    .input input[type="text"]:focus {
+      border-color: #2980b9;
+      box-shadow: 0 0 10px #2980b9;
+    }
+    .input input[type="text2"] {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: all 0.3s ease;
+      background-color: #282826;
+      color: #fff; 
+    }
+    
+    .input input[type="text2"]:focus {
+      border-color: #2980b9;
+      box-shadow: 0 0 10px #2980b9;
+    }
+    .input select {
+        width: 100%;
+        padding: 13px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: all 0.3s ease;
+        background-color: #282826;
+        color: #fff; 
+        appearance: none;
+    }
+    
+    .input select:focus {
+        border-color: #2980b9;
+        box-shadow: 0 0 10px #2980b9;
+    }
+    /* Estilos ajustados para el textarea */
+  .input2 textarea {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #282826;
+    color: #fff;
+    resize: vertical; /* Permite al usuario ajustar la altura del textarea */
+  }
+  
+  .input2 textarea:focus {
+    border-color: #2980b9;
+    box-shadow: 0 0 10px #2980b9;
+  }
+    .boton-buscar {
+        width: 100%;
+        height: 20%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .boton-buscar .boton-atras {
+        background-color: #fff;
+        color: #000000;
+        border: 2px solid #808080; /* Gris oscuro */
+        transition: all 0.3s ease; /* Transición suave para el hover */
+    }
+    
+    .boton-buscar .boton-atras:hover {
+        background-color: #f2f2f2; 
+        
+    }
+    
+    .boton-buscar button {
+        width: 25%;
+        margin: 40px; 
+        padding: 9px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background-color: #FF6600;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1em;
+    }
+    
+    .boton-buscar button:hover {
+        background-color: #FF3300;
+    }
+    
+    .cardBox .card {
+      position: relative;
+      background: var(--white);
+      padding: 5px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    }
+    
+    
+    .cardBox .card:hover {
+      background: var(--blue);
+    }
+    .cardBox .card:hover .numbers,
+    .cardBox .card:hover .cardName,
+    .cardBox .card:hover .iconBx {
+      color: var(--white);
+    }
+    
+    /* ================== Order Details List ============== */
+    .details {
+      position: relative;
+      width: 100%;
+      padding: 20px;
+      display: grid;
+      grid-gap: 30px;
+    }
+    
+    .details .recentOrders {
+      position: relative;
+      display: grid;
+      min-height: 500px;
+      background: white;
+      box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 0.5px solid #282826;
+      overflow-x: auto;
+    }
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .fas.fa-pencil-alt {
+      padding: 6px;
+      background-color: #FF6600;
+      border: 1px solid #fec453;
+      border-radius: 50px;
+      font-size: 1.4em;
+    }
+    /*Estilo de la alerta */
+    .alert {
+      position: fixed;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1em;
+      border: 1px solid #000;
+      background-color: #fff;
+      text-align: center;
+      z-index: 1000;
+      border-radius: 10px;
+      padding: 1em;
+      width: 80%;
+      height: auto;
+      max-width: 380px;
+    }
+    
+    .alert i {
+      font-size: 2em;
+      color: #f00;
+    }
+    .fas.fa-exclamation-triangle {
+      border-radius: 20%;
+      padding: 10px;
+      background-color: #ffb7b7;
+      color: #f00;
+    }
+    
+    .alert p {
+      margin: 1em 1em;
+    }
+    
+    .alert button {
+      padding: 0.7em 1em;
+      border-radius: 10px;
+      background-color: #F00;
+      width: 90%;
+      color: #fff;
+      font-size: medium;
+    }
+    .alert .button-container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      margin: auto;
+    }
+    
+    .alert .button-container button:first-child {
+      margin-right: 20px;
+      background-color: transparent; /* Cambia el color de fondo a transparente */
+      border: 1px solid #808080; /* Agrega un borde gris */
+      color: #000;
+    }
+    
+    .alert .button-container button:last-child {
+      background-color: #FFAA04; /* Cambia el color de fondo del segundo botón a verde */
+      border: none; /* Elimina el borde del segundo botón */
+    }
+    .alert .icon {
+      background-color: #fff1d7; /* Cambia el color de fondo a rojo */
+      border-radius: 10px; /* Hace que el icono sea redondo */
+      padding: 10px; /* Agrega espacio alrededor del icono */
+      color: #ffaa04;
+    }
+    
+    /* Estilos para pantallas de tabletas y móviles */
+    @media (max-width: 768px) {
+      .alert {
+        top: 50%;
+        width: 85%; /* Aumenta el ancho del modal a 85% */
+      }
+    
+      .alert .button-container {
+        flex-direction: column; /* Cambia la dirección de los botones a columna */
+        align-items: stretch; /* Asegura que los botones se estiren para llenar el contenedor */
+      }
+    
+      .alert .button-container button {
+        margin-bottom: 10px; /* Añade margen debajo de los botones */
+      }
+    }
+    /* ====================== Responsive Design ========================== */
+    @media (max-width: 991px) {
+      .navigation {
+        left: -300px;
+      }
+      .navigation.active {
+        width: 300px;
+        left: 0;
+      }
+      .main {
+        width: 100%;
+        left: 0;
+      }
+      .main.active {
+        left: 300px;
+      }
+      .cardBox {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .cardBox2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .details {
+        grid-template-columns: 1fr;
+      }
+      .recentOrders {
+        overflow-x: auto;
+      }
+      .status.inProgress {
+        white-space: nowrap;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .cardBox {
+        grid-template-columns: repeat(1, 1fr);
+      }
+      .cardBox2 {
+        grid-template-columns: repeat(1, 1fr);
+      }
+      .cardHeader h2 {
+        font-size: 20px;
+      }
+      .user {
+        min-width: 40px;
+      }
+      .navigation {
+        width: 100%;
+        left: -100%;
+        z-index: 1000;
+      }
+      .navigation.active {
+        width: 100%;
+        left: 0;
+      }
+      .toggle {
+        z-index: 10001;
+      }
+      .main.active .toggle {
+        color: #fff;
+        position: fixed;
+        right: 0;
+        left: initial;
+      }
+    }
+    

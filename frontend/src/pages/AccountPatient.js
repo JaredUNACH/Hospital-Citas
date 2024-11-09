@@ -5,6 +5,7 @@ import Main from '../components/Main';
 import AccountEdit from '../components/AccountEdit'; // Componente para editar detalles de la cuenta
 import AccountView from '../components/AccountView'; // Componente para visualizar los detalles de la cuenta
 import UserList from '../components/user-list'; // Importa el componente UserList
+import VerTodosPacientes from '../components/Ver-todos-pacientes'; // Importa el componente VerTodosPacientes
 import { Link } from 'react-router-dom';
 import '../styles/AccountPatient.css';
 
@@ -19,8 +20,10 @@ const AccountPatient = () => {
         return <AccountEdit setContent={setContent} />;
       case 'view':
         return <AccountView setContent={setContent} />;
-      case 'user-list': // Nueva opción para redirigir a UserList
+      case 'user-list': // Opción para redirigir a UserList
         return <UserList setContent={setContent} />;
+      case 'ver-todos-pacientes': // Nueva opción para redirigir a VerTodosPacientes
+        return <VerTodosPacientes setContent={setContent} />;
       default:
         return <Main setContent={setContent} />;
     }

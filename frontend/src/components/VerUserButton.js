@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const VerUserButton = () => {
+const VerUserButton = ({ onClick }) => {
   return (
     <StyledWrapper>
-      <button>
+      <button onClick={onClick}>
         <span>Ver todos</span>
       </button>
     </StyledWrapper>
