@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
+import Search from './Search'; // Importa el componente Search
 
 const VerTodosPacientes = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [pacientes, setPacientes] = useState([]); // Estado para almacenar los datos de los pacientes
   const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -96,6 +98,16 @@ const VerTodosPacientes = ({ setContent }) => {
     }
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredPacientes = pacientes.filter(paciente =>
+    paciente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    paciente.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    paciente.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
       <div className={styles.topbar}>
@@ -109,6 +121,9 @@ const VerTodosPacientes = ({ setContent }) => {
 
       <div className={styles.title}>
         <h2><em>Lista de Pacientes</em></h2>
+        <div className={styles.searchContainer}>
+          <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
+        </div>
       </div>
 
       <div className={styles.details}>
@@ -132,7 +147,7 @@ const VerTodosPacientes = ({ setContent }) => {
               </tr>
             </thead>
             <tbody>
-              {pacientes.map((paciente, index) => (
+              {filteredPacientes.map((paciente, index) => (
                 <tr key={paciente.id || index}>
                   <td onDoubleClick={() => handleDoubleClick(paciente.id, 'nombre', paciente.nombre)}>
                     {editing.id === paciente.id && editing.field === 'nombre' ? (

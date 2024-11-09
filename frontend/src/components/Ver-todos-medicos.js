@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
+import Search from './Search'; // Importa el componente Search
 
 const VerTodosMedicos = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [medicos, setMedicos] = useState([]); // Estado para almacenar los datos de los médicos
   const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -94,6 +96,16 @@ const VerTodosMedicos = ({ setContent }) => {
     }
   };
 
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredMedicos = medicos.filter(medico =>
+    medico.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    medico.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    medico.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
       <div className={styles.topbar}>
@@ -107,6 +119,7 @@ const VerTodosMedicos = ({ setContent }) => {
 
       <div className={styles.title}>
         <h2><em>Lista de Médicos</em></h2>
+        <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
       </div>
 
       <div className={styles.details}>
@@ -130,7 +143,7 @@ const VerTodosMedicos = ({ setContent }) => {
               </tr>
             </thead>
             <tbody>
-              {medicos.map((medico, index) => (
+              {filteredMedicos.map((medico, index) => (
                 <tr key={medico.id || index}>
                   <td onDoubleClick={() => handleDoubleClick(medico.id, 'nombre', medico.nombre)}>
                     {editing.id === medico.id && editing.field === 'nombre' ? (
