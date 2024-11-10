@@ -1,42 +1,87 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Form = () => {
+const FormModal = ({ onClose }) => {
   return (
-    <StyledWrapper>
-      <form className="form">
-        <p className="title">Register </p>
-        <p className="message">Signup now and get full access to our app. </p>
-        <div className="flex">
-          <label>
-            <input className="input" type="text" placeholder required />
-            <span>Firstname</span>
-          </label>
-          <label>
-            <input className="input" type="text" placeholder required />
-            <span>Lastname</span>
-          </label>
-        </div>  
-        <label>
-          <input className="input" type="email" placeholder required />
-          <span>Email</span>
-        </label> 
-        <label>
-          <input className="input" type="password" placeholder required />
-          <span>Password</span>
-        </label>
-        <label>
-          <input className="input" type="password" placeholder required />
-          <span>Confirm password</span>
-        </label>
-        <button className="submit">Submit</button>
-        <p className="signin">Already have an acount ? <a href="#">Signin</a> </p>
-      </form>
-    </StyledWrapper>
+    <ModalWrapper>
+      <div className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={onClose}>&times;</span>
+          <form className="form">
+            <p className="title">Register</p>
+            <p className="message">Signup now and get full access to our app.</p>
+            <div className="flex">
+              <label>
+                <input className="input" type="text" placeholder required />
+                <span>Firstname</span>
+              </label>
+              <label>
+                <input className="input" type="text" placeholder required />
+                <span>Lastname</span>
+              </label>
+            </div>
+            <label>
+              <input className="input" type="email" placeholder required />
+              <span>Email</span>
+            </label>
+            <label>
+              <input className="input" type="password" placeholder required />
+              <span>Password</span>
+            </label>
+            <label>
+              <input className="input" type="password" placeholder required />
+              <span>Confirm password</span>
+            </label>
+            <button className="submit">Submit</button>
+            <p className="signin">Already have an account? <a href="#">Signin</a></p>
+          </form>
+        </div>
+      </div>
+    </ModalWrapper>
   );
 }
 
-const StyledWrapper = styled.div`
+const ModalWrapper = styled.div`
+  .modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1200; /* Asegúrate de que el z-index sea suficientemente alto */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
   .form {
     display: flex;
     flex-direction: column;
@@ -173,6 +218,7 @@ const StyledWrapper = styled.div`
       transform: scale(1.8);
       opacity: 0;
     }
-  }`;
+  }
+`;
 
-export default Form;
+export default FormModal;

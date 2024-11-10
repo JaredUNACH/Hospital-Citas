@@ -8,12 +8,14 @@ import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonElim
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 import Search from './Search'; // Importa el componente Search
 import AñadirNuevo from './Añadir-nuevo'; // Importa el componente AñadirNuevo
+import FormModal from './Form-modal'; // Importa el componente FormModal
 
 const VerTodosPacientes = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [pacientes, setPacientes] = useState([]); // Estado para almacenar los datos de los pacientes
   const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
   const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar la visibilidad del modal
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -103,6 +105,14 @@ const VerTodosPacientes = ({ setContent }) => {
     setSearchTerm(term);
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const filteredPacientes = pacientes.filter(paciente =>
     paciente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     paciente.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -125,7 +135,9 @@ const VerTodosPacientes = ({ setContent }) => {
         <div className={styles.searchContainer}>
           <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
         </div>
-        <AñadirNuevo /> {/* Componente AñadirNuevo */}
+        <div className={styles.añadirNuevoContainer}>
+          <AñadirNuevo onClick={handleOpenModal} /> {/* Componente AñadirNuevo */}
+        </div>
       </div>
 
       <div className={styles.details}>
@@ -242,6 +254,7 @@ const VerTodosPacientes = ({ setContent }) => {
           </table>
         </div>
       </div>
+      {isModalOpen && <FormModal onClose={handleCloseModal} />} {/* Modal con el componente FormModal */}
     </div>
   );
 };

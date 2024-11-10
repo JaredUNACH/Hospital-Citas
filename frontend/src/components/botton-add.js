@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Button = () => {
+const Button = ({ onClick }) => {
   return (
     <StyledWrapper>
-      <button className="learn-more">
+      <button className="learn-more" onClick={onClick}>
         <span className="circle" aria-hidden="true">
           <span className="icon arrow" />
         </span>
@@ -101,6 +101,7 @@ const StyledWrapper = styled.div`
 
   button:hover .button-text {
    color: #fff;
-  }`;
+  }
+`;
 
 export default Button;
