@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
+import config from '..//config'; // Importa la configuración
 
 const Main = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -40,7 +41,7 @@ const Main = ({ setContent }) => {
       }
 
       try {
-        const response = await axios.get('http://127.0.0.1:5000/user-info', {
+        const response = await axios.get(`${config.apiBaseUrl}/user-info`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = response.data;
@@ -54,13 +55,13 @@ const Main = ({ setContent }) => {
         setTelefono(data.telefono || '');
         setFechaNacimiento(data.fecha_nacimiento || '');
         setAlergiaMedicamentos(data.alergia_medicamentos || '');
-        setUserImage(data.profile_picture ? `http://127.0.0.1:5000/${data.profile_picture.replace(/\\/g, '/')}` : null);
+        setUserImage(data.profile_picture ? `${config.apiBaseUrl}/${data.profile_picture.replace(/\\/g, '/')}` : null);
 
         // Obtener la primera letra del nombre de usuario
         const firstLetter = data.name.charAt(0).toUpperCase();
 
         // Seleccionar la imagen adecuada basada en la primera letra
-        setUserImage(data.profile_picture ? `http://127.0.0.1:5000/${data.profile_picture.replace(/\\/g, '/')}` : letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
+        setUserImage(data.profile_picture ? `${config.apiBaseUrl}/${data.profile_picture.replace(/\\/g, '/')}` : letterImages[firstLetter] || null); // Establecer la imagen o null si no hay coincidencia
 
         // Decodificar el token JWT manualmente para obtener el rol del usuario
         const decodedToken = JSON.parse(atob(token.split('.')[1]));

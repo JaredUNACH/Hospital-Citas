@@ -7,6 +7,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 import Search from './Search'; // Importa el componente Search
+import config from '..//config'; // Importa la configuración
 
 const VerTodosMedicos = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
@@ -36,7 +37,7 @@ const VerTodosMedicos = ({ setContent }) => {
     // Función para obtener los datos de los médicos
     const fetchMedicos = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/medicos', {
+        const response = await axios.get(`${config.apiBaseUrl}/medicos`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -65,7 +66,7 @@ const VerTodosMedicos = ({ setContent }) => {
 
   const handleSave = async (id) => {
     try {
-      const response = await axios.put(`http://127.0.0.1:5000/medicos/${id}`, {
+      const response = await axios.put(`${config.apiBaseUrl}/medicos/${id}`, {
         [editing.field]: editing.value
       }, {
         headers: {
@@ -84,7 +85,7 @@ const VerTodosMedicos = ({ setContent }) => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://127.0.0.1:5000/medicos/${id}`, {
+      const response = await axios.delete(`${config.apiBaseUrl}/medicos/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }

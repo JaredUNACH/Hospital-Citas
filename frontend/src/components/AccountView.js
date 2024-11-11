@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 import { format } from 'date-fns'; // Importa la función de formateo de date-fns
+import config from '..//config'; // Importa la configuración
 
 const AccountView = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -36,7 +37,7 @@ const AccountView = ({ setContent }) => {
       }
 
       try {
-        const response = await axios.get('http://127.0.0.1:5000/user-info', {
+        const response = await axios.get(`${config.apiBaseUrl}/user-info`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = response.data;

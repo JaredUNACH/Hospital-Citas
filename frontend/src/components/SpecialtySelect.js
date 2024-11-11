@@ -3,8 +3,9 @@ import Select from 'react-select';
 import axios from 'axios';
 import io from 'socket.io-client';
 import '../styles/SpecialtySelect.css';
+import config from '..//config'; // Importa la configuración
 
-const socket = io('http://127.0.0.1:5000');
+const socket = io(config.apiBaseUrl);
 
 const SpecialtySelect = ({ onChange }) => {
   const [specialties, setSpecialties] = useState([]);
@@ -13,7 +14,7 @@ const SpecialtySelect = ({ onChange }) => {
   useEffect(() => {
     const fetchSpecialties = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/specialties');
+        const response = await axios.get(`${config.apiBaseUrl}/specialties`);
         const specialtyOptions = response.data.map(specialty => ({
           value: specialty.nombre, // Usar el nombre de la especialidad como valor
           label: specialty.nombre // Asegúrate de usar el nombre correcto del campo

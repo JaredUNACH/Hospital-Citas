@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import config from '../config'; // Importa la configuración
 
 const BotonReportesMedicos = () => {
   const handleGeneratePDF = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/generate-doctors-pdf', {
+      const response = await axios.get(`${config.apiBaseUrl}/generate-doctors-pdf`, {
         responseType: 'blob',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`

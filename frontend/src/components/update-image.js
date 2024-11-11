@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import config from '..//config'; // Importa la configuración
 
 const UpdateImage = ({ onUploadSuccess }) => {
   const [message, setMessage] = useState('');
@@ -16,7 +17,7 @@ const UpdateImage = ({ onUploadSuccess }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://127.0.0.1:5000/upload-profile-picture', formData, {
+      const response = await axios.post(`${config.apiBaseUrl}/upload-profile-picture`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`

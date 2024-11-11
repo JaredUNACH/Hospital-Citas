@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar'; // Importa el nuevo componente Navbar
 
 import { CSSTransition } from 'react-transition-group';
 import axios from 'axios';
+import config from '..//config'; // Importa la configuración
 
 const Appointment = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Appointment = () => {
     const fetchDoctors = async () => {
       const specialty = location.state?.specialty || '';
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/doctors?specialty=${specialty}`);
+        const response = await axios.get(`${config.apiBaseUrl}/doctors?specialty=${specialty}`);
         setDoctors(response.data);
       } catch (error) {
         console.error('Error fetching doctors:', error);

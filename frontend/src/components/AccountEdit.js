@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 import UpdateImage from './update-image'; // Importa el componente UpdateImage
+import config from '..//config'; // Importa la configuración
 
 const AccountEdit = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -37,7 +38,7 @@ const AccountEdit = ({ setContent }) => {
       }
 
       try {
-        const response = await axios.get('http://127.0.0.1:5000/user-info', {
+        const response = await axios.get(`${config.apiBaseUrl}/user-info`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = response.data;
@@ -109,7 +110,7 @@ const AccountEdit = ({ setContent }) => {
     };
 
     try {
-      const response = await axios.put('http://127.0.0.1:5000/update-user-info', userData, {
+      const response = await axios.put(`${config.apiBaseUrl}/update-user-info`, userData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert('Datos guardados');

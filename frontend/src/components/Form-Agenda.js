@@ -5,13 +5,14 @@ import 'react-calendar/dist/Calendar.css'; // Importa los estilos CSS para el ca
 import { getSpecialtyWithGender } from '../utils/genero-especialidad'; // Importa la función desde utils
 import Button from './botton-add'; // Importa el componente Button
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
+import config from '..//config'; // Importa la configuración
 
 const FormAgenda = ({ doctors }) => {
   const [doctorsWithImages, setDoctorsWithImages] = useState([]);
 
   useEffect(() => {
     const updatedDoctors = doctors.map(doctor => {
-      const profilePicture = doctor.profile_picture ? `http://127.0.0.1:5000/${doctor.profile_picture.replace(/\\/g, '/')}` : null;
+      const profilePicture = doctor.profile_picture ? `${config.apiBaseUrl}/${doctor.profile_picture.replace(/\\/g, '/')}` : null;
       const firstLetter = doctor.nombre.charAt(0).toUpperCase();
       const image = profilePicture || letterImages[firstLetter] || null;
       return { ...doctor, image };

@@ -9,6 +9,7 @@ import LoginMovil from '../components/LoginMovil'; // Importa el componente móv
 import '../styles/Login.css';
 import '../styles/Transitions.css'; // Importa los estilos de transición
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
+import config from '..//config'; // Importa la configuración API
 
 const clientId = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com";
 
@@ -51,7 +52,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', loginData, { withCredentials: true });
+      const response = await axios.post(`${config.apiBaseUrl}/login`, loginData, { withCredentials: true });
       console.log('Login response:', response.data); // Verifica la respuesta del servidor
       const token = response.data.access_token;
       if (token && token.length > 9) {
@@ -100,7 +101,7 @@ const Login = () => {
       return;
     }
     try {
-      const response = await axios.post('http://127.0.0.1:5000/register', registerData, { withCredentials: true });
+      const response = await axios.post(`${config.apiBaseUrl}/register`, registerData, { withCredentials: true });
       console.log('Register response:', response.data); // Verifica la respuesta del servidor
       const token = response.data.access_token;
       if (token && token.length > 9) {
@@ -140,7 +141,7 @@ const Login = () => {
   const handleGoogleLoginSuccess = async (response) => {
     try {
       const { credential } = response;
-      const loginResponse = await axios.post('http://127.0.0.1:5000/google-login', { credential }, { withCredentials: true });
+      const loginResponse = await axios.post(`${config.apiBaseUrl}/google-login`, { credential }, { withCredentials: true });
       console.log('Google login response:', loginResponse.data); // Verifica la respuesta del servidor
       const token = loginResponse.data.access_token;
       if (token && token.length > 9) {
@@ -180,7 +181,7 @@ const Login = () => {
   const handleGoogleRegisterSuccess = async (response) => {
     try {
       const { credential } = response;
-      const registerResponse = await axios.post('http://127.0.0.1:5000/google-register', { credential }, { withCredentials: true });
+      const registerResponse = await axios.post(`${config.apiBaseUrl}/google-register`, { credential }, { withCredentials: true });
       console.log('Google register response:', registerResponse.data); // Verifica la respuesta del servidor
       const token = registerResponse.data.access_token;
       if (token && token.length > 9) {
