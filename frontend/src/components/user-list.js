@@ -7,7 +7,7 @@ import BotonReportes from '../components/BotonReportes'; // Importa el component
 import BotonReportesMedicos from '../components/BotonReportes-medicos'; // Importa el componente BotonReportesMedicos
 import EditUserButton from '../components/boton-editar-user'; // Importa el componente EditUserButton
 import VerUserButton from '../components/VerUserButton'; // Importa el componente VerUserButton
-import BotonReportesAdmins from '../components/BotonReportes-admins'; // Importa el componente BotonReportesAdmins'
+import BotonReportesAdmins from '../components/BotonReportes-admins'; // Importa el componente BotonReportesAdmins
 
 const UserList = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
@@ -40,6 +40,10 @@ const UserList = ({ setContent }) => {
 
   const handleViewMedicosClick = () => {
     setContent('ver-todos-medicos'); // Cambia el estado para mostrar VerTodosMedicos
+  };
+
+  const handleViewAdminsClick = () => {
+    setContent('ver-todos-admins'); // Cambia el estado para mostrar VerTodosAdmins
   };
 
   return (
@@ -83,7 +87,7 @@ const UserList = ({ setContent }) => {
               </tr>
               <tr>
                 <td>Administradores</td>
-                <td><VerUserButton /></td>
+                <td><VerUserButton onClick={handleViewAdminsClick} /></td>
                 <td><EditUserButton /></td>
                 <td><BotonReportesAdmins /></td>
               </tr>

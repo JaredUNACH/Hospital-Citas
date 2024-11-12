@@ -11,6 +11,7 @@ from .functions.pdf_functions import generate_pdf  # Importa la función para ge
 from .functions.generate_doctors_pdf import generate_doctors_pdf  # Importa la función para generar PDF de médicos
 from .functions.generate_admins_pdf import generate_admins_pdf  # Importa la función para generar PDF de administradores
 from .functions.medicos_functions import add_doctor, update_doctor, delete_doctor, get_doctors, get_doctor  # Importa las funciones de médicos
+from .functions.admin_functions import add_admin, update_admin, delete_admin, get_admins, get_admin  # Importa las funciones de administradores
 from werkzeug.utils import secure_filename
 import os
 
@@ -163,6 +164,36 @@ def get_doctors_by_specialty():
         'profile_picture': doctor.profile_picture  # Incluir la ruta de la imagen de perfil
     } for doctor in doctors]
     return jsonify(doctors_list)
+
+#------------------------------------ Rutas de administradores ------------------------------------#
+# Ruta para insertar un nuevo administrador
+@routes.route('/administradores', methods=['POST'])
+def add_admin_route():
+    data = request.json
+    return jsonify(add_admin(data))
+
+# Ruta para actualizar un administrador existente
+@routes.route('/administradores/<int:id>', methods=['PUT'])
+def update_admin_route(id):
+    data = request.json
+    return jsonify(update_admin(id, data))
+
+# Ruta para eliminar un administrador
+@routes.route('/administradores/<int:id>', methods=['DELETE'])
+def delete_admin_route(id):
+    return jsonify(delete_admin(id))
+
+# Ruta para obtener todos los administradores
+@routes.route('/administradores', methods=['GET'])
+def get_admins_route():
+    admins, status_code = get_admins()
+    return jsonify(admins), status_code
+
+# Ruta para obtener un administrador por ID
+@routes.route('/administradores/<int:id>', methods=['GET'])
+def get_admin_route(id):
+    admin, status_code = get_admin(id)
+    return jsonify(admin), status_code
 
 #subida de imagenes de perfil------------------------------------#
 

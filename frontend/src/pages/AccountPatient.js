@@ -7,6 +7,7 @@ import AccountView from '../components/AccountView'; // Componente para visualiz
 import UserList from '../components/user-list'; // Importa el componente UserList
 import VerTodosPacientes from '../components/Ver-todos-pacientes'; // Importa el componente VerTodosPacientes
 import VerTodosMedicos from '../components/Ver-todos-medicos'; // Importa el componente VerTodosMedicos
+import VerTodosAdmins from '../components/ver-todos-admins'; // Importa el componente VerTodosAdmins
 import { Link } from 'react-router-dom';
 import '../styles/AccountPatient.css';
 
@@ -25,8 +26,10 @@ const AccountPatient = () => {
         return <UserList setContent={setContent} />;
       case 'ver-todos-pacientes': // Opción para redirigir a VerTodosPacientes
         return <VerTodosPacientes setContent={setContent} />;
-      case 'ver-todos-medicos': // Nueva opción para redirigir a VerTodosMedicos
+      case 'ver-todos-medicos': // Opción para redirigir a VerTodosMedicos
         return <VerTodosMedicos setContent={setContent} />;
+      case 'ver-todos-admins': // Nueva opción para redirigir a VerTodosAdmins
+        return <VerTodosAdmins setContent={setContent} />;
       default:
         return <Main setContent={setContent} />;
     }
