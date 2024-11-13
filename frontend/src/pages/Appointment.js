@@ -8,7 +8,7 @@ import Navbar from '../components/Navbar'; // Importa el nuevo componente Navbar
 
 import { CSSTransition } from 'react-transition-group';
 import axios from 'axios';
-import config from '..//config'; // Importa la configuración
+import config from '../config'; // Importa la configuración
 
 const Appointment = () => {
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const Appointment = () => {
         <Navbar onNavigate={handleNavigation} /> {/* Pasa la función handleNavigation al Navbar */}
         <div className="content-Appointment">
           <div className="typewriter-A">
-            <h2>Agenta tu cita!</h2>
+            <h2>¡Agenda tu cita!</h2>
           </div>
           <div className='Agenda-contendor'>
             <FormAgenda doctors={doctors} />

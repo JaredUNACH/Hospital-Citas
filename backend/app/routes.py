@@ -12,6 +12,7 @@ from .functions.generate_doctors_pdf import generate_doctors_pdf  # Importa la f
 from .functions.generate_admins_pdf import generate_admins_pdf  # Importa la función para generar PDF de administradores
 from .functions.medicos_functions import add_doctor, update_doctor, delete_doctor, get_doctors, get_doctor  # Importa las funciones de médicos
 from .functions.admin_functions import add_admin, update_admin, delete_admin, get_admins, get_admin  # Importa las funciones de administradores
+from .functions.agendar_functions import get_available_times, create_appointment  # Importa las funciones de agendar citas
 from werkzeug.utils import secure_filename
 import os
 
@@ -155,6 +156,7 @@ def get_doctors_by_specialty():
         doctors = Doctor.query.all()
     
     doctors_list = [{
+        'id': doctor.id,
         'nombre': doctor.nombre,
         'apellido_paterno': doctor.apellido_paterno,
         'especialidad': doctor.especialidad.nombre,
@@ -195,8 +197,27 @@ def get_admin_route(id):
     admin, status_code = get_admin(id)
     return jsonify(admin), status_code
 
-#subida de imagenes de perfil------------------------------------#
+#------------------------------------ Rutas de agendar citas ------------------------------------#
+# Ruta para obtener los horarios disponibles
+@routes.route('/horarios_disponibilidad', methods=['GET'])
+@jwt_required()
+def get_available_times_route():
+    medico_id = request.args.get('medico_id')
+    fecha = request.args.get('fecha')
+    if not medico_id or not fecha:
+        return jsonify({'message': 'medico_id y fecha son requeridos'}), 400
+    available_times = get_available_times(medico_id, fecha)
+    return jsonify(available_times), 200
 
+# Ruta para crear una nueva cita
+@routes.route('/citas', methods=['POST'])
+@jwt_required()
+def create_appointment_route():
+    data = request.json
+    result, status_code = create_appointment(data)
+    return jsonify(result), status_code
+
+# Subida de imágenes de perfil
 # Ruta para subir la imagen de perfil
 @routes.route('/upload-profile-picture', methods=['POST'])
 @jwt_required()

@@ -24,21 +24,21 @@ def login():
 
     if paciente and paciente.check_password(password):
         access_token = create_access_token(identity={"id": paciente.id, "email": paciente.email, "rol": paciente.rol})
-        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token}
+        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token, "user_id": paciente.id}
         print('Login response:', response_data)
         response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
     elif admin and admin.check_password(password):
         access_token = create_access_token(identity={"id": admin.id, "email": admin.email, "rol": admin.rol})
-        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token}
+        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token, "user_id": admin.id}
         print('Login response:', response_data)
         response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
         return response
     elif doctor and doctor.check_password(password):
         access_token = create_access_token(identity={"id": doctor.id, "email": doctor.email, "rol": doctor.rol})
-        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token}
+        response_data = {"message": "Inicio de sesión exitoso", "access_token": access_token, "user_id": doctor.id}
         print('Login response:', response_data)
         response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
@@ -73,7 +73,7 @@ def register():
     db.session.commit()
 
     access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email, "rol": new_user.rol})
-    response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'access_token': access_token}
+    response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'access_token': access_token, 'user_id': new_user.id}
     print('Register response:', response_data)
     response = make_response(jsonify(response_data), 200)
     response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
@@ -96,7 +96,7 @@ def google_login():
             return jsonify({'message': 'Usuario no registrado'}), 400
 
         access_token = create_access_token(identity={"id": user.id, "email": user.email, "rol": user.rol})
-        response_data = {'message': 'Inicio de sesión exitoso', 'email': email, 'name': name, 'access_token': access_token}
+        response_data = {'message': 'Inicio de sesión exitoso', 'email': email, 'name': name, 'access_token': access_token, 'user_id': user.id}
         print('Google login response:', response_data)
         response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')
@@ -140,7 +140,7 @@ def google_register():
         db.session.commit()
 
         access_token = create_access_token(identity={"id": new_user.id, "email": new_user.email, "rol": new_user.rol})
-        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'access_token': access_token}
+        response_data = {'message': 'Registro exitoso', 'email': email, 'name': name, 'access_token': access_token, 'user_id': new_user.id}
         print('Google register response:', response_data)
         response = make_response(jsonify(response_data), 200)
         response.set_cookie('token', access_token, httponly=True, secure=True, samesite='Strict')

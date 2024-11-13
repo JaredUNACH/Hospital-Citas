@@ -9,7 +9,7 @@ import LoginMovil from '../components/LoginMovil'; // Importa el componente móv
 import '../styles/Login.css';
 import '../styles/Transitions.css'; // Importa los estilos de transición
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
-import config from '..//config'; // Importa la configuración API
+import config from '../config'; // Importa la configuración API
 
 const clientId = "577245318494-v9611dklsktb7gn5re00kce0msqh06l4.apps.googleusercontent.com";
 
@@ -55,8 +55,10 @@ const Login = () => {
       const response = await axios.post(`${config.apiBaseUrl}/login`, loginData, { withCredentials: true });
       console.log('Login response:', response.data); // Verifica la respuesta del servidor
       const token = response.data.access_token;
+      const userId = response.data.user_id; // Obtener el ID del usuario de la respuesta
       if (token && token.length > 9) {
         localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         console.log('Decoded token:', decodedToken); // Verifica el contenido del token decodificado
@@ -104,8 +106,10 @@ const Login = () => {
       const response = await axios.post(`${config.apiBaseUrl}/register`, registerData, { withCredentials: true });
       console.log('Register response:', response.data); // Verifica la respuesta del servidor
       const token = response.data.access_token;
+      const userId = response.data.user_id; // Obtener el ID del usuario de la respuesta
       if (token && token.length > 9) {
         localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         Swal.fire({
@@ -144,8 +148,10 @@ const Login = () => {
       const loginResponse = await axios.post(`${config.apiBaseUrl}/google-login`, { credential }, { withCredentials: true });
       console.log('Google login response:', loginResponse.data); // Verifica la respuesta del servidor
       const token = loginResponse.data.access_token;
+      const userId = loginResponse.data.user_id; // Obtener el ID del usuario de la respuesta
       if (token && token.length > 9) {
         localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         Swal.fire({
@@ -184,8 +190,10 @@ const Login = () => {
       const registerResponse = await axios.post(`${config.apiBaseUrl}/google-register`, { credential }, { withCredentials: true });
       console.log('Google register response:', registerResponse.data); // Verifica la respuesta del servidor
       const token = registerResponse.data.access_token;
+      const userId = registerResponse.data.user_id; // Obtener el ID del usuario de la respuesta
       if (token && token.length > 9) {
         localStorage.setItem('token', token); // Guarda el token en el almacenamiento local
+        localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         Swal.fire({

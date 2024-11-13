@@ -3,7 +3,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import io from 'socket.io-client';
 import '../styles/SpecialtySelect.css';
-import config from '..//config'; // Importa la configuración
+import config from '../config'; // Importa la configuración
 
 const socket = io(config.apiBaseUrl);
 
