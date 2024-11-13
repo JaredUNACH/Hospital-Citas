@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const Button = () => {
+const AñadirNuevo = ({ onClick }) => {
   return (
     <StyledWrapper>
-      <button type="button" className="button">
+      <button type="button" className="button" onClick={onClick}>
         <span className="button__text">Nuevo</span>
-        <span className="button__icon"><svg xmlns="http://www.w3.org/2000/svg" width={24} viewBox="0 0 24 24" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" stroke="currentColor" height={24} fill="none" className="svg"><line y2={19} y1={5} x2={12} x1={12} /><line y2={12} y1={12} x2={19} x1={5} /></svg></span>
+        <span className="button__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width={24} viewBox="0 0 24 24" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" stroke="currentColor" height={24} fill="none" className="svg">
+            <line y2={19} y1={5} x2={12} x1={12} />
+            <line y2={12} y1={12} x2={19} x1={5} />
+          </svg>
+        </span>
       </button>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .button {
@@ -74,6 +79,7 @@ const StyledWrapper = styled.div`
   .button:active {
     transform: translate(3px, 3px);
     box-shadow: 0px 0px var(--main-color);
-  }`;
+  }
+`;
 
-export default Button;
+export default AñadirNuevo;

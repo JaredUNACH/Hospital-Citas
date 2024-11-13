@@ -9,7 +9,7 @@ import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuarda
 import Search from './Search'; // Importa el componente Search
 import AñadirNuevo from './Añadir-nuevo'; // Importa el componente AñadirNuevo
 import FormModal from './Form-modal'; // Importa el componente FormModal
-import config from '..//config'; // Importa la configuración
+import config from '../config'; // Importa la configuración
 
 const VerTodosPacientes = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
@@ -114,10 +114,24 @@ const VerTodosPacientes = ({ setContent }) => {
     setIsModalOpen(false);
   };
 
+  const handleSaveNewPaciente = async (formData) => {
+    try {
+      const response = await axios.post(`${config.apiBaseUrl}/pacientes`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log(response.data); // Verifica la respuesta del servidor
+      setPacientes([...pacientes, response.data[0]]); // Asegúrate de añadir el nuevo paciente al estado
+    } catch (error) {
+      console.error('Error saving new paciente:', error);
+    }
+  };
+
   const filteredPacientes = pacientes.filter(paciente =>
-    paciente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    paciente.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    paciente.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase())
+    (paciente.nombre && paciente.nombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (paciente.apellido_paterno && paciente.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (paciente.apellido_materno && paciente.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -156,9 +170,8 @@ const VerTodosPacientes = ({ setContent }) => {
                 <th>Teléfono</th>
                 <th>Fecha de Nacimiento</th>
                 <th>Alergia a Medicamentos</th>
-                <th>Historial Médico</th>
-                <th>Editar</th>
-                <th>Eliminar</th>
+                <th className={styles.smallColumn}>Editar</th> {/* Añadir clase para ajustar el ancho */}
+                <th className={styles.smallColumn}>Eliminar</th> {/* Añadir clase para ajustar el ancho */}
               </tr>
             </thead>
             <tbody>
@@ -234,17 +247,10 @@ const VerTodosPacientes = ({ setContent }) => {
                       paciente.alergia_medicamentos
                     )}
                   </td>
-                  <td onDoubleClick={() => handleDoubleClick(paciente.id, 'historial_medico', paciente.historial_medico)}>
-                    {editing.id === paciente.id && editing.field === 'historial_medico' ? (
-                      <input type="text" value={editing.value} onChange={handleChange} />
-                    ) : (
-                      paciente.historial_medico
-                    )}
-                  </td>
-                  <td>
+                  <td className={styles.smallColumn}>
                     <BotonGuardar onClick={() => handleSave(paciente.id)} />
                   </td>
-                  <td>
+                  <td className={styles.smallColumn}>
                     <div className={styles.botonEliminarWrapper}>
                       <BotonEliminar onClick={() => handleDelete(paciente.id)} />
                     </div>
@@ -255,7 +261,7 @@ const VerTodosPacientes = ({ setContent }) => {
           </table>
         </div>
       </div>
-      {isModalOpen && <FormModal onClose={handleCloseModal} />} {/* Modal con el componente FormModal */}
+      {isModalOpen && <FormModal onClose={handleCloseModal} onSave={handleSaveNewPaciente} />} {/* Modal con el componente FormModal */}
     </div>
   );
 };
