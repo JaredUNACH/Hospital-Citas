@@ -79,7 +79,7 @@ def generate_doctors_pdf():
 
     try:
         # Especifica la ruta al ejecutable wkhtmltopdf
-        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
         pdf = pdfkit.from_string(html, False, configuration=config)
     except Exception as e:
         return jsonify({'message': 'Error generating PDF', 'error': str(e)}), 500
