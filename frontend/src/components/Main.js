@@ -11,6 +11,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
 import config from '..//config'; // Importa la configuración
+import WikiSearch from '../components/WikiSearch'; // Importa el componente WikiSearch
 
 const Main = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -301,6 +302,12 @@ const Main = ({ setContent }) => {
           </div>
         </div>
       </div>
+
+      {role === 'medico' && (
+        <div className="wiki-search-section">
+          <WikiSearch />
+        </div>
+      )}
     </div>
   );
 };
