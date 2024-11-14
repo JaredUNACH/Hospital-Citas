@@ -112,6 +112,14 @@ const Login = () => {
         localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
+
+        // Enviar correo de bienvenida
+        await axios.post(`${config.apiBaseUrl}/send-welcome-email`, { paciente_id: userId }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
         Swal.fire({
           title: 'Registro exitoso',
           text: 'Bienvenido!',
@@ -196,6 +204,14 @@ const Login = () => {
         localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
+
+        // Enviar correo de bienvenida
+        await axios.post(`${config.apiBaseUrl}/send-welcome-email`, { paciente_id: userId }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
         Swal.fire({
           title: 'Registro exitoso',
           text: 'Bienvenido!',

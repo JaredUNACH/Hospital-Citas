@@ -3,7 +3,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_tok
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_cors import cross_origin
-from flask_mail import Message
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
 from .functions.users_functions import user_info, update_user_info  # Importa las funciones de usuario
 from .models import db, Paciente, Administrador, Especialidad, Doctor, Cita  # Asegúrate de importar Cita
@@ -15,6 +14,8 @@ from .functions.medicos_functions import add_doctor, update_doctor, delete_docto
 from .functions.admin_functions import add_admin, update_admin, delete_admin, get_admins, get_admin  # Importa las funciones de administradores
 from .functions.agendar_functions import get_available_times, create_appointment  # Importa las funciones de agendar citas
 from .functions.citas_functions import get_citas_con_medico  # Importa la función para obtener citas con información del médico
+from .functions.email_functions import send_welcome_email, send_confirmation_email  # Importa las funciones de correo electrónico
+from .functions.upload_functions import upload_profile_picture as upload_profile_picture_function  # Importa la función de subida de imágenes
 from . import mail
 
 from werkzeug.utils import secure_filename
@@ -235,56 +236,36 @@ def obtener_citas_route():
 # Ruta para enviar el correo electrónico de confirmación
 @routes.route('/send-confirmation-email', methods=['POST'])
 @jwt_required()
-def send_confirmation_email():
+def send_confirmation_email_route():
     data = request.json
     paciente_id = data.get('paciente_id')
     medico_id = data.get('medico_id')
     fecha = data.get('fecha')
     hora = data.get('hora')
 
-    # Obtener la información del paciente y del médico
-    paciente = Paciente.query.get(paciente_id)
-    medico = Doctor.query.get(medico_id)
+    result, status_code = send_confirmation_email(paciente_id, medico_id, fecha, hora)
+    return jsonify(result), status_code
 
-    if not paciente or not medico:
-        return jsonify({'error': 'Paciente o médico no encontrado'}), 404
+# Ruta para enviar el correo electrónico de bienvenida
+@routes.route('/send-welcome-email', methods=['POST'])
+@jwt_required()
+def send_welcome_email_route():
+    data = request.json
+    paciente_id = data.get('paciente_id')
 
-    # Crear el mensaje de correo electrónico
-    msg = Message('Confirmación de Cita Médica',
-                  sender='jared.salazar65@unach.mx',
-                  recipients=[paciente.email])
-    msg.body = f'Hola {paciente.nombre},\n\nTu cita con el Dr. {medico.nombre} {medico.apellido_paterno} ha sido confirmada para el {fecha} a las {hora}.\n\nGracias,\nHospital'
-
-    try:
-        mail.send(msg)
-        return jsonify({'message': 'Correo de confirmación enviado'}), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    result, status_code = send_welcome_email(paciente_id)
+    return jsonify(result), status_code
 
 # Subida de imágenes de perfil
-# Ruta para subir la imagen de perfil
 @routes.route('/upload-profile-picture', methods=['POST'])
 @jwt_required()
-def upload_profile_picture():
+def upload_profile_picture_route():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
     file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        user_id = get_jwt_identity()['id']
-        filepath = os.path.join(UPLOAD_FOLDER, f"{user_id}_{filename}")
-        file.save(filepath)
-        
-        # Actualizar la ruta de la imagen en la base de datos
-        user = Paciente.query.get(user_id) or Administrador.query.get(user_id) or Doctor.query.get(user_id)
-        if user:
-            user.profile_picture = filepath
-            db.session.commit()
-        
-        return jsonify({'message': 'File uploaded successfully', 'filepath': filepath}), 200
-    return jsonify({'error': 'File type not allowed'}), 400
+    user_id = get_jwt_identity()['id']
+    result, status_code = upload_profile_picture_function(file, user_id)
+    return jsonify(result), status_code
 
 # Ruta para generar pdf
 @routes.route('/generate-pdf', methods=['GET'])
