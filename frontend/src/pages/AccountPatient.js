@@ -9,6 +9,7 @@ import VerTodosPacientes from '../components/Ver-todos-pacientes'; // Importa el
 import VerTodosMedicos from '../components/Ver-todos-medicos'; // Importa el componente VerTodosMedicos
 import VerTodosAdmins from '../components/Ver-todos-admins'; // Importa el componente VerTodosAdmins
 import VerCitas from '../components/ver-citas'; // Importa el componente VerCitas
+import VerCitasMedicas from '../components/ver-citas-medicas'; // Importa el componente VerCitasMedicas
 import { Link } from 'react-router-dom';
 import '../styles/AccountPatient.css';
 
@@ -33,6 +34,8 @@ const AccountPatient = () => {
         return <VerTodosAdmins setContent={setContent} />;
       case 'ver-citas': // Nueva opción para redirigir a VerCitas
         return <VerCitas setContent={setContent} />;
+      case 'ver-citas-medicas': // Nueva opción para redirigir a VerCitasMedicas
+        return <VerCitasMedicas setContent={setContent} />;
       default:
         return <Main setContent={setContent} />;
     }

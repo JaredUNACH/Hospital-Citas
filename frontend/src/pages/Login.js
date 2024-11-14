@@ -64,7 +64,7 @@ const Login = () => {
         console.log('Decoded token:', decodedToken); // Verifica el contenido del token decodificado
 
         // Enviar correo de notificación de inicio de sesión
-        await axios.post(`${config.apiBaseUrl}/send-login-notification-email`, { paciente_id: userId }, {
+        await axios.post(`${config.apiBaseUrl}/send-login-notification-email`, { user_id: userId, role: rol }, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -172,7 +172,7 @@ const Login = () => {
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
 
         // Enviar correo de notificación de inicio de sesión
-        await axios.post(`${config.apiBaseUrl}/send-login-notification-email`, { paciente_id: userId }, {
+        await axios.post(`${config.apiBaseUrl}/send-login-notification-email`, { user_id: userId, role: rol }, {
           headers: {
             Authorization: `Bearer ${token}`
           }

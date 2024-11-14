@@ -16,6 +16,7 @@ from .functions.agendar_functions import get_available_times, create_appointment
 from .functions.citas_functions import get_citas_con_medico  # Importa la función para obtener citas con información del médico
 from .functions.email_functions import send_welcome_email, send_confirmation_email, send_login_notification_email  # Importa las funciones de correo electrónico
 from .functions.upload_functions import upload_profile_picture as upload_profile_picture_function  # Importa la función de subida de imágenes
+from .functions.citas_medicos_functions import get_citas_medico  # Importa la función para obtener citas del médico
 from . import mail
 
 from werkzeug.utils import secure_filename
@@ -233,6 +234,17 @@ def obtener_citas_route():
     citas = get_citas_con_medico(paciente_id)
     return jsonify(citas), 200
 
+# Ruta para obtener las citas de un médico para hoy y mañana
+@routes.route('/citas-medico', methods=['GET'])
+@jwt_required()
+def obtener_citas_medico_route():
+    medico_id = request.args.get('medico_id')
+    if not medico_id:
+        return jsonify({'error': 'Medico ID es requerido'}), 400
+
+    citas = get_citas_medico(medico_id)
+    return jsonify(citas), 200
+
 # Ruta para enviar el correo electrónico de confirmación
 @routes.route('/send-confirmation-email', methods=['POST'])
 @jwt_required()
@@ -261,9 +273,10 @@ def send_welcome_email_route():
 @jwt_required()
 def send_login_notification_email_route():
     data = request.json
-    paciente_id = data.get('paciente_id')
+    user_id = data.get('user_id')
+    role = data.get('role')
 
-    result, status_code = send_login_notification_email(paciente_id)
+    result, status_code = send_login_notification_email(user_id, role)
     return jsonify(result), status_code
 
 # Subida de imágenes de perfil

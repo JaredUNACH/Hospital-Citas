@@ -170,7 +170,7 @@ const Main = ({ setContent }) => {
               <div className="title-button-container">
                 <h2 className="title-card">{role === 'administrador' ? 'Monitoreo' : 'Mis citas'}</h2>
                 <div className="button-container">
-                  <button className="eye-button" onClick={() => role === 'usuario' ? setContent('ver-citas') : setContent('view')}>
+                  <button className="eye-button" onClick={() => role === 'usuario' ? setContent('ver-citas') : role === 'medico' ? setContent('ver-citas-medicas') : setContent('view')}>
                     <i className="fas fa-eye"></i>
                   </button>
                   <button className="edit-button" onClick={() => role === 'usuario' ? setContent('ver-citas') : setContent('account')}>
