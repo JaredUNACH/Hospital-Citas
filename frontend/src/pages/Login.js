@@ -62,6 +62,14 @@ const Login = () => {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
         console.log('Decoded token:', decodedToken); // Verifica el contenido del token decodificado
+
+        // Enviar correo de notificación de inicio de sesión
+        await axios.post(`${config.apiBaseUrl}/send-login-notification-email`, { paciente_id: userId }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
         Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',
@@ -162,6 +170,14 @@ const Login = () => {
         localStorage.setItem('user_id', userId); // Guarda el ID del usuario en el almacenamiento local
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const { rol } = decodedToken.sub; // Asegúrate de acceder correctamente al rol
+
+        // Enviar correo de notificación de inicio de sesión
+        await axios.post(`${config.apiBaseUrl}/send-login-notification-email`, { paciente_id: userId }, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
         Swal.fire({
           title: 'Inicio de sesión exitoso',
           text: 'Bienvenido de nuevo!',

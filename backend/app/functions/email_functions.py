@@ -1,6 +1,7 @@
 from flask_mail import Message
 from ..models import Paciente, Doctor
 from .. import mail
+from datetime import datetime
 
 def send_welcome_email(paciente_id):
     # Obtener la información del paciente
@@ -38,5 +39,27 @@ def send_confirmation_email(paciente_id, medico_id, fecha, hora):
     try:
         mail.send(msg)
         return {'message': 'Correo de confirmación enviado'}, 200
+    except Exception as e:
+        return {'error': str(e)}, 500
+
+def send_login_notification_email(paciente_id):
+    # Obtener la información del paciente
+    paciente = Paciente.query.get(paciente_id)
+
+    if not paciente:
+        return {'error': 'Paciente no encontrado'}, 404
+
+    # Obtener la hora actual
+    login_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Crear el mensaje de correo electrónico
+    msg = Message('Notificación de Inicio de Sesión',
+                  sender='jared.salazar65@unach.mx',
+                  recipients=[paciente.email])
+    msg.body = f'Hola {paciente.nombre},\n\nHas iniciado sesión en Medical Care el {login_time}.\n\nGracias,\nMedical Care'
+
+    try:
+        mail.send(msg)
+        return {'message': 'Correo de notificación de inicio de sesión enviado'}, 200
     except Exception as e:
         return {'error': str(e)}, 500

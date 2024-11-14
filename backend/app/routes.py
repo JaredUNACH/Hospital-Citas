@@ -14,7 +14,7 @@ from .functions.medicos_functions import add_doctor, update_doctor, delete_docto
 from .functions.admin_functions import add_admin, update_admin, delete_admin, get_admins, get_admin  # Importa las funciones de administradores
 from .functions.agendar_functions import get_available_times, create_appointment  # Importa las funciones de agendar citas
 from .functions.citas_functions import get_citas_con_medico  # Importa la función para obtener citas con información del médico
-from .functions.email_functions import send_welcome_email, send_confirmation_email  # Importa las funciones de correo electrónico
+from .functions.email_functions import send_welcome_email, send_confirmation_email, send_login_notification_email  # Importa las funciones de correo electrónico
 from .functions.upload_functions import upload_profile_picture as upload_profile_picture_function  # Importa la función de subida de imágenes
 from . import mail
 
@@ -254,6 +254,16 @@ def send_welcome_email_route():
     paciente_id = data.get('paciente_id')
 
     result, status_code = send_welcome_email(paciente_id)
+    return jsonify(result), status_code
+
+# Ruta para enviar el correo electrónico de notificación de inicio de sesión
+@routes.route('/send-login-notification-email', methods=['POST'])
+@jwt_required()
+def send_login_notification_email_route():
+    data = request.json
+    paciente_id = data.get('paciente_id')
+
+    result, status_code = send_login_notification_email(paciente_id)
     return jsonify(result), status_code
 
 # Subida de imágenes de perfil
