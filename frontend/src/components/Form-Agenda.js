@@ -151,7 +151,20 @@ const FormAgenda = ({ doctors }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
-      alert('Cita creada exitosamente');
+
+      // Enviar correo electrónico de confirmación
+      await axios.post(`${config.apiBaseUrl}/send-confirmation-email`, {
+        paciente_id: pacienteId,
+        medico_id: doctorId,
+        fecha: selectedDate.toISOString().split('T')[0],
+        hora: selectedTime.time
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      alert('Cita creada exitosamente y correo de confirmación enviado');
       navigate('/account-patient'); // Redirigir a la página de cuenta del paciente
     } catch (error) {
       console.error('Error creating appointment:', error);

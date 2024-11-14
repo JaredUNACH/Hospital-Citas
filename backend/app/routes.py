@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_tok
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_cors import cross_origin
+from flask_mail import Message
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
 from .functions.users_functions import user_info, update_user_info  # Importa las funciones de usuario
 from .models import db, Paciente, Administrador, Especialidad, Doctor, Cita  # Asegúrate de importar Cita
@@ -14,6 +15,7 @@ from .functions.medicos_functions import add_doctor, update_doctor, delete_docto
 from .functions.admin_functions import add_admin, update_admin, delete_admin, get_admins, get_admin  # Importa las funciones de administradores
 from .functions.agendar_functions import get_available_times, create_appointment  # Importa las funciones de agendar citas
 from .functions.citas_functions import get_citas_con_medico  # Importa la función para obtener citas con información del médico
+from . import mail
 
 from werkzeug.utils import secure_filename
 import os
@@ -229,6 +231,35 @@ def obtener_citas_route():
 
     citas = get_citas_con_medico(paciente_id)
     return jsonify(citas), 200
+
+# Ruta para enviar el correo electrónico de confirmación
+@routes.route('/send-confirmation-email', methods=['POST'])
+@jwt_required()
+def send_confirmation_email():
+    data = request.json
+    paciente_id = data.get('paciente_id')
+    medico_id = data.get('medico_id')
+    fecha = data.get('fecha')
+    hora = data.get('hora')
+
+    # Obtener la información del paciente y del médico
+    paciente = Paciente.query.get(paciente_id)
+    medico = Doctor.query.get(medico_id)
+
+    if not paciente or not medico:
+        return jsonify({'error': 'Paciente o médico no encontrado'}), 404
+
+    # Crear el mensaje de correo electrónico
+    msg = Message('Confirmación de Cita Médica',
+                  sender='jared.salazar65@unach.mx',
+                  recipients=[paciente.email])
+    msg.body = f'Hola {paciente.nombre},\n\nTu cita con el Dr. {medico.nombre} {medico.apellido_paterno} ha sido confirmada para el {fecha} a las {hora}.\n\nGracias,\nHospital'
+
+    try:
+        mail.send(msg)
+        return jsonify({'message': 'Correo de confirmación enviado'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # Subida de imágenes de perfil
 # Ruta para subir la imagen de perfil

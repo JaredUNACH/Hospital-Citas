@@ -6,12 +6,16 @@ from flask_login import LoginManager
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
+from flask_mail import Mail
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
 
 # Inicializar Flask-SocketIO
 socketio = SocketIO()
+
+# Inicializar Flask-Mail
+mail = Mail()
 
 def create_app():
     load_dotenv()  # Cargar variables de entorno desde el archivo .env
@@ -22,7 +26,13 @@ def create_app():
     # Configuración de JWT
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'af03f15da847ebb6e355fdcdc397fc4794304b5f3045f4')
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
-    jwt = JWTManager(app)
+
+    # Configuración de Flask-Mail
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'jared.salazar65@unach.mx')
+    app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', 'kgnk mwie mxic deky')
 
     # Inicializar extensiones
     db.init_app(app)
@@ -30,7 +40,9 @@ def create_app():
     migrate = Migrate(app, db)
     login_manager = LoginManager(app)
     login_manager.login_view = 'main.login'
-    
+    jwt = JWTManager(app)
+    mail.init_app(app)
+
     # Habilita CORS con credenciales
     CORS(app, supports_credentials=True)
 
