@@ -13,6 +13,8 @@ from .functions.generate_admins_pdf import generate_admins_pdf  # Importa la fun
 from .functions.medicos_functions import add_doctor, update_doctor, delete_doctor, get_doctors, get_doctor  # Importa las funciones de médicos
 from .functions.admin_functions import add_admin, update_admin, delete_admin, get_admins, get_admin  # Importa las funciones de administradores
 from .functions.agendar_functions import get_available_times, create_appointment  # Importa las funciones de agendar citas
+from .functions.citas_functions import get_citas_con_medico  # Importa la función para obtener citas con información del médico
+
 from werkzeug.utils import secure_filename
 import os
 
@@ -150,7 +152,7 @@ def get_doctor_route(id):
 @routes.route('/doctors', methods=['GET'])
 def get_doctors_by_specialty():
     specialty = request.args.get('specialty')
-    if specialty:
+    if (specialty):
         doctors = Doctor.query.filter(Doctor.especialidad.has(nombre=specialty)).all()
     else:
         doctors = Doctor.query.all()
@@ -216,6 +218,17 @@ def create_appointment_route():
     data = request.json
     result, status_code = create_appointment(data)
     return jsonify(result), status_code
+
+# Ruta para obtener las citas de un paciente con información del médico
+@routes.route('/citas', methods=['GET'])
+@jwt_required()
+def obtener_citas_route():
+    paciente_id = request.args.get('paciente_id')
+    if not paciente_id:
+        return jsonify({'error': 'Paciente ID es requerido'}), 400
+
+    citas = get_citas_con_medico(paciente_id)
+    return jsonify(citas), 200
 
 # Subida de imágenes de perfil
 # Ruta para subir la imagen de perfil
