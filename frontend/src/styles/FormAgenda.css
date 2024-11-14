@@ -1,3 +1,56 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1200; /* Asegúrate de que el z-index sea suficientemente alto */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo transparente */
+}
+
+.modal-content {
+  background-color: #fff; /* Fondo blanco */
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%; /* Ajusta el ancho del modal */
+  max-width: 400px; /* Ajusta el ancho máximo del modal */
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra para darle un efecto de elevación */
+}
+
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.selected {
+  background-color: #4CAF50; /* Color de fondo para el horario seleccionado */
+  color: white; /* Color del texto para el horario seleccionado */
+}
 .form-agenda-container {
   display: flex;
   flex-direction: column;

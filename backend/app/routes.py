@@ -5,7 +5,7 @@ from flask_limiter.util import get_remote_address
 from flask_cors import cross_origin
 from .functions.auth_functions import login, register, google_login, google_register  # Importa las funciones de autenticación
 from .functions.users_functions import user_info, update_user_info  # Importa las funciones de usuario
-from .models import db, Paciente, Administrador, Especialidad, Doctor  # Asegúrate de importar Medico
+from .models import db, Paciente, Administrador, Especialidad, Doctor, Cita  # Asegúrate de importar Cita
 from .functions.patients_functions import add_paciente, update_paciente, delete_paciente, get_pacientes, get_paciente
 from .functions.pdf_functions import generate_pdf  # Importa la función para generar PDF de pacientes
 from .functions.generate_doctors_pdf import generate_doctors_pdf  # Importa la función para generar PDF de médicos

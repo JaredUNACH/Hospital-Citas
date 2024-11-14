@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate para redirigir
 import '../styles/FormAgenda.css'; // Importa los estilos CSS para FormAgenda
 import Calendar from 'react-calendar'; // Importa el componente de calendario
 import 'react-calendar/dist/Calendar.css'; // Importa los estilos CSS para el calendario
@@ -24,7 +25,7 @@ const DoctorCard = ({ doctor, onDateChange, onTimeSelect, onAppointment, selecte
           <p><strong>Email:</strong> {doctor.email}</p>
           <p><strong>Teléfono:</strong> {doctor.telefono}</p>
           <div className="desktop-button-container">
-            <Button className="desktop-button" /> {/* Botón para dispositivos de escritorio */}
+            <Button className="desktop-button" onClick={() => onAppointment(doctor.id)} /> {/* Botón para dispositivos de escritorio */}
           </div>
         </div>
       </div>
@@ -33,8 +34,12 @@ const DoctorCard = ({ doctor, onDateChange, onTimeSelect, onAppointment, selecte
           <div className="available-times">
             {availableTimes?.length > 0 ? (
               availableTimes.map((time, index) => (
-                <button key={index} onClick={() => onTimeSelect(doctor.id, time)}>
-                  {time}
+                <button
+                  key={index}
+                  onClick={() => onTimeSelect(doctor.id, time)}
+                  className={`${selectedTime === time ? 'selected' : ''}`}
+                >
+                  {time.time}
                 </button>
               ))
             ) : (
@@ -59,6 +64,9 @@ const FormAgenda = ({ doctors }) => {
   const [selectedDates, setSelectedDates] = useState({});
   const [availableTimes, setAvailableTimes] = useState({});
   const [selectedTimes, setSelectedTimes] = useState({});
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
+  const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
+  const navigate = useNavigate(); // Hook para redirigir
 
   useEffect(() => {
     const updatedDoctors = doctors.map(doctor => {
@@ -78,13 +86,32 @@ const FormAgenda = ({ doctors }) => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
+      const times = generateTimes(response.data);
       setAvailableTimes(prevTimes => ({
         ...prevTimes,
-        [doctorId]: response.data
+        [doctorId]: times
       }));
     } catch (error) {
       console.error('Error fetching available times:', error);
     }
+  };
+
+  const generateTimes = (bookedTimes) => {
+    const startTime = new Date();
+    startTime.setHours(8, 0, 0, 0);
+    const endTime = new Date();
+    endTime.setHours(18, 0, 0, 0);
+
+    const times = [];
+    while (startTime < endTime) {
+      const timeString = startTime.toTimeString().substring(0, 5);
+      const isAvailable = !bookedTimes.some(booking => booking.hora === timeString);
+      if (isAvailable) {
+        times.push({ time: timeString, isAvailable });
+      }
+      startTime.setMinutes(startTime.getMinutes() + 40); // 30 minutes appointment + 10 minutes break
+    }
+    return times;
   };
 
   const handleDateChange = (doctorId, date) => {
@@ -113,11 +140,11 @@ const FormAgenda = ({ doctors }) => {
     }
 
     try {
-      const response = await axios.post(`${config.apiBaseUrl}/citas`, {
+      await axios.post(`${config.apiBaseUrl}/citas`, {
         paciente_id: pacienteId, // Usar el ID del paciente desde localStorage
         medico_id: doctorId,
         fecha: selectedDate.toISOString().split('T')[0],
-        hora: selectedTime,
+        hora: selectedTime.time,
         estado: 'pendiente'
       }, {
         headers: {
@@ -125,14 +152,28 @@ const FormAgenda = ({ doctors }) => {
         }
       });
       alert('Cita creada exitosamente');
+      navigate('/account-patient'); // Redirigir a la página de cuenta del paciente
     } catch (error) {
       console.error('Error creating appointment:', error);
-      alert('Error al crear la cita');
+      setErrorMessage('El horario ya está ocupado. Por favor, seleccione otro horario.'); // Mostrar mensaje de error
+      setShowModal(true); // Mostrar el modal
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
     <div className="form-agenda-container">
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <p>{errorMessage}</p>
+          </div>
+        </div>
+      )}
       {doctorsWithImages.map((doctor, index) => (
         <DoctorCard
           key={index}

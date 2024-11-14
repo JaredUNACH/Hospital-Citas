@@ -101,19 +101,6 @@ class Doctor(db.Model, UserMixin):
     def __repr__(self):
         return f'<Doctor {self.nombre} {self.apellido_paterno} {self.apellido_materno}>'
 
-class HorarioDisponibilidad(db.Model):
-    __tablename__ = 'horarios_disponibilidad'
-    id = db.Column(db.Integer, primary_key=True)
-    medico_id = db.Column(db.Integer, db.ForeignKey('medicos.id'), nullable=False)
-    dia_semana = db.Column(db.String(20), nullable=False)
-    hora_inicio = db.Column(db.Time, nullable=False)
-    hora_fin = db.Column(db.Time, nullable=False)
-
-    medico = db.relationship('Doctor', backref=db.backref('horarios_disponibilidad', lazy=True))
-
-    def __repr__(self):
-        return f'<HorarioDisponibilidad {self.dia_semana} {self.hora_inicio}-{self.hora_fin}>'
-
 class Cita(db.Model):
     __tablename__ = 'citas'
     id = db.Column(db.Integer, primary_key=True)
@@ -123,6 +110,8 @@ class Cita(db.Model):
     hora = db.Column(db.Time, nullable=False)
     estado = db.Column(db.String(50), nullable=False, default='pendiente')
     fecha_creacion = db.Column(db.DateTime, default=db.func.current_timestamp())
+    hora_inicio = db.Column(db.Time, nullable=False)
+    hora_fin = db.Column(db.Time, nullable=False)
 
     paciente = db.relationship('Paciente', backref=db.backref('citas', lazy=True))
     medico = db.relationship('Doctor', backref=db.backref('citas', lazy=True))
