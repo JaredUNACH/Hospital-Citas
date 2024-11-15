@@ -14,9 +14,14 @@ import config from '../config'; // Importa la configuración
 const VerTodosMedicos = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [medicos, setMedicos] = useState([]); // Estado para almacenar los datos de los médicos
+  const [especialidades, setEspecialidades] = useState([]); // Estado para almacenar las especialidades
   const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
   const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
+  const [filterEspecialidad, setFilterEspecialidad] = useState(''); // Estado para manejar el filtro de especialidad
+  const [filterGenero, setFilterGenero] = useState(''); // Estado para manejar el filtro de género
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar la visibilidad del modal
+  const [currentPage, setCurrentPage] = useState(1); // Estado para manejar la página actual
+  const itemsPerPage = 30; // Número de elementos por página
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -52,7 +57,22 @@ const VerTodosMedicos = ({ setContent }) => {
       }
     };
 
+    // Función para obtener las especialidades
+    const fetchEspecialidades = async () => {
+      try {
+        const response = await axios.get(`${config.apiBaseUrl}/especialidades`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        setEspecialidades(response.data);
+      } catch (error) {
+        console.error('Error fetching especialidades:', error);
+      }
+    };
+
     fetchMedicos();
+    fetchEspecialidades();
   }, []);
 
   const handleBackClick = () => {
@@ -127,11 +147,31 @@ const VerTodosMedicos = ({ setContent }) => {
     }
   };
 
+  const handleFilterEspecialidad = (e) => {
+    setFilterEspecialidad(e.target.value);
+  };
+
+  const handleFilterGenero = (e) => {
+    setFilterGenero(e.target.value);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
   const filteredMedicos = medicos.filter(medico =>
-    medico.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (medico.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     medico.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    medico.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase())
+    medico.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (filterEspecialidad ? medico.especialidad === filterEspecialidad : true) &&
+    (filterGenero ? medico.sexo === filterGenero : true)
   );
+
+  const paginatedMedicos = filteredMedicos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
@@ -148,6 +188,19 @@ const VerTodosMedicos = ({ setContent }) => {
         <h2><em>Lista de Médicos</em></h2>
         <div className={styles.searchContainer}>
           <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
+        </div>
+        <div className={styles.filterContainer}>
+          <select className={styles.filterSelect} onChange={handleFilterEspecialidad} value={filterEspecialidad}>
+            <option value="">Todas las Especialidades</option>
+            {especialidades.map(especialidad => (
+              <option key={especialidad.id} value={especialidad.nombre}>{especialidad.nombre}</option>
+            ))}
+          </select>
+          <select className={styles.filterSelect} onChange={handleFilterGenero} value={filterGenero}>
+            <option value="">Todos los Géneros</option>
+            <option value="H">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
         </div>
         <div className={styles.añadirNuevoContainer}>
           <AñadirNuevo onClick={handleOpenModal} /> {/* Componente AñadirNuevo */}
@@ -175,7 +228,7 @@ const VerTodosMedicos = ({ setContent }) => {
               </tr>
             </thead>
             <tbody>
-              {filteredMedicos.map((medico, index) => (
+              {paginatedMedicos.map((medico, index) => (
                 <tr key={medico.id || index}>
                   <td onDoubleClick={() => handleDoubleClick(medico.id, 'nombre', medico.nombre)}>
                     {editing.id === medico.id && editing.field === 'nombre' ? (
@@ -266,6 +319,11 @@ const VerTodosMedicos = ({ setContent }) => {
               ))}
             </tbody>
           </table>
+          <div className={styles.pagination}>
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>Atrás</button>
+            <span>Página {currentPage}</span>
+            <button onClick={handleNextPage} disabled={currentPage * itemsPerPage >= filteredMedicos.length}>Adelante</button>
+          </div>
         </div>
       </div>
       {isModalOpen && <FormModal onClose={handleCloseModal} onSave={handleSaveNewMedico} />} {/* Modal con el componente FormModal */}

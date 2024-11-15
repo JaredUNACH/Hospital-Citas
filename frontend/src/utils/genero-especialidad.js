@@ -23,7 +23,9 @@ export const getSpecialtyWithGender = (specialty, gender) => {
       "Medicina Familiar": gender === 'H' ? "Médico Familiar" : "Médica Familiar",
       "Anestesiología": gender === 'H' ? "Anestesiólogo" : "Anestesióloga",
       "Radiología": gender === 'H' ? "Radiólogo" : "Radióloga",
-      "Cardiología": gender === 'H' ? "Cardiólogo" : "Cardióloga"
+      "Cardiología": gender === 'H' ? "Cardiólogo" : "Cardióloga",
+      "Medico General": gender === 'H' ? "Médico General" : "Médica General",
+      "Odonotología":gender === 'H' ? "Odontólogo" : "Odontóloga"
     };
     return specialties[specialty] || specialty;
   };
