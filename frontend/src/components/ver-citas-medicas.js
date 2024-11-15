@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Importa axios
-import { format, addDays, startOfDay, endOfDay } from 'date-fns'; // Importa las funciones necesarias de date-fns
+import { format, addDays, startOfDay, endOfDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns'; // Importa las funciones necesarias de date-fns
 import styles from '../styles/Ver-todos.module.css'; // Importa el módulo CSS
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Importamos Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +12,7 @@ const VerCitasMedicas = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [citas, setCitas] = useState([]); // Estado para almacenar los datos de las citas
   const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
+  const [filter, setFilter] = useState('today'); // Estado para manejar el filtro de citas
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -33,7 +34,7 @@ const VerCitasMedicas = ({ setContent }) => {
 
   useEffect(() => {
     // Función para obtener los datos de las citas
-    const fetchCitas = async () => {
+    const fetchCitas = async (filter) => {
       try {
         const medicoId = localStorage.getItem('user_id'); // Obtener el ID del médico desde localStorage
         const response = await axios.get(`${config.apiBaseUrl}/citas-medico`, {
@@ -44,11 +45,40 @@ const VerCitasMedicas = ({ setContent }) => {
         });
         console.log(response.data); // Verifica los datos recibidos
         const citasData = response.data; // Ajuste para obtener solo los datos de las citas
+
+        let startDate, endDate;
         const today = startOfDay(new Date());
         const tomorrow = endOfDay(addDays(new Date(), 1));
+        const thisWeekStart = startOfWeek(new Date());
+        const thisWeekEnd = endOfWeek(new Date());
+        const nextMonthStart = startOfMonth(addDays(new Date(), 30));
+        const nextMonthEnd = endOfMonth(addDays(new Date(), 30));
+
+        switch (filter) {
+          case 'today':
+            startDate = today;
+            endDate = endOfDay(today);
+            break;
+          case 'tomorrow':
+            startDate = startOfDay(tomorrow);
+            endDate = endOfDay(tomorrow);
+            break;
+          case 'week':
+            startDate = thisWeekStart;
+            endDate = thisWeekEnd;
+            break;
+          case 'month':
+            startDate = nextMonthStart;
+            endDate = nextMonthEnd;
+            break;
+          default:
+            startDate = today;
+            endDate = endOfDay(today);
+        }
+
         const filteredCitas = citasData.filter(cita => {
           const citaDate = new Date(cita.fecha);
-          return citaDate >= today && citaDate <= tomorrow;
+          return citaDate >= startDate && citaDate <= endDate;
         });
         const sortedCitas = filteredCitas.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
         setCitas(sortedCitas);
@@ -57,8 +87,8 @@ const VerCitasMedicas = ({ setContent }) => {
       }
     };
 
-    fetchCitas();
-  }, []);
+    fetchCitas(filter);
+  }, [filter]);
 
   const handleBackClick = () => {
     setContent('main'); // Redirige al estado main
@@ -92,6 +122,13 @@ const VerCitasMedicas = ({ setContent }) => {
         <div className={styles.searchContainer}>
           <Search onSearch={handleSearch} />
         </div>
+      </div>
+
+      <div className={styles.filterButtons}>
+        <button onClick={() => setFilter('today')}>Hoy</button>
+        <button onClick={() => setFilter('tomorrow')}>Mañana</button>
+        <button onClick={() => setFilter('week')}>Esta Semana</button>
+        <button onClick={() => setFilter('month')}>Próximo Mes</button>
       </div>
 
       <div className={styles.details}>

@@ -7,7 +7,7 @@ import AccountView from '../components/AccountView'; // Componente para visualiz
 import UserList from '../components/user-list'; // Importa el componente UserList
 import VerTodosPacientes from '../components/Ver-todos-pacientes'; // Importa el componente VerTodosPacientes
 import VerTodosMedicos from '../components/Ver-todos-medicos'; // Importa el componente VerTodosMedicos
-import VerTodosAdmins from '../components/Ver-todos-admins'; // Importa el componente VerTodosAdmins
+import VerTodosAdmins from '../components/ver-todos-admins'; // Importa el componente VerTodosAdmins
 import VerCitas from '../components/ver-citas'; // Importa el componente VerCitas
 import VerCitasMedicas from '../components/ver-citas-medicas'; // Importa el componente VerCitasMedicas
 import { Link } from 'react-router-dom';
