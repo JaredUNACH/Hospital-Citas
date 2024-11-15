@@ -74,13 +74,18 @@ def google_register_route():
 def protected():
     current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
     return jsonify(logged_in_as=current_user), 200  # Devuelve la identidad del usuario en la respuesta
-
 # Ruta para obtener las especialidades
 @routes.route('/specialties', methods=['GET'])
 def get_specialties():
     specialties = Especialidad.query.all()
     specialties_list = [{'id': specialty.id, 'nombre': specialty.nombre} for specialty in specialties]
     return jsonify(specialties_list)
+# Ruta para obtener las especialidades
+@routes.route('/especialidades', methods=['GET'])
+def get_especialidades_route():
+    especialidades = Especialidad.query.all()
+    especialidades_list = [{'id': especialidad.id, 'nombre': especialidad.nombre} for especialidad in especialidades]
+    return jsonify(especialidades_list), 200
 
 # Nueva ruta para obtener la información del usuario logueado
 @routes.route('/user-info', methods=['GET'])

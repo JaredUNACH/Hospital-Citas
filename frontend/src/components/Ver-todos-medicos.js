@@ -7,13 +7,16 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 import Search from './Search'; // Importa el componente Search
-import config from '..//config'; // Importa la configuración
+import AñadirNuevo from './Añadir-nuevo'; // Importa el componente AñadirNuevo
+import FormModal from './Form-modal-medicos'; // Importa el componente FormModal
+import config from '../config'; // Importa la configuración
 
 const VerTodosMedicos = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [medicos, setMedicos] = useState([]); // Estado para almacenar los datos de los médicos
   const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
   const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar la visibilidad del modal
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -101,6 +104,29 @@ const VerTodosMedicos = ({ setContent }) => {
     setSearchTerm(term);
   };
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSaveNewMedico = async (formData) => {
+    try {
+      const response = await axios.post(`${config.apiBaseUrl}/medicos`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log(response.data); // Verifica la respuesta del servidor
+      setMedicos([...medicos, response.data]); // Asegúrate de añadir el nuevo médico al estado
+      setIsModalOpen(false); // Cierra el modal después de guardar
+    } catch (error) {
+      console.error('Error saving new medico:', error);
+    }
+  };
+
   const filteredMedicos = medicos.filter(medico =>
     medico.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
     medico.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -120,7 +146,12 @@ const VerTodosMedicos = ({ setContent }) => {
 
       <div className={styles.title}>
         <h2><em>Lista de Médicos</em></h2>
-        <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
+        <div className={styles.searchContainer}>
+          <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
+        </div>
+        <div className={styles.añadirNuevoContainer}>
+          <AñadirNuevo onClick={handleOpenModal} /> {/* Componente AñadirNuevo */}
+        </div>
       </div>
 
       <div className={styles.details}>
@@ -237,6 +268,7 @@ const VerTodosMedicos = ({ setContent }) => {
           </table>
         </div>
       </div>
+      {isModalOpen && <FormModal onClose={handleCloseModal} onSave={handleSaveNewMedico} />} {/* Modal con el componente FormModal */}
     </div>
   );
 };
