@@ -7,6 +7,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import BotonEliminar from './Boton-eliminar'; // Importa el componente BotonEliminar
 import BotonGuardar from './Boton-guardar'; // Importa el componente BotonGuardar
 import Search from './Search'; // Importa el componente Search
+import AñadirNuevo from './Añadir-nuevo'; // Importa el componente AñadirNuevo
+import FormModal from './Form-modal-admins'; // Importa el componente FormModal para administradores
 import config from '../config'; // Importa la configuración
 
 const VerTodosAdmins = ({ setContent }) => {
@@ -14,6 +16,10 @@ const VerTodosAdmins = ({ setContent }) => {
   const [administradores, setAdministradores] = useState([]); // Estado para almacenar los datos de los administradores
   const [editing, setEditing] = useState({}); // Estado para manejar la edición en línea
   const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
+  const [filterGenero, setFilterGenero] = useState(''); // Estado para manejar el filtro de género
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar la visibilidad del modal
+  const [currentPage, setCurrentPage] = useState(1); // Estado para manejar la página actual
+  const itemsPerPage = 30; // Número de elementos por página
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -101,11 +107,49 @@ const VerTodosAdmins = ({ setContent }) => {
     setSearchTerm(term);
   };
 
+  const handleFilterGenero = (e) => {
+    setFilterGenero(e.target.value);
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSaveNewAdmin = async (formData) => {
+    try {
+      const response = await axios.post(`${config.apiBaseUrl}/administradores`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log(response.data); // Verifica la respuesta del servidor
+      setAdministradores([...administradores, response.data]); // Asegúrate de añadir el nuevo administrador al estado
+      setIsModalOpen(false); // Cierra el modal después de guardar
+    } catch (error) {
+      console.error('Error saving new admin:', error);
+    }
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
   const filteredAdministradores = administradores.filter(admin =>
-    admin.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    admin.apellido_paterno.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    admin.apellido_materno.toLowerCase().includes(searchTerm.toLowerCase())
+    (admin.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    admin.apellido_paterno?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    admin.apellido_materno?.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (filterGenero ? admin.sexo === filterGenero : true)
   );
+
+  const paginatedAdministradores = filteredAdministradores.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className={`${styles.main} ${isNavActive ? styles.active : ''}`}>
@@ -120,7 +164,19 @@ const VerTodosAdmins = ({ setContent }) => {
 
       <div className={styles.title}>
         <h2><em>Lista de Administradores</em></h2>
-        <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
+        <div className={styles.searchContainer}>
+          <Search onSearch={handleSearch} /> {/* Componente de búsqueda */}
+        </div>
+        <div className={styles.filterContainer}>
+          <select className={styles.filterSelect} onChange={handleFilterGenero} value={filterGenero}>
+            <option value="">Todos los Géneros</option>
+            <option value="H">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+        <div className={styles.añadirNuevoContainer}>
+          <AñadirNuevo onClick={handleOpenModal} /> {/* Componente AñadirNuevo */}
+        </div>
       </div>
 
       <div className={styles.details}>
@@ -139,7 +195,7 @@ const VerTodosAdmins = ({ setContent }) => {
               </tr>
             </thead>
             <tbody>
-              {filteredAdministradores.map((admin, index) => (
+              {paginatedAdministradores.map((admin, index) => (
                 <tr key={admin.id || index}>
                   <td onDoubleClick={() => handleDoubleClick(admin.id, 'nombre', admin.nombre)}>
                     {editing.id === admin.id && editing.field === 'nombre' ? (
@@ -195,8 +251,14 @@ const VerTodosAdmins = ({ setContent }) => {
               ))}
             </tbody>
           </table>
+          <div className={styles.pagination}>
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>Atrás</button>
+            <span>Página {currentPage}</span>
+            <button onClick={handleNextPage} disabled={currentPage * itemsPerPage >= filteredAdministradores.length}>Adelante</button>
+          </div>
         </div>
       </div>
+      {isModalOpen && <FormModal onClose={handleCloseModal} onSave={handleSaveNewAdmin} />} {/* Modal con el componente FormModal */}
     </div>
   );
 };
