@@ -17,6 +17,7 @@ from .functions.citas_functions import get_citas_con_medico  # Importa la funci�
 from .functions.email_functions import send_welcome_email, send_confirmation_email, send_login_notification_email  # Importa las funciones de correo electrónico
 from .functions.upload_functions import upload_profile_picture as upload_profile_picture_function  # Importa la función de subida de imágenes
 from .functions.citas_medicos_functions import get_citas_medico  # Importa la función para obtener citas del médico
+from .functions.pdf_utils import generate_receta_pdf
 from . import mail
 
 from werkzeug.utils import secure_filename
@@ -74,12 +75,14 @@ def google_register_route():
 def protected():
     current_user = get_jwt_identity()  # Obtiene la identidad del usuario actual desde el token JWT
     return jsonify(logged_in_as=current_user), 200  # Devuelve la identidad del usuario en la respuesta
+
 # Ruta para obtener las especialidades
 @routes.route('/specialties', methods=['GET'])
 def get_specialties():
     specialties = Especialidad.query.all()
     specialties_list = [{'id': specialty.id, 'nombre': specialty.nombre} for specialty in specialties]
     return jsonify(specialties_list)
+
 # Ruta para obtener las especialidades
 @routes.route('/especialidades', methods=['GET'])
 def get_especialidades_route():
@@ -315,3 +318,10 @@ def generate_doctors_pdf_route():
 @cross_origin()  # Habilita CORS para esta ruta específica
 def generate_admins_pdf_route():
     return generate_admins_pdf()
+
+# Ruta para generar el PDF de la receta médica
+@routes.route('/generate-receta-pdf', methods=['POST'])
+@jwt_required()
+def generate_receta_pdf_route():
+    receta_data = request.json
+    return generate_receta_pdf(receta_data)

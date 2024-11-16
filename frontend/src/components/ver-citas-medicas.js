@@ -7,12 +7,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import config from '../config'; // Importa la configuración
 import Search from '../components/Search'; // Importa el componente Search
+import RecetaModal from '../components/Form-modal-recta'; // Importa el componente RecetaModal
+import ButtonReceta from '../components/boton-rectea'; // Importa el componente ButtonReceta
 
 const VerCitasMedicas = ({ setContent }) => {
   const [isNavActive, setIsNavActive] = useState(false); // Estado para controlar el toggle de navegación
   const [citas, setCitas] = useState([]); // Estado para almacenar los datos de las citas
   const [searchTerm, setSearchTerm] = useState(''); // Estado para manejar el término de búsqueda
   const [filter, setFilter] = useState('today'); // Estado para manejar el filtro de citas
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar la visibilidad del modal
+  const [selectedCita, setSelectedCita] = useState(null); // Estado para manejar la cita seleccionada
 
   const handleToggleClick = () => {
     setIsNavActive(!isNavActive);
@@ -98,6 +102,56 @@ const VerCitasMedicas = ({ setContent }) => {
     setSearchTerm(term);
   };
 
+  const handleOpenModal = (cita) => {
+    setSelectedCita(cita);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCita(null);
+  };
+
+  const handleSaveReceta = async (recetaData) => {
+    try {
+      // Aquí puedes hacer una llamada a la API para guardar la receta en la base de datos
+      // await axios.post(`${config.apiBaseUrl}/recetas`, recetaData, {
+      // headers: {
+      //     Authorization: `Bearer ${localStorage.getItem('token')}`
+      //   }
+      // });
+
+      // Verificar que todos los campos necesarios estén presentes
+      const requiredFields = ['paciente_nombre', 'paciente_apellido_paterno', 'medicamento', 'dosis', 'frecuencia', 'duracion'];
+      for (const field of requiredFields) {
+        if (!recetaData[field]) {
+          throw new Error(`Missing field: ${field}`);
+        }
+      }
+
+      // Generar el PDF de la receta médica
+      const response = await axios.post(`${config.apiBaseUrl}/generate-receta-pdf`, recetaData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        responseType: 'blob' // Asegúrate de que la respuesta sea un blob
+      });
+
+      // Crear un enlace para descargar el PDF
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'receta_medica.pdf');
+      document.body.appendChild(link);
+      link.click();
+
+      // Cerrar el modal después de guardar
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving receta:', error);
+    }
+  };
+
   const filteredCitas = citas.filter(cita =>
     (cita.fecha && cita.fecha.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (cita.estado && cita.estado.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -144,6 +198,7 @@ const VerCitasMedicas = ({ setContent }) => {
                 <th>Nombre del Paciente</th>
                 <th>Apellido Paterno del Paciente</th>
                 <th>Especialidad</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -157,12 +212,22 @@ const VerCitasMedicas = ({ setContent }) => {
                   <td>{cita.paciente_nombre}</td>
                   <td>{cita.paciente_apellido_paterno}</td>
                   <td>{cita.especialidad_nombre}</td>
+                  <td>
+                    <ButtonReceta onClick={() => handleOpenModal(cita)} />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      {isModalOpen && (
+        <RecetaModal
+          cita={selectedCita}
+          onClose={handleCloseModal}
+          onSave={handleSaveReceta}
+        />
+      )}
     </div>
   );
 };
