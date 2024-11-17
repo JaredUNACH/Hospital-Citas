@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Logout from './pages/Logout';
 import AccountPatient from './pages/AccountPatient';
 import Appointment from './pages/Appointment'; // Importa el nuevo componente Appointment
+import ForgotPassword from './pages/ForgotPassword'; // Importa el nuevo componente ForgotPassword
 import './App.css'; // Importa los estilos CSS para App
 
 function App() {
@@ -27,6 +28,7 @@ const AppRoutes = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/account-patient" element={<AccountPatient />} />
       <Route path="/appointment" element={<Appointment />} /> {/* Agrega la nueva ruta */}
+      <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Agrega la nueva ruta */}
       <Route path="/logout" element={<Logout />} />
     </Routes>
   );

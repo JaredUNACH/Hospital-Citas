@@ -268,6 +268,10 @@ const Login = () => {
     });
   };
 
+  const handleForgotPassword = () => {
+    navigate('/forgot-password'); // Redirige a la página de recuperación de contraseña
+  };
+
   return (
     <>
       <div className="desktop-view">
@@ -307,7 +311,7 @@ const Login = () => {
                     <span>o usa tu cuenta</span>
                     <input type="email" name="email" placeholder="Correo Electrónico" onChange={handleLoginChange} />
                     <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} />
-                    <a href="#">¿Olvidaste tu contraseña?</a>
+                    <a href="#" onClick={handleForgotPassword}>¿Olvidaste tu contraseña?</a>
                     <button type="submit" className="pulse">Iniciar Sesión</button>
                   </form>
                 </div>

@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.forgot-password-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+
+
+.forgot-password-form {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px; /* Ajusta el ancho máximo */
+  animation: emerge 1s ease-out;
+  position: relative;
+}
+
+.forgot-password-form h2 {
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.forgot-password-form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.forgot-password-form button {
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.forgot-password-form button:hover {
+  background-color: #0056b3;
+}
+
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes emerge {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubble {
+  position: relative;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  top: -100px;
+  border-radius: 10px;
+  font-size: 14px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+}
+
+.bubble-email {
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bubble-email::after {
+  top: 100%;
+  left: 50%;
+  border-width: 10px;
+  border-color: #007bff transparent transparent transparent;
+  transform: translateX(-50%);
+}
+
+.bubble-code {
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bubble-code::after {
+  top: 100%;
+  left: 50%;
+  border-width: 10px;
+  border-color: #007bff transparent transparent transparent;
+  transform: translateX(-50%);
+}
+
+.bubble-password {
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bubble-password::after {
+  top: 100%;
+  left: 50%;
+  border-width: 10px;
+  border-color: #007bff transparent transparent transparent;
+  transform: translateX(-50%);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .forgot-password-form {
+    max-width: 300px; /* Ajusta el ancho máximo para pantallas pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  .forgot-password-form {
+    max-width: 250px; /* Ajusta el ancho máximo para pantallas muy pequeñas */
+  }
+}
