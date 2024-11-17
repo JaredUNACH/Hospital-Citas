@@ -10,8 +10,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import letterImages from '../utils/letterImages'; // Importa el mapeo de imágenes
-import config from '..//config'; // Importa la configuración
+import config from '../config'; // Importa la configuración
 import WikiSearch from '../components/WikiSearch'; // Importa el componente WikiSearch
+import UploadHistorialMedico from '../components/UploadHistorialMedico'; // Importa el componente de subida de archivos
 
 const Main = ({ setContent }) => {
   const [username, setUsername] = useState('');
@@ -120,12 +121,7 @@ const Main = ({ setContent }) => {
       case 'usuario':
         return (
           <>
-            <button className="eye-button" onClick={() => setContent('patient-view')}>
-              <i className="fas fa-eye"></i>
-            </button>
-            <button className="edit-button" onClick={() => setContent('patient-edit')}>
-              Editar
-            </button>
+            <UploadHistorialMedico />
           </>
         );
       default:
