@@ -25,6 +25,8 @@ class Paciente(db.Model, UserMixin):
     rol = db.Column(db.String(50), default='usuario', nullable=False)
     historial_medico = db.Column(db.Text, nullable=True)
     profile_picture = db.Column(db.String(255), nullable=True)
+    verification_code = db.Column(db.String(6), nullable=True)  # Nuevo campo
+    verification_code_sent_at = db.Column(db.DateTime, nullable=True)  # Nuevo campo
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')

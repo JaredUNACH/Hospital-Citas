@@ -18,6 +18,7 @@ from .functions.email_functions import send_welcome_email, send_confirmation_ema
 from .functions.upload_functions import upload_profile_picture as upload_profile_picture_function  # Importa la función de subida de imágenes
 from .functions.citas_medicos_functions import get_citas_medico  # Importa la función para obtener citas del médico
 from .functions.pdf_utils import generate_receta_pdf
+from .functions.email_forgot_password import send_forgot_password_email, verify_code, reset_password  # Importa las funciones de recuperación de contraseña
 from . import mail
 
 from werkzeug.utils import secure_filename
@@ -285,6 +286,35 @@ def send_login_notification_email_route():
     role = data.get('role')
 
     result, status_code = send_login_notification_email(user_id, role)
+    return jsonify(result), status_code
+
+# Ruta para enviar el correo electrónico de recuperación de contraseña
+@routes.route('/forgot-password', methods=['POST'])
+def forgot_password_route():
+    data = request.json
+    email = data.get('email')
+
+    result, status_code = send_forgot_password_email(email)
+    return jsonify(result), status_code
+
+# Ruta para verificar el código de verificación
+@routes.route('/verify-code', methods=['POST'])
+def verify_code_route():
+    data = request.json
+    email = data.get('email')
+    verification_code = data.get('verificationCode')
+
+    result, status_code = verify_code(email, verification_code)
+    return jsonify(result), status_code
+
+# Ruta para restablecer la contraseña
+@routes.route('/reset-password', methods=['POST'])
+def reset_password_route():
+    data = request.json
+    email = data.get('email')
+    new_password = data.get('newPassword')
+
+    result, status_code = reset_password(email, new_password)
     return jsonify(result), status_code
 
 # Subida de imágenes de perfil
