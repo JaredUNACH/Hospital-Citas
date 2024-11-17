@@ -55,6 +55,10 @@ const VerCitasMedicas = ({ setContent }) => {
         const tomorrow = endOfDay(addDays(new Date(), 1));
         const thisWeekStart = startOfWeek(new Date());
         const thisWeekEnd = endOfWeek(new Date());
+        const nextWeekStart = startOfWeek(addDays(new Date(), 7));
+        const nextWeekEnd = endOfWeek(addDays(new Date(), 7));
+        const thisMonthStart = startOfMonth(new Date());
+        const thisMonthEnd = endOfMonth(new Date());
         const nextMonthStart = startOfMonth(addDays(new Date(), 30));
         const nextMonthEnd = endOfMonth(addDays(new Date(), 30));
 
@@ -71,7 +75,15 @@ const VerCitasMedicas = ({ setContent }) => {
             startDate = thisWeekStart;
             endDate = thisWeekEnd;
             break;
-          case 'month':
+          case 'nextWeek':
+            startDate = nextWeekStart;
+            endDate = nextWeekEnd;
+            break;
+          case 'thisMonth':
+            startDate = thisMonthStart;
+            endDate = thisMonthEnd;
+            break;
+          case 'nextMonth':
             startDate = nextMonthStart;
             endDate = nextMonthEnd;
             break;
@@ -182,7 +194,9 @@ const VerCitasMedicas = ({ setContent }) => {
         <button onClick={() => setFilter('today')}>Hoy</button>
         <button onClick={() => setFilter('tomorrow')}>Mañana</button>
         <button onClick={() => setFilter('week')}>Esta Semana</button>
-        <button onClick={() => setFilter('month')}>Próximo Mes</button>
+        <button onClick={() => setFilter('nextWeek')}>Próxima Semana</button>
+        <button onClick={() => setFilter('thisMonth')}>Este Mes</button>
+        <button onClick={() => setFilter('nextMonth')}>Próximo Mes</button>
       </div>
 
       <div className={styles.details}>
