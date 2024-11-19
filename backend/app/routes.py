@@ -19,6 +19,7 @@ from .functions.upload_functions import upload_profile_picture as upload_profile
 from .functions.citas_medicos_functions import get_citas_medico  # Importa la función para obtener citas del médico
 from .functions.pdf_utils import generate_receta_pdf
 from .functions.email_forgot_password import send_forgot_password_email, verify_code, reset_password  # Importa las funciones de recuperación de contraseña
+from .functions.chatbot_functions import predict_specialist
 from . import mail
 
 from werkzeug.utils import secure_filename
@@ -357,27 +358,16 @@ def generate_receta_pdf_route():
     receta_data = request.json
     return generate_receta_pdf(receta_data)
 
-# Ruta para manejar las solicitudes a la API de OpenAI
-@routes.route('/api/chat', methods=['POST'])
-def chat():
+# Ruta para el chatbot
+@routes.route('/chatbot', methods=['POST'])
+def chatbot_route():
     data = request.json
-    message = data.get('message')
+    symptoms = data.get('symptoms')
+    if not symptoms:
+        return jsonify({'error': 'Los síntomas son requeridos'}), 400
 
-    headers = {
-        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}',
-        'Content-Type': 'application/json'
-    }
-
-    payload = {
-        'model': 'text-davinci-003',
-        'prompt': message,
-        'max_tokens': 150
-    }
-
-    response = requests.post('https://api.openai.com/v1/completions', headers=headers, json=payload)
-
-    if response.status_code == 200:
-        response_data = response.json()
-        return jsonify({'response': response_data['choices'][0]['text'].strip()})
-    else:
-        return jsonify({'error': 'Error fetching response from OpenAI'}), response.status_code
+    try:
+        predicted_specialist = predict_specialist(symptoms)
+        return jsonify({'predicted_specialist': predicted_specialist}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

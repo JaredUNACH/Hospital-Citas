@@ -16,7 +16,7 @@ const Chatbot = () => {
 
     const instructionsTimer = setTimeout(() => {
       setShowInstructions(false);
-    }, 15000); // 5 segundos para que el mensaje de instrucciones desaparezca
+    }, 18000); // 8 segundos para que el mensaje de instrucciones desaparezca
 
     return () => {
       clearTimeout(timer);
@@ -35,12 +35,13 @@ const Chatbot = () => {
     setMessages([...newMessages, { text: response, sender: 'bot' }]);
   };
 
-  const getResponse = async (message) => {
+  const getResponse = async (symptoms) => {
     try {
-      console.log('Sending message to API:', message);
-      const response = await axios.post(`${config.apiBaseUrl}/api/chat`, { message });
+      console.log('Sending symptoms to API:', symptoms);
+      const response = await axios.post(`${config.apiBaseUrl}/chatbot`, { symptoms });
       console.log('API response:', response.data);
-      return response.data.response;
+      const specialist = response.data.predicted_specialist;
+      return `${specialist}. Puedes hacer una cita con un ${specialist}.`;
     } catch (error) {
       console.error('Error fetching response from backend:', error);
       return 'Lo siento, no puedo ayudarte con ese síntoma. Por favor, consulta a un médico general.';
