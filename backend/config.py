@@ -30,3 +30,6 @@ class Config:
     # Configuración de CORS
     CORS_HEADERS = 'Content-Type'
     CORS_RESOURCES = {r"/*": {"origins": "*"}}
+    
+    # Configuración de la API de OpenAI
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

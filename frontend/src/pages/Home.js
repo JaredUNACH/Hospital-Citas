@@ -5,8 +5,8 @@ import SpecialtySelect from '../components/SpecialtySelect';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../components/Navbar'; // Importa el nuevo componente Navbar
-
 import { CSSTransition } from 'react-transition-group';
+import Chatbot from '../components/Chatbot'; // Importa el componente Chatbot
 
 const Home = () => {
   const navigate = useNavigate();
@@ -58,6 +58,7 @@ const Home = () => {
             </button>
           </div>
         </div>
+        <Chatbot /> {/* Agrega el componente Chatbot */}
       </div>
     </CSSTransition>
   );

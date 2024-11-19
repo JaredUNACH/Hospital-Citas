@@ -23,6 +23,7 @@ from . import mail
 
 from werkzeug.utils import secure_filename
 import os
+import requests
 
 # Crea un Blueprint para las rutas
 routes = Blueprint('routes', __name__)
@@ -355,3 +356,28 @@ def generate_admins_pdf_route():
 def generate_receta_pdf_route():
     receta_data = request.json
     return generate_receta_pdf(receta_data)
+
+# Ruta para manejar las solicitudes a la API de OpenAI
+@routes.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    message = data.get('message')
+
+    headers = {
+        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}',
+        'Content-Type': 'application/json'
+    }
+
+    payload = {
+        'model': 'text-davinci-003',
+        'prompt': message,
+        'max_tokens': 150
+    }
+
+    response = requests.post('https://api.openai.com/v1/completions', headers=headers, json=payload)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        return jsonify({'response': response_data['choices'][0]['text'].strip()})
+    else:
+        return jsonify({'error': 'Error fetching response from OpenAI'}), response.status_code
