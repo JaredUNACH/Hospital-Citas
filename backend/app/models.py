@@ -23,7 +23,7 @@ class Paciente(db.Model, UserMixin):
     google_id = db.Column(db.String(100), unique=True, nullable=True)  # ID de Google
     fecha_registro = db.Column(db.DateTime, default=db.func.current_timestamp())
     rol = db.Column(db.String(50), default='usuario', nullable=False)
-    historial_medico = db.Column(db.Text, nullable=True)
+    historial_medico = db.Column(db.String(255), nullable=True)  # Actualizado para almacenar la ruta del archivo
     profile_picture = db.Column(db.String(255), nullable=True)
     verification_code = db.Column(db.String(6), nullable=True)  # Nuevo campo
     verification_code_sent_at = db.Column(db.DateTime, nullable=True)  # Nuevo campo

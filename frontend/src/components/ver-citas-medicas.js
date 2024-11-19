@@ -164,6 +164,14 @@ const VerCitasMedicas = ({ setContent }) => {
     }
   };
 
+  const handleDownloadHistorial = (historialUrl, tipo) => {
+    const link = document.createElement('a');
+    link.href = `${config.apiBaseUrl}/uploads/historial_medico/${historialUrl}`;
+    link.setAttribute('download', tipo === 'application/pdf' ? 'historial_medico.pdf' : 'historial_medico.png');
+    document.body.appendChild(link);
+    link.click();
+  };
+
   const filteredCitas = citas.filter(cita =>
     (cita.fecha && cita.fecha.toLowerCase().includes(searchTerm.toLowerCase())) ||
     (cita.estado && cita.estado.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -212,6 +220,7 @@ const VerCitasMedicas = ({ setContent }) => {
                 <th>Nombre del Paciente</th>
                 <th>Apellido Paterno del Paciente</th>
                 <th>Especialidad</th>
+                <th>Historial Médico</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -226,6 +235,9 @@ const VerCitasMedicas = ({ setContent }) => {
                   <td>{cita.paciente_nombre}</td>
                   <td>{cita.paciente_apellido_paterno}</td>
                   <td>{cita.especialidad_nombre}</td>
+                  <td>
+                    <button onClick={() => handleDownloadHistorial(cita.historial_medico, cita.historial_medico_tipo)}>Descargar Historial</button>
+                  </td>
                   <td>
                     <ButtonReceta onClick={() => handleOpenModal(cita)} />
                   </td>

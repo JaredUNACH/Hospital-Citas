@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import config from '../config'; // Importa la configuración
 import styled from 'styled-components';
+import sanitizeFilename from 'sanitize-filename'; // Importa una biblioteca para sanitizar nombres de archivos
 
 const UploadHistorialMedico = () => {
   const [file, setFile] = useState(null);
@@ -15,8 +16,25 @@ const UploadHistorialMedico = () => {
       return;
     }
 
+    // Validar el tipo de archivo
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (!allowedTypes.includes(selectedFile.type)) {
+      alert('Solo se permiten archivos JPEG, PNG y PDF.');
+      return;
+    }
+
+    // Validar el tamaño del archivo (por ejemplo, máximo 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (selectedFile.size > maxSize) {
+      alert('El archivo es demasiado grande. El tamaño máximo permitido es de 5MB.');
+      return;
+    }
+
+    // Sanitize the filename
+    const sanitizedFilename = sanitizeFilename(selectedFile.name);
+
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('file', selectedFile, sanitizedFilename);
 
     try {
       const response = await axios.post(`${config.apiBaseUrl}/upload-historial-medico`, formData, {

@@ -27,6 +27,7 @@
     "react-select": "^5.8.1",
     "react-sweetalert2": "^0.6.0",
     "react-transition-group": "^4.4.5",
+    "sanitize-filename": "^1.6.3",
     "socket.io-client": "^4.8.0",
     "styled-components": "^6.1.13",
     "sweetalert2": "^11.14.1",
